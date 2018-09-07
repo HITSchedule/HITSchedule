@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+
+    <dimen name="padding">16dp</dimen>
+    <dimen name="padding_half">8dp</dimen>
+
+    <dimen name="textSize_large">20sp</dimen>
+    <dimen name="textSize_normal">18sp</dimen>
+    <dimen name="textSize_small">16sp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+
+    <!--以下是帮助页面配置-->
+    <dimen name="tv_title_height">30dp</dimen>
+    <dimen name="tv_margin_left">30dp</dimen>
+    <dimen name="tv_margin_top">2dp</dimen>
+    <dimen name="tv_margin_right">20dp</dimen>
+    <dimen name="tv_line_space">4dp</dimen>
+</resources>

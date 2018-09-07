@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<litepal>
+    <dbname value="classes" ></dbname>
+
+    <version value="5" ></version>
+
+    <list>
+        <mapping class="com.example.aclass.database.MySubject"></mapping>
+        <mapping class="com.example.aclass.database.User"></mapping>
+        <mapping class="com.example.aclass.database.Info"></mapping>
+    </list>
+</litepal>

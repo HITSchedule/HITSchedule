@@ -1,0 +1,60 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 27
+    defaultConfig {
+        applicationId "com.example.aclass"
+        minSdkVersion 15
+        targetSdkVersion 27
+        versionCode 6
+        versionName "1.0.5"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'com.android.support:appcompat-v7:27.1.1'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.2'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+
+    implementation ('com.squareup.okhttp3:okhttp:3.11.0'){
+        exclude group: 'com.squareup.okhttp3'
+        exclude group: 'com.squareup.okio'
+    }
+    implementation 'org.xutils:xutils:3.5.0'
+    implementation 'org.jsoup:jsoup:1.11.3'
+
+    implementation 'com.zhuangfei:TimetableView:2.0.2'
+
+    implementation 'org.litepal.android:core:2.0.0'
+
+    implementation 'com.github.sd6352051:NiftyDialogEffects:v1.0.3'
+
+    implementation 'com.orhanobut:dialogplus:1.11@aar'
+//
+//    implementation 'com.dou361.dialogui:jjdxm-dialogui:1.0.3'
+    implementation 'com.mylhyl:circleDialog:2.6.6'
+
+    implementation 'com.github.medyo:android-about-page:1.0.7'
+
+    //bmob-sdk：Bmob的android sdk包，包含了Bmob的数据存储、文件等服务，以下是最新的bmob-sdk:
+        //3.5.5：请务必查看下面注释[1]
+    implementation ('cn.bmob.android:bmob-sdk:3.6.3'){
+        exclude group: 'com.squareup.okhttp3'
+        exclude group: 'com.squareup.okio'
+    }
+
+    implementation 'com.github.ksoichiro:richbuttons:0.1.1@aar'
+    //如果你想应用能够兼容Android6.0，请添加此依赖(org.apache.http.legacy.jar)
+//    implementation 'cn.bmob.android:http-legacy:1.0'
+}

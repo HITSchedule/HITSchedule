@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <!-- 同级的item有几个则在toolbar右边显示几个 -->
+    <!--
+        id:之后设置点击事件的时候找到当前菜单项的唯一标识
+        title:必填项，Toolbar栏的menu标题
+        [如果存在icon，则显示icon图标，不显示文字]
+        [如果不存在icon,则显示文字]
+        app:showAsAction = "ifRoom" ：显示为一个行为
+        android:showAsAction="ifRoom":icon失效显示图标为“3个竖立的点”
+    -->
+
+    <item android:id="@+id/refresh"
+        android:title="刷新课表"
+        android:icon="@drawable/refresh"
+        app:showAsAction="always" />
+
+    <item android:id="@+id/week_choose"
+        android:title="选择周次"
+        android:icon="@drawable/week"
+        app:showAsAction="always" />
+
+
+    <item android:id="@+id/clear_user"
+        android:title="退出登录"
+        android:icon="@drawable/menu"
+        app:showAsAction="collapseActionView" />
+
+    <item android:id="@+id/update"
+        android:title="检查更新"
+        android:icon="@drawable/menu"
+        app:showAsAction="collapseActionView" />
+
+    <item android:id="@+id/about"
+        android:title="关于软件"
+        android:icon="@drawable/menu"
+        app:showAsAction="collapseActionView" />
+
+    <item android:id="@+id/changelog"
+        android:title="更新说明"
+        android:icon="@drawable/menu"
+        app:showAsAction="collapseActionView" />
+
+    <!--<item android:id="@+id/toolbar_r_img"-->
+        <!--android:title="分享"-->
+        <!--android:icon="@drawable/ic_launcher"-->
+        <!--app:showAsAction="collapseActionView"-->
+        <!--&gt;-->
+        <!--&lt;!&ndash; item包含menu表示该menu是item下的子菜单 &ndash;&gt;-->
+        <!--<menu>-->
+            <!--&lt;!&ndash; 将group中的菜单项放于一个组里面 &ndash;&gt;-->
+            <!--<group>-->
+                <!--<item android:id="@+id/toolbar_r_1"-->
+                    <!--android:title="登录"-->
+                    <!--android:icon="@drawable/ic_launcher"-->
+                    <!--app:showAsAction="ifRoom"-->
+                    <!--/>-->
+                <!--<item android:id="@+id/toolbar_r_2"-->
+                    <!--android:title="注册"-->
+                    <!--android:icon="@drawable/ic_launcher"-->
+                    <!--app:showAsAction="ifRoom"-->
+                    <!--/>-->
+                <!--<item android:id="@+id/toolbar_r_3"-->
+                    <!--android:title="设置"-->
+                    <!--android:icon="@drawable/ic_launcher"-->
+                    <!--app:showAsAction="ifRoom"-->
+                    <!--/>-->
+            <!--</group>-->
+        <!--</menu>-->
+    <!--</item>-->
+    <!---->
+
+    <!--<item android:title="学习"-->
+    <!--android:id="@+id/item_learn"-->
+    <!--android:icon="@drawable/list_item"-->
+    <!--app:showAsAction="ifRoom"-->
+    <!--/>-->
+</menu>
