@@ -42,9 +42,10 @@ public class AboutActivity extends AppCompatActivity {
 
         View aboutPage = new AboutPage(this)
                 .isRTL(false)
-                .setDescription("本软件仅供哈工大本科生进行课表相关操作使用，完全免费，严禁用于商业用途。如果你在使用的过程中发现任何bug，或对本软件的发展有建议，请联系yuxiang.wei.cs@gmail.com。感谢您的支持。")
+                .setDescription("本软件仅供哈工大本科生进行课表相关操作使用，项目已开源。如果你在使用的过程中发现任何bug，或对本软件的发展有建议，请联系yuxiang.wei.cs@gmail.com。感谢您的支持。")
                 .setImage(R.drawable.bg_black)
                 .addItem(help)
+                .addGitHub("https://github.com/Yuxiang-Wei/HITSchedule")
                 .addEmail("Yuxiang.Wei.CS@gmail.com")
                 .addGroup("Thanks for")
                 .addItem(timetableView)
