@@ -183,6 +183,12 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                 } else {
+                    if(dialogFragment != null){
+                        dialogFragment.dismiss();
+                        Toast.makeText(MainActivity.this, "获取课表失败，请检查网络", Toast.LENGTH_SHORT).show();
+                    }else {
+                        Log.d(TAG, "handleMessage: no progress");
+                    }
                     Log.d(TAG, "done: 加载错误" + e.toString());
                 }
             }
@@ -275,6 +281,12 @@ public class MainActivity extends AppCompatActivity {
             }).start();
 
         } catch (Exception e) {
+            if(dialogFragment != null){
+                dialogFragment.dismiss();
+                Toast.makeText(MainActivity.this, "获取课表失败，请检查网络", Toast.LENGTH_SHORT).show();
+            }else {
+                Log.d(TAG, "handleMessage: no progress");
+            }
             Log.d(TAG, "run: error" + e.getMessage());
         }
     }
@@ -300,7 +312,10 @@ public class MainActivity extends AppCompatActivity {
         }
         int height = metrics.heightPixels;
 
-        int itemHeight = height == 2560 ? 152 : 115;
+
+//        int itemHeight = height == 2560 ? 152 : 115;
+
+        int itemHeight = height * 1380 / (1920 * 12);
 
         Log.d(TAG, "initView: 屏幕大小: height" + height);
 
