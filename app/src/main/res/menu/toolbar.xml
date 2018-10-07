@@ -22,13 +22,20 @@
         app:showAsAction="always" />
 
 
-    <item android:id="@+id/clear_user"
-        android:title="退出登录"
+    <item android:id="@+id/update"
+        android:title="检查更新"
         android:icon="@drawable/menu"
         app:showAsAction="collapseActionView" />
 
-    <item android:id="@+id/update"
-        android:title="检查更新"
+    <item android:id="@+id/setbg"
+        android:title="设置背景"
+        android:icon="@drawable/menu"
+        app:showAsAction="collapseActionView" />
+
+
+
+    <item android:id="@+id/changelog"
+        android:title="更新说明"
         android:icon="@drawable/menu"
         app:showAsAction="collapseActionView" />
 
@@ -37,8 +44,8 @@
         android:icon="@drawable/menu"
         app:showAsAction="collapseActionView" />
 
-    <item android:id="@+id/changelog"
-        android:title="更新说明"
+    <item android:id="@+id/clear_user"
+        android:title="退出登录"
         android:icon="@drawable/menu"
         app:showAsAction="collapseActionView" />
 

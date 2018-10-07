@@ -1,14 +1,25 @@
 package com.example.aclass.ui;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Application;
+import android.content.ContentValues;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.StrictMode;
+import android.provider.MediaStore;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
@@ -17,6 +28,7 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.aclass.R;
@@ -40,6 +52,7 @@ import com.zhuangfei.timetable.view.WeekView;
 
 import org.litepal.LitePal;
 
+import java.io.File;
 import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.List;
@@ -60,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
 
     private boolean isLogin = false;  // 是否已经登录
 
-    private String regex = "<input id=\"DSIDFormDataStr\" type=\"hidden\" name=\"FormDataStr\" value=\"([^ ]+)\">";
+    private String regex = "<input id=\"DSIDFormDataStr\" type=\"hidden\" name=\"FormDataStr\" value=\"([^ ]+)\">";  // 判断是否已经登录的正则
 
     private String relogin_token = "";
 
@@ -69,10 +82,9 @@ public class MainActivity extends AppCompatActivity {
     private String stuId;
     private String pwd;
 
+    private LinearLayout layout;
     private TimetableView mTimetableView;
-
     private WeekView weekView;
-
     private Toolbar toolbar;
 
     private int cWeek = 1;
@@ -299,6 +311,25 @@ public class MainActivity extends AppCompatActivity {
         mTimetableView = findViewById(R.id.id_timetableView);
         weekView=findViewById(R.id.id_weekview);
         toolbar = findViewById(R.id.toolbar);
+        layout = findViewById(R.id.layout);
+
+        SharedPreferences preferences = getSharedPreferences("data",MODE_PRIVATE);
+        String bg_path = preferences.getString("bgPath",null);
+
+        if (bg_path != null){
+            File file = new File(bg_path);
+            Drawable drawable = null;
+            if (file.exists()){
+                drawable = Drawable.createFromPath(bg_path);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                    layout.setBackground(drawable);
+                }
+            }
+
+        }
+
+
+
 
         /**
          * getRealMetrics - 屏幕的原始尺寸，即包含状态栏。
@@ -550,11 +581,19 @@ public class MainActivity extends AppCompatActivity {
                                 .create();
                         dialog.show();
                         break;
+                    case R.id.setbg:
+                        Intent intent3 = new Intent(MainActivity.this, SetBgActivity.class);
+                        startActivity(intent3);
+                        break;
                 }
                 return true;    //返回为true
             }
         });
     }
+
+
+
+
 
 
     //设置menu（右边图标）

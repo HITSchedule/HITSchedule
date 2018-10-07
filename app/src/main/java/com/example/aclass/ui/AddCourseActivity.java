@@ -73,9 +73,6 @@ public class AddCourseActivity extends AppCompatActivity {
 
         weekList = new ArrayList<>();
 
-        for(int i = 1; i < 21; i++){
-            weekList.add(i);
-        }
 
         theDay = day == 0 ? "一" : day == 1 ? "二" : day == 2 ? "三" : day == 3 ? "四" : day == 4 ? "五" : day == 5 ? "六" : day == 6 ? "日" : "天";
 
@@ -115,6 +112,12 @@ public class AddCourseActivity extends AppCompatActivity {
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                if (weekList.isEmpty()){
+                    Toast.makeText(AddCourseActivity.this, "周数不能为空", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 String teacher = et_teacher.getText().toString();
                 String room = et_room.getText().toString();
                 String name = et_course_name.getText().toString();
