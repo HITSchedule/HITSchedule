@@ -1,25 +1,16 @@
 package com.example.aclass.ui;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.Application;
-import android.content.ContentValues;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.StrictMode;
-import android.provider.MediaStore;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
@@ -142,7 +133,6 @@ public class MainActivity extends AppCompatActivity {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
         }
-
         httpUtil = new HttpUtil();
 
         // 检查账户是否已登录
@@ -316,6 +306,7 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences preferences = getSharedPreferences("data",MODE_PRIVATE);
         String bg_path = preferences.getString("bgPath",null);
 
+        Log.d(TAG, "initView: " + bg_path);
         if (bg_path != null){
             File file = new File(bg_path);
             Drawable drawable = null;
@@ -325,7 +316,10 @@ public class MainActivity extends AppCompatActivity {
                     layout.setBackground(drawable);
                 }
             }
-
+        } else {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                layout.setBackground(null);
+            }
         }
 
 
@@ -585,6 +579,12 @@ public class MainActivity extends AppCompatActivity {
                         Intent intent3 = new Intent(MainActivity.this, SetBgActivity.class);
                         startActivity(intent3);
                         break;
+                    case R.id.addCourse:
+                        Intent intent4 = new Intent(MainActivity.this, AddCourseActivity.class);
+                        intent4.putExtra("start", 1);
+                        intent4.putExtra("day", 1);
+                        startActivity(intent4);
+                        break;
                 }
                 return true;    //返回为true
             }
@@ -647,6 +647,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
+        Log.d(TAG, "onResume: 重启MainActivity");
         initView();
 
         List<MySubject> mySubjects = LitePal.findAll(MySubject.class);

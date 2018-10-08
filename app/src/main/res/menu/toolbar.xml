@@ -21,6 +21,11 @@
         android:icon="@drawable/week"
         app:showAsAction="always" />
 
+    <item android:id="@+id/addCourse"
+        android:title="添加课程"
+        android:icon="@drawable/add_course"
+        app:showAsAction="always" />
+
 
     <item android:id="@+id/update"
         android:title="检查更新"

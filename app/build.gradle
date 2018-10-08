@@ -6,8 +6,8 @@ android {
         applicationId "com.example.aclass"
         minSdkVersion 15
         targetSdkVersion 27
-        versionCode 8
-        versionName "1.0.7"
+        versionCode 9
+        versionName "1.0.8"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -46,6 +46,8 @@ dependencies {
     implementation 'com.mylhyl:circleDialog:2.6.6'
 
     implementation 'com.github.medyo:android-about-page:1.0.7'
+
+    implementation 'com.contrarywind:Android-PickerView:4.1.6'
 
     //bmob-sdk：Bmob的android sdk包，包含了Bmob的数据存储、文件等服务，以下是最新的bmob-sdk:
         //3.5.5：请务必查看下面注释[1]

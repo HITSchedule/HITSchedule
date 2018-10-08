@@ -3,7 +3,9 @@ package com.example.aclass.ui;
 import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.ContentUris;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -19,14 +21,21 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.View;
+import android.widget.ListAdapter;
 import android.widget.Toast;
 
 import com.example.aclass.R;
+import com.example.aclass.adapter.MyListAdapter;
+import com.orhanobut.dialogplus.DialogPlus;
+import com.orhanobut.dialogplus.OnItemClickListener;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.util.Arrays;
 
 public class SetBgActivity extends Activity {
 
@@ -43,7 +52,56 @@ public class SetBgActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setbg);
         base_path = getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).getPath();
-        openAlbum();
+
+        final String[] name ={"设为无背景", "从相册选择"};
+
+        MyListAdapter adapter = new MyListAdapter(this, R.layout.layout_list, Arrays.asList(name));
+
+//        DialogPlus dialog = DialogPlus.newDialog(this)
+//                .setMargin(110, 0, 110, 0)
+//                .setGravity(Gravity.CENTER)
+//                .setAdapter(adapter)
+//                .setOnItemClickListener(new OnItemClickListener() {
+//                    @Override
+//                    public void onItemClick(DialogPlus dialog, Object item, View view, int position) {
+//                        Log.d(TAG, "onItemClick: " + name[position]);
+//                    }
+//                })
+//                .setGravity(Gravity.CENTER)
+//                .create();
+//        dialog.show();
+
+        new AlertDialog.Builder(SetBgActivity.this)
+                .setTitle("请选择设置方式")
+                .setIcon(android.R.drawable.ic_dialog_info)
+                .setItems(new String[]{"设为无背景", "从相册选择"}, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (which){
+                            case 1:
+                                openAlbum();
+                                break;
+                            case 0:
+                                SharedPreferences.Editor editor = getSharedPreferences("data",MODE_PRIVATE).edit();
+                                editor.clear();
+                                editor.apply();
+                                finish();
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                })
+                .setOnCancelListener(new DialogInterface.OnCancelListener() {
+                    @Override
+                    public void onCancel(DialogInterface dialogInterface) {
+                        Log.d(TAG, "onCancel: 这个dialog死了");
+
+                        finish();
+
+                    }
+                })
+                .show();
     }
 
 
@@ -84,7 +142,11 @@ public class SetBgActivity extends Activity {
             } else {
                 handleImageBeforeKitkat(data);
             }
+        } else if (requestCode == REQUEST_SYSTEM_PIC && resultCode == RESULT_CANCELED) {
+            finish();
         }
+
+        Log.d(TAG, "onActivityResult: 什么也没干 " + resultCode);
     }
 
     @TargetApi(19)
