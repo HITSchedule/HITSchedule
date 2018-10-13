@@ -257,6 +257,67 @@ public class HttpUtil {
     }
 
 
+    /**
+     * 获取某一学期的课表
+     * @param url
+     * @return
+     * @throws Exception
+     */
+    public String kb_post(String url, RequestBody body ,String cookie, Handler uiHandler) throws Exception {
+        OkHttpClient client = getHttpClient();
+        if(cookie.contains("DSID")) {
+            client = getClient();
+        }
+
+        Request request = new Request.Builder()
+                .addHeader("Cookie",cookie)
+                .post(body)
+                .url(url)
+                .build();
+
+        Call call = client.newCall(request);
+
+        Response response = call.execute();
+        String string = response.body().string();
+        if(response.isSuccessful()){
+            Log.d(TAG, "kb_post: " + string);
+        }else {
+            Log.d(TAG, "kb_post: failed");
+        }
+
+        HtmlUtil util = new HtmlUtil(string);
+        List<MySubject> subjects = util.getzkb();
+        List<MySubject> mySubjects = LitePal.findAll(MySubject.class);
+//        List<MySubject> toDelete = new ArrayList<>();
+
+        Log.d(TAG, "kb_post: " + subjects.size());
+        Log.d(TAG, "kb_post: " + mySubjects.size());
+        // 删除本地与最新加载的想重复的
+        for (MySubject subject : mySubjects){
+            if(subjects.contains(subject)){
+                subject.delete();
+                Log.d(TAG, "kb_post: 删除" + subject);
+            }
+        }
+        Log.d(TAG, "kb_post: " + subjects.size());
+        Log.d(TAG, "kb_post: " + mySubjects.size());
+        //  保存最新的
+        for (MySubject subject : subjects){
+            subject.save();
+            Log.d(TAG, "kb_post: 存储" + subject);
+        }
+
+        mySubjects = LitePal.findAll(MySubject.class);
+        Log.d(TAG, "kb_post: " + mySubjects.size());
+
+        String s = util.getStartTime();
+        Log.d(TAG, "kb_post: 耗时 " + s);
+        Message msg = new Message();
+        msg.what = 0;
+        msg.obj = subjects;
+        uiHandler.sendMessage(msg);
+        return string;
+    }
 
 
     /**

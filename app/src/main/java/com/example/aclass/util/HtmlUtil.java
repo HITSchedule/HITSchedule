@@ -1,6 +1,7 @@
 package com.example.aclass.util;
 
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.aclass.database.MySubject;
 
@@ -57,7 +58,7 @@ public class HtmlUtil {
 
                         int num = 0;
                         // 找到下一个k应该增加的数，这样即便解析出现异常，也不耽误下一个课表的解析
-                        for(int x = 1; x < 6; x++){
+                        for(int x = 1; x < strings.length; x++){
                             Pattern pattern = Pattern.compile("[0-9]*");
                             Matcher isNum = pattern.matcher(strings[k+x].charAt(strings[x+k].length() -  1)+ "");
                             if (isNum.matches()) {
@@ -65,7 +66,11 @@ public class HtmlUtil {
                                 break;
                             }
                         }
-                        Log.d(TAG, "getzkb: 课名" + strings[k]);
+
+                        if (strings[k].contains("体育")){
+                            num = 2;
+                        }
+
                         try{
                             // 不好解析，略过
                             if(strings[k].contains("机械设计A")){
@@ -98,7 +103,8 @@ public class HtmlUtil {
                                 } else {
                                     Log.d(TAG, "getzkb: 解析课表失败，一个老师多个教室" + strings[k] + strings[k + 1]);
                                 }
-                            } else if(strings[k + 1].endsWith("周")){
+                            } else if(strings[k + 1].endsWith("周") && !strings[k].contains("体育")){
+                                // 这里要剔除体育课，因为体育课也可能没有教室
                                 MySubject mySubject = getMySubject(i, j, strings[k], strings[k + 1], strings[k+2]);
                                 k += 3;
                                 if(mySubject != null){
@@ -255,6 +261,9 @@ public class HtmlUtil {
         boolean isEven = false;
         boolean isOdd = false;
 
+        if (course.contains("体育")){
+            Log.d(TAG, "getMySubject: " + info);
+        }
         if (info.contains("双")){
             isEven = true;
             info = info.replace("双", "");
@@ -270,7 +279,14 @@ public class HtmlUtil {
 
 
         mySubject.setTeacher(infos[0]);
+
         mySubject.setRoom(infos[2].replace("周",""));
+//        if (infos[2].equals("周")){
+//            mySubject.setRoom("无");
+//        }else {
+//            mySubject.setRoom(infos[2].replace("周",""));
+//        }
+
         mySubject.setWeekList(getWeeks(infos[1], isEven, isOdd));
 
         Log.d(TAG, "getzkb: mySubject" + mySubject);

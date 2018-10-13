@@ -230,8 +230,8 @@ public class MainActivity extends AppCompatActivity {
 
         // 查看周课表的表单 暂时没用
         final FormBody kb_data = new FormBody.Builder()
-                .add("xnxq", "2017-20183")
-                .add("zc", "2")
+                .add("xnxq", "2017-20182")
+//                .add("zc", "2")
                 .build();
 
         try {
@@ -264,7 +264,7 @@ public class MainActivity extends AppCompatActivity {
                                 httpUtil.vpn_jwts_post(jwts_data);
                                 String cookie = "DSID=" + httpUtil.DSID;
                                 httpUtil.kb_get("https://vpn.hit.edu.cn/kbcx/,DanaInfo=jwts.hit.edu.cn+queryGrkb", cookie, uiHandler);
-//                        kb_post("https://vpn.hit.edu.cn/kbcx/,DanaInfo=jwts.hit.edu.cn+queryXszkb", kb_data);
+//                                httpUtil.kb_post("https://vpn.hit.edu.cn/kbcx/,DanaInfo=jwts.hit.edu.cn+queryGrkb", kb_data, cookie, uiHandler);
 
                             } catch (Exception e1) {
                                 if(dialogFragment != null){
