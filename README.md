@@ -1,6 +1,6 @@
 # HITSchedule
 
-Android版工大课表app。[下载网页](hitschedule.bmob.site)
+Android版工大课表app。[下载网页](http://hitschedule.bmob.site/)
 
 #### 已实现
 
@@ -11,6 +11,7 @@ Android版工大课表app。[下载网页](hitschedule.bmob.site)
 
 #### 待实现
 
+- 空教室查询
 - 修改已有课表项
 - 完善课表解析函数
 
