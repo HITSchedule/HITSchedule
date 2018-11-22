@@ -1,5 +1,7 @@
 package com.example.aclass.util;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
@@ -8,6 +10,8 @@ import com.example.aclass.database.MySubject;
 
 import org.litepal.LitePal;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -23,6 +27,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import okhttp3.ResponseBody;
 import okhttp3.TlsVersion;
 
 public class HttpUtil {
@@ -34,6 +39,9 @@ public class HttpUtil {
     public String DSID = "";  // 通过vpn访问需要的cookie 值
     public String JSESSIONID = ""; //通过校内网访问需要的cookie
     public String clwz_blc_pst = ""; //通过校内网访问需要的cookie
+    public String DSLaunchURL = "";
+    public String DSFirstAccess = "";
+    public String DSLastAccess = "";
 
 
     /**
@@ -90,6 +98,39 @@ public class HttpUtil {
     }
 
     /**
+     * vpn登录之前，获取验证码
+     * @param url
+     * @param cookie
+     * @return
+     * @throws Exception
+     */
+    public Bitmap getCaptchaImage(String url, String cookie) throws Exception{
+
+        OkHttpClient client = getHttpClient();
+
+        Request request = new Request.Builder()
+                .addHeader("Cookie",cookie)
+                .get()
+                .url(url)
+                .build();
+
+        Call call = client.newCall(request);
+
+        Response response = call.execute();
+        ResponseBody body = response.body();
+        if(response.isSuccessful()){
+            //获取流
+            InputStream in = body.byteStream();
+            //转化为bitmap
+            Bitmap bitmap = BitmapFactory.decodeStream(in);
+            return bitmap;
+        }else {
+            Log.d(TAG, "kb_get: failed");
+        }
+
+        return null; // TODO 改
+    }
+    /**
      * vpn登录jwts
      * @param body
      * @return
@@ -101,7 +142,8 @@ public class HttpUtil {
 
         OkHttpClient client = getClient();
         Request request = new Request.Builder()
-                .addHeader("Cookie","DSID=" + DSID)
+                .addHeader("Cookie","DSID=" + DSID + "; DSLaunchURL=" + DSLaunchURL)
+                .addHeader("Referer","https://vpn.hit.edu.cn/,DanaInfo=jwts.hit.edu.cn+loginLdapQian")
                 .url(url)
                 .post(body)
                 .build();
@@ -192,6 +234,37 @@ public class HttpUtil {
         msg.obj = mySubjects;
         uiHandler.sendMessage(msg);
         return string;
+    }
+
+
+    /**
+     * 在使用vpn登录jwts请求验证码之前，先请求一下该网址，将Cookie送过去再说
+     */
+    public void get_cookie_before_login(){
+        OkHttpClient client = getHttpClient();
+        long x = Integer.valueOf(DSFirstAccess);
+        x = x + 1;
+        String cookie = "DSSignInURL=/; DSID=" +DSID + "; DSFirstAccess=" + DSFirstAccess + "; DSLastAccess=" + x;
+
+        Request request = new Request.Builder()
+                .addHeader("Cookie",cookie)
+                .get()
+                .url("https://vpn.hit.edu.cn/,DanaInfo=jwts.hit.edu.cn,SSO=U+")
+                .build();
+
+        Call call = client.newCall(request);
+
+        Response response = null;
+        try {
+            response = call.execute();
+            ResponseBody body = response.body();
+            if(response.isSuccessful()){
+
+            }else {
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -353,6 +426,15 @@ public class HttpUtil {
                             if(cookie.name().equals("JSESSIONID")){
                                 JSESSIONID = cookie.value();
                             }
+                            if(cookie.name().equals("DSLaunchURL")){
+                                DSLaunchURL = cookie.value();
+                            }
+                            if(cookie.name().equals("DSFirstAccess")){
+                                DSFirstAccess = cookie.value();
+                            }
+                            if(cookie.name().equals("DSLastAccess")){
+                                DSLastAccess = cookie.value();
+                            }
                             if (cookie.name().equals("clwz_blc_pst")){
                                 clwz_blc_pst = cookie.value();
                             }
@@ -371,6 +453,9 @@ public class HttpUtil {
         return client;
 
     }
+
+
+
 
     private OkHttpClient getHttpClient(){
 
@@ -396,6 +481,15 @@ public class HttpUtil {
                             }
                             if(cookie.name().equals("JSESSIONID")){
                                 JSESSIONID = cookie.value();
+                            }
+                            if(cookie.name().equals("DSLaunchURL")){
+                                DSLaunchURL = cookie.value();
+                            }
+                            if(cookie.name().equals("DSFirstAccess")){
+                                DSFirstAccess = cookie.value();
+                            }
+                            if(cookie.name().equals("DSLastAccess")){
+                                DSLastAccess = cookie.value();
                             }
                             if (cookie.name().equals("clwz_blc_pst")){
                                 clwz_blc_pst = cookie.value();

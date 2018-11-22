@@ -36,6 +36,10 @@ public class AboutActivity extends AppCompatActivity {
         android_about_page.setTitle("AboutPage");
         android_about_page.setIntent(new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/medyo/android-about-page")));
 
+        Element webpage = new Element();
+        webpage.setTitle("软件官网");
+        webpage.setIntent(new Intent(Intent.ACTION_VIEW, Uri.parse("http://hitschedule.bmob.site/")));
+
         Element help = new Element();
         help.setTitle("点此查看使用说明");
         help.setIntent(new Intent(AboutActivity.this, HelpActivity.class));
@@ -45,8 +49,9 @@ public class AboutActivity extends AppCompatActivity {
                 .setDescription("本软件仅供哈工大本科生进行课表相关操作使用，项目已开源。如果你在使用的过程中发现任何bug，或对本软件的发展有建议，请联系yuxiang.wei.cs@gmail.com。感谢您的支持。")
                 .setImage(R.drawable.bg_black)
                 .addItem(help)
-                .addGitHub("https://github.com/Yuxiang-Wei/HITSchedule")
+                .addGitHub("Yuxiang-Wei/HITSchedule")
                 .addEmail("Yuxiang.Wei.CS@gmail.com")
+                .addItem(webpage)
                 .addGroup("Thanks for")
                 .addItem(timetableView)
                 .addItem(dialogplus)

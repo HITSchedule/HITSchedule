@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -29,6 +30,7 @@ import com.example.aclass.database.BmobInfo;
 import com.example.aclass.database.Info;
 import com.example.aclass.database.MySubject;
 import com.example.aclass.database.User;
+import com.example.aclass.dialog.CustomDialog;
 import com.example.aclass.util.HttpUtil;
 import com.mylhyl.circledialog.CircleDialog;
 import com.mylhyl.circledialog.params.ProgressParams;
@@ -44,7 +46,6 @@ import com.zhuangfei.timetable.view.WeekView;
 import org.litepal.LitePal;
 
 import java.io.File;
-import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -61,27 +62,20 @@ import okhttp3.FormBody;
 public class MainActivity extends AppCompatActivity {
 
     private String TAG = getClass().getName();
-
-    private boolean isLogin = false;  // 是否已经登录
-
     private String regex = "<input id=\"DSIDFormDataStr\" type=\"hidden\" name=\"FormDataStr\" value=\"([^ ]+)\">";  // 判断是否已经登录的正则
-
     private String relogin_token = "";
-
-    private HttpUtil httpUtil;
-
     private String stuId;
     private String pwd;
+    private String captcha;
 
+    private HttpUtil httpUtil;
     private LinearLayout layout;
     private TimetableView mTimetableView;
     private WeekView weekView;
     private Toolbar toolbar;
-
     private int cWeek = 1;
-
     private android.support.v4.app.DialogFragment dialogFragment;
-
+    private CustomDialog dialog;
     private List<MySubject> mySubjects = new ArrayList<>();
 
 
@@ -115,7 +109,79 @@ public class MainActivity extends AppCompatActivity {
                         Log.d(TAG, "handleMessage: no progress");
                     }
                     break;
+                case 1:
+                    // 加载验证码
+                    Bitmap bitmap = (Bitmap) msg.obj;
 
+                    CustomDialog.Builder builder = new CustomDialog.Builder(MainActivity.this);
+                    dialog = builder
+                            .style(R.style.Dialog)
+//                            .heightDimenRes(R.dimen.dilog_identitychange_height)
+//                            .heightDimenRes(R.dimen.dilog_identitychange_width)
+                            .cancelTouchout(false)
+                            .view(R.layout.layout_captcha_image)
+                            .img(bitmap)
+                            .addViewOnclick(R.id.btn_sure,new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    String captcha1 = dialog.getCaptcha();
+                                    if (!captcha1.isEmpty() && captcha1.length() == 4){
+                                        captcha = captcha1.trim();
+                                        dialog.dismiss();
+                                        dialogFragment = new CircleDialog.Builder()
+                                                .setProgressText("刷新中...")
+                                                .setProgressStyle(ProgressParams.STYLE_SPINNER)
+                                                .show(getSupportFragmentManager());
+                                        getkb();
+                                    }else {
+                                        Toast.makeText(MainActivity.this, "验证码格式有误", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            })
+                            .build();
+                    dialog.show();
+                    break;
+                case 2:
+                    // 验证码错误
+                    if(dialogFragment != null){
+                        dialogFragment.dismiss();
+                    }else {
+                        Log.d(TAG, "handleMessage: no progress");
+                    }
+                    Toast.makeText(MainActivity.this, "验证码错误，请重试", Toast.LENGTH_SHORT).show();
+                    // 重新请求验证码
+                    try {
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                httpUtil.get_cookie_before_login();
+                                String cookie = "DSSignInURL=/; DSID=" + httpUtil.DSID + "; DSFirstAccess=" + httpUtil.DSFirstAccess + "; DSLastAccess=" + httpUtil.DSLastAccess;
+                                String url = "https://vpn.hit.edu.cn/,DanaInfo=jwts.hit.edu.cn+captchaImage";
+                                try {
+                                    Bitmap bitmap = httpUtil.getCaptchaImage(url, cookie);
+                                    Message msg1 = new Message();
+                                    msg1.what = 1;
+                                    msg1.obj = bitmap;
+                                    uiHandler.sendMessage(msg1);
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }).start();
+                    } catch (Exception e) {
+                        if(dialogFragment != null){
+                            dialogFragment.dismiss();
+//                            Toast.makeText(MainActivity.this, "获取课表失败，请检查网络", Toast.LENGTH_SHORT).show();
+                        }else {
+                            Log.d(TAG, "handleMessage: no progress");
+                        }
+                        Log.d(TAG, "run: error" + e.getMessage());
+                    }
+                    break;
+                case 4:
+                    // 请求错误
+                    Toast.makeText(MainActivity.this, "请求超时，请重试", Toast.LENGTH_SHORT).show();
+                    break;
             }
         }
     };
@@ -202,16 +268,6 @@ public class MainActivity extends AppCompatActivity {
      */
     private void initData() {
 
-        // 先清空
-        mySubjects = LitePal.findAll(MySubject.class);
-
-//        for(MySubject subject : subjects){
-//            Log.d(TAG, "initData: " + subject);
-//            if(!subject.getInfo().startsWith("#")){
-//                subject.delete();
-//            }
-//        }
-
         // 登录vpn的表单
         final FormBody vpn_data = new FormBody.Builder()
                 .add("tz_offset","480")
@@ -221,16 +277,9 @@ public class MainActivity extends AppCompatActivity {
                 .add("btnSubmit", "登录")
                 .build();
 
-        // 登录jwts的表单
-        final FormBody jwts_data = new FormBody.Builder()
-                .add("usercode", stuId)
-                .add("password", pwd)
-                .add("code","")
-                .build();
-
         // 查看周课表的表单 暂时没用
         final FormBody kb_data = new FormBody.Builder()
-                .add("xnxq", "2017-20182")
+                .add("xnxq", "2016-20171")
 //                .add("zc", "2")
                 .build();
 
@@ -239,46 +288,59 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void run() {
 
+//                    try {
+//                        httpUtil.jwts_post(jwts_data);
+//                        String cookie = "JSESSIONID=" + httpUtil.JSESSIONID + "; clwz_blc_pst=" + httpUtil.clwz_blc_pst + ";";
+//                        httpUtil.kb_get("http://jwts.hit.edu.cn/kbcx/queryGrkb", cookie, uiHandler);
+//                    } catch (Exception e) {
+//                        if (e.getClass().equals(SocketTimeoutException.class)){
+//                            Log.d(TAG, "onCreate: jwts连接失败");
+//
+//                        }
+//                    }
+                    // 尝试走vpn
                     try {
-                        httpUtil.jwts_post(jwts_data);
-                        String cookie = "JSESSIONID=" + httpUtil.JSESSIONID + "; clwz_blc_pst=" + httpUtil.clwz_blc_pst + ";";
-                        httpUtil.kb_get("http://jwts.hit.edu.cn/kbcx/queryGrkb", cookie, uiHandler);
-                    } catch (Exception e) {
-                        if (e.getClass().equals(SocketTimeoutException.class)){
-                            Log.d(TAG, "onCreate: jwts连接失败");
-                            // 尝试走vpn
-                            try {
-                                String s = httpUtil.vpn_post( vpn_data);
-                                // 查看vpn是否已登录，已登录就重新登录
-                                Pattern p = Pattern.compile(regex);
-                                Matcher m = p.matcher(s);
-                                if(m.find()){
-                                    relogin_token = m.group(1);
-                                    Log.d(TAG, "run: FormDataStr= " + relogin_token);
-                                    FormBody relogin_data = new FormBody.Builder()
-                                            .add("btnContinue","继续会话")
-                                            .add("FormDataStr", relogin_token)
-                                            .build();
-                                    httpUtil.vpn_reLogin(relogin_data);
-                                }
-                                httpUtil.vpn_jwts_post(jwts_data);
-                                String cookie = "DSID=" + httpUtil.DSID;
-                                httpUtil.kb_get("https://vpn.hit.edu.cn/kbcx/,DanaInfo=jwts.hit.edu.cn+queryGrkb", cookie, uiHandler);
-//                                httpUtil.kb_post("https://vpn.hit.edu.cn/kbcx/,DanaInfo=jwts.hit.edu.cn+queryGrkb", kb_data, cookie, uiHandler);
-
-                            } catch (Exception e1) {
-                                if(dialogFragment != null){
-                                    dialogFragment.dismiss();
-                                    Toast.makeText(MainActivity.this, "获取课表失败，请检查网络", Toast.LENGTH_SHORT).show();
-                                }else {
-                                    Log.d(TAG, "handleMessage: no progress");
-                                }
-                                Log.d(TAG, "run vpn请求出问题: " + e1.getMessage());
-                            }
+                        String s = httpUtil.vpn_post( vpn_data);
+                        // 查看vpn是否已登录，已登录就重新登录
+                        Pattern p = Pattern.compile(regex);
+                        Matcher m = p.matcher(s);
+                        if(m.find()){
+                            relogin_token = m.group(1);
+                            Log.d(TAG, "run: FormDataStr= " + relogin_token);
+                            FormBody relogin_data = new FormBody.Builder()
+                                    .add("btnContinue","继续会话")
+                                    .add("FormDataStr", relogin_token)
+                                    .build();
+                            httpUtil.vpn_reLogin(relogin_data);
                         }
+                        httpUtil.get_cookie_before_login();
+                        String cookie = "DSSignInURL=/; DSID=" + httpUtil.DSID + "; DSFirstAccess=" + httpUtil.DSFirstAccess + "; DSLastAccess=" + httpUtil.DSLastAccess;
+                        String url = "https://vpn.hit.edu.cn/,DanaInfo=jwts.hit.edu.cn+captchaImage";
+                        Bitmap bitmap = httpUtil.getCaptchaImage(url, cookie);
+//                                BitmapDrawable bd=new BitmapDrawable(bitmap);
+//                                layout.setBackgroundDrawable(bd);
+                        Log.d(TAG, "run: 拿到验证码");
+                        if(dialogFragment != null){
+                            dialogFragment.dismiss();
+                        }else {
+                            Log.d(TAG, "handleMessage: no progress");
+                        }
+                        Message msg = new Message();
+                        msg.what = 1;
+                        msg.obj = bitmap;
+                        uiHandler.sendMessage(msg);
+
+                    } catch (Exception e1) {
+                        Log.d(TAG, "run vpn请求出问题: " + e1.getMessage());
+                        if(dialogFragment != null){
+                            dialogFragment.dismiss();
+                        }else {
+                            Log.d(TAG, "handleMessage: no progress");
+                        }
+                        Message msg = new Message();
+                        msg.what = 4;
+                        uiHandler.sendMessage(msg);
                     }
-
-
                 }
             }).start();
 
@@ -293,6 +355,59 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void getkb(){
+
+        // 登录jwts的表单
+        final FormBody jwts_data = new FormBody.Builder()
+                .add("usercode", stuId)
+                .add("password", pwd)
+                .add("code", captcha)
+                .build();
+
+        Log.d(TAG, "getkb: 验证码是" + captcha);
+
+        try {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        // + "; DSFirstAccess=" + httpUtil.DSFirstAccess + "; DSLastAccess=" + httpUtil.DSLastAccess;
+                        String cookie = "DSSignInURL=/; DSID=" + httpUtil.DSID;
+                        String html = httpUtil.vpn_jwts_post(jwts_data);
+                        if(html.contains("验证码错误")){
+                            Message msg = new Message();
+                            msg.what = 2;
+                            msg.obj = mySubjects;
+                            uiHandler.sendMessage(msg);
+                            return;
+                        }
+                        httpUtil.kb_get("https://vpn.hit.edu.cn/kbcx/,DanaInfo=jwts.hit.edu.cn+queryGrkb", cookie, uiHandler);
+//                      httpUtil.kb_post("https://vpn.hit.edu.cn/kbcx/,DanaInfo=jwts.hit.edu.cn+queryGrkb", kb_data, cookie, uiHandler);
+
+                    } catch (Exception e1) {
+                        if(dialogFragment != null){
+                            dialogFragment.dismiss();
+                        }else {
+                            Log.d(TAG, "handleMessage: no progress");
+                        }
+                        Log.d(TAG, "run vpn请求出问题: " + e1.getMessage());
+                        Message msg = new Message();
+                        msg.what = 4;
+                        uiHandler.sendMessage(msg);
+                    }
+                }
+            }).start();
+
+        } catch (Exception e) {
+            if(dialogFragment != null){
+                dialogFragment.dismiss();
+                Toast.makeText(MainActivity.this, "获取课表失败，请检查网络", Toast.LENGTH_SHORT).show();
+            }else {
+                Log.d(TAG, "handleMessage: no progress");
+            }
+            Log.d(TAG, "run: error" + e.getMessage());
+        }
+    }
     /**
      * 初始化 各个控件
      */

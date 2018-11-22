@@ -60,6 +60,10 @@ public class HtmlUtil {
                         // 找到下一个k应该增加的数，这样即便解析出现异常，也不耽误下一个课表的解析
                         for(int x = 1; x < strings.length; x++){
                             Pattern pattern = Pattern.compile("[0-9]*");
+                            if(k+x >= strings.length){
+                                num = x;
+                                break;
+                            }
                             Matcher isNum = pattern.matcher(strings[k+x].charAt(strings[x+k].length() -  1)+ "");
                             if (isNum.matches()) {
                                 num = x;

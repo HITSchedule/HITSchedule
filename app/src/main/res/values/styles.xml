@@ -26,5 +26,12 @@
         <item name="android:textColor">@color/app_white</item>
     </style>
 
+    <!--自定义Dialog-->
+    <style name="Dialog" parent="android:style/Theme.Dialog">
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+
 
 </resources>
