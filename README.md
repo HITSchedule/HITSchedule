@@ -1,19 +1,19 @@
 # HITSchedule
 
-Android版工大课表app。[下载网页](http://hitschedule.bmob.site/)
+Android版工大课表app。[下载官网](http://hitschedule.bmob.site/)
 
 #### 已实现
 
-- 自定义背景
-- 从vpn加载课表
-- 从校园网加载课表
-- 手动添加删除课表
+- [x] 自定义背景
+- [x] 从vpn加载课表
+- [x] 从校园网加载课表
+- [x] 手动添加删除课表
 
 #### 待实现
 
-- 空教室查询
-- 修改已有课表项
-- 完善课表解析函数
+- [ ] 空教室查询
+- [ ] 修改已有课表项
+- [ ] 完善课表解析函数
 
 #### 使用的开源库
 
@@ -23,5 +23,3 @@ Android版工大课表app。[下载网页](http://hitschedule.bmob.site/)
 
 
 持续更新...
-
-
