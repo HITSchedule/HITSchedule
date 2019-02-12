@@ -4,6 +4,7 @@
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
 
+    <!--添加课程中字体颜色-->
     <color name="new_text_color">#353535</color>
 
     <color name="grey">#CFCDCC</color>
@@ -14,5 +15,4 @@
     <color name="new_black">#3B3636</color>
 
     <color name="red">#C90000</color>
-
 </resources>

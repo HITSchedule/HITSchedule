@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="300dp"
+    android:layout_gravity="center_horizontal"
+    android:layout_height="150dp"
+    android:background="@drawable/shape_fillet"
+    android:orientation="vertical">
+
+    <ProgressBar
+        android:layout_marginTop="20dp"
+        android:id="@+id/progress_bar"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:indeterminateTint="@color/app_blue1"
+        android:background="@drawable/progress_bar_bg"
+        android:layout_gravity="center" />
+
+    <TextView
+        android:layout_marginTop="20dp"
+        android:id="@+id/progress_text"
+        android:text="登录中..."
+        android:textSize="20sp"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>
+
+    <!--style="@android:style/Widget.DeviceDefault.ProgressBar.Horizontal"-->

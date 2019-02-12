@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <litepal>
-    <dbname value="classes" ></dbname>
+    <dbname value="hitschedule" ></dbname>
 
-    <version value="5" ></version>
+    <version value="3" ></version>
 
     <list>
-        <mapping class="com.example.aclass.database.MySubject"></mapping>
-        <mapping class="com.example.aclass.database.User"></mapping>
-        <mapping class="com.example.aclass.database.Info"></mapping>
+        <mapping class="com.example.hitschedule.database.User"></mapping>
+        <mapping class="com.example.hitschedule.database.MySubject"></mapping>
+        <mapping class="com.example.hitschedule.database.MyInfo"></mapping>
+
     </list>
 </litepal>

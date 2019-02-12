@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:background="@drawable/shape_fillet"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/album_choose"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?android:attr/selectableItemBackground"
+        android:clickable="true"
+        android:drawableLeft="@drawable/ic_album"
+        android:drawablePadding="10dp"
+        android:gravity="center_vertical"
+        android:padding="16dp"
+        android:text="从相册选择背景"
+        android:textColor="#666666"
+        android:textSize="@dimen/textSize_normal"/>
+
+
+    <TextView
+        android:id="@+id/delete_bg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?android:attr/selectableItemBackground"
+        android:clickable="true"
+        android:drawableLeft="@drawable/ic_delete"
+        android:drawablePadding="10dp"
+        android:gravity="center_vertical"
+        android:padding="16dp"
+        android:text="设置为无背景"
+        android:textColor="#666666"
+        android:textSize="@dimen/textSize_normal"/>
+
+    <TextView
+        android:id="@+id/cancel_choose"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?android:attr/selectableItemBackground"
+        android:clickable="true"
+        android:gravity="center"
+        android:text="取消"
+        android:padding="16dp"
+        android:textColor="#FF0000"
+        android:textSize="@dimen/textSize_normal"/>
+
+</LinearLayout>

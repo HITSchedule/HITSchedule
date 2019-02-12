@@ -5,5 +5,4 @@
     <external-files-path path="Download/" name="download"/>
 
     <!--<external-path path="." name="external_storage_root"/>-->
-
 </paths>

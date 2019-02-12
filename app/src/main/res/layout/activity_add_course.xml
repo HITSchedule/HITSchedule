@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="#ebebeb">
 
-    <android.support.v7.widget.Toolbar
+    <androidx.appcompat.widget.Toolbar
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
         android:id="@+id/toolbar"
@@ -188,14 +188,14 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="其它"
+                    android:text="Info"
                     android:textSize="@dimen/textSize_normal"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="15dp"
                     android:textColor="@color/new_text_color"/>
 
                 <EditText
-                    android:id="@+id/et_other"
+                    android:id="@+id/et_info"
                     android:background="@null"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
@@ -211,13 +211,13 @@
 
 
             <Button
+                style="@style/RbButton.Blue"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_width="match_parent"
                 android:id="@+id/save"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
-                android:background="@drawable/round"
                 android:textSize="20sp"
                 android:text="确    定"
                 android:textColor="@android:color/background_dark" />

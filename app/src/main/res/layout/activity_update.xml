@@ -16,7 +16,7 @@
             android:layout_width="350dp"
             android:layout_height="100dp"
             android:layout_gravity="center"
-            android:src="@drawable/test"
+            android:src="@drawable/logo"
             android:tint="@android:color/background_dark" />
 
         <TextView

@@ -20,6 +20,6 @@
     <dimen name="tv_line_space">4dp</dimen>
 
     <!--以下为刷新时验证码的布局的定义-->
-    <dimen name="dilog_identitychange_height">200dp</dimen>
-    <dimen name="dilog_identitychange_width">300dp</dimen>
+    <dimen name="dialog_height">180dp</dimen>
+    <dimen name="dialog_width">280dp</dimen>
 </resources>

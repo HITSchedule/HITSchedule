@@ -16,7 +16,7 @@
             android:layout_width="350dp"
             android:layout_height="100dp"
             android:layout_gravity="center"
-            android:src="@drawable/test"
+            android:src="@drawable/logo"
             android:tint="@android:color/background_dark" />
 
 
@@ -25,7 +25,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="50dp"
-            android:background="@drawable/round"
+            android:background="@drawable/shape_round"
             android:drawableLeft="@drawable/ic_user_24dp"
             android:drawablePadding="16dp"
 
@@ -40,7 +40,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:background="@drawable/round"
+            android:background="@drawable/shape_round"
             android:drawableLeft="@drawable/ic_lock_outline_24dp"
             android:drawablePadding="16dp"
             android:drawableTint="@android:color/background_dark"
@@ -55,7 +55,7 @@
             android:id="@+id/login"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
-            android:background="@drawable/round"
+            android:background="@drawable/shape_round"
             android:text="登               录"
             android:textColor="@android:color/background_dark" />
 
