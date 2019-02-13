@@ -271,7 +271,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             query.findObjects(new FindListener<Info>() {
                 @Override
                 public void done(List<Info> list, BmobException e) {
-                    Log.d(TAG, "done: 这里获得info" + list.size());
                     if (e == null && list.size() > 0){
                         Info bombInfo = list.get(0);
                         info = bombInfo.toMyInfo();
@@ -349,6 +348,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void run() {
                 try {
+
                     int code = HttpUtil.vpn_jwts_login(usrId, pwd, captcha);
                     if (code == CAPTCHA_ERROR){
                         makeToast("验证码错误");
@@ -466,10 +466,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onResume() {
         super.onResume();
+        Log.d(TAG, "onResume: ");
         if (info != null){
             // 刷新界面
             initView();
             subjects = LitePal.findAll(MySubject.class);
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             updateTimeTable();
         }
     }
@@ -571,7 +577,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     .addViewOnclick(R.id.btn_cancel, new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            refreshDialog.hide();
+                            refreshDialog.dismiss();
                         }
                     })
                     .build();

@@ -196,6 +196,8 @@ public class AddCourseActivity extends AppCompatActivity {
                     // 连上两节课
                     subject.setStep(end - start + 1);
 
+                    subject.setTeacher(teacher);
+
                     Log.d(TAG, "onClick: " + other);
 
                     if(other.isEmpty()){
@@ -217,6 +219,7 @@ public class AddCourseActivity extends AppCompatActivity {
                                     Toast.makeText(getApplicationContext(), "修改成功", Toast.LENGTH_SHORT).show();
                                     Log.d(TAG, "done: is saved=" + subject.isSaved());
                                     subject.save();
+                                    finish();
                                 } else {
                                     Toast.makeText(getApplicationContext(), "修改失败,请重试", Toast.LENGTH_SHORT).show();
                                 }
@@ -230,6 +233,7 @@ public class AddCourseActivity extends AppCompatActivity {
                                 if(e == null){
                                     Toast.makeText(getApplicationContext(), "添加成功", Toast.LENGTH_SHORT).show();
                                     subject.save();
+                                    finish();
                                 }else {
                                     Toast.makeText(getApplicationContext(), "添加失败,请重试", Toast.LENGTH_SHORT).show();
                                 }
@@ -239,7 +243,7 @@ public class AddCourseActivity extends AppCompatActivity {
 
 
 
-                    finish();
+
                 } else {
                     Toast.makeText(AddCourseActivity.this, "请填写完整信息", Toast.LENGTH_SHORT).show();
                     save.setClickable(true);
