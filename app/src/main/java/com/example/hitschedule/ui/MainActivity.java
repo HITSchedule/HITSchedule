@@ -255,6 +255,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Log.d(TAG, "initData: " + info.getXnxq());
             subjects = LitePal.where("usrId = ? and xnxq = ?",
                     usrId, info.getXnxq()).find(MySubject.class);
+            for (MySubject subject : subjects){
+                Log.d(TAG, "initData: " + subject.getName() + subject.getUsrId());
+            }
             Log.d(TAG, "initData: subject size=" + subjects.size());
             if (subjects.size() > 0){
                 updateTimeTable();
@@ -282,6 +285,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         } else {
                             getDataFromBmob();
                         }
+                    } else {
+                        makeToast("获取信息失败,请检查网络后重试");
                     }
                 }
             });
@@ -348,8 +353,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void run() {
                 try {
-
                     int code = HttpUtil.vpn_jwts_login(usrId, pwd, captcha);
+
                     if (code == CAPTCHA_ERROR){
                         makeToast("验证码错误");
                         Message msg = new Message();
@@ -358,6 +363,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         handler.sendMessage(msg);
                         return;
                     }
+
+                    if (info == null){
+                        makeToast("info is null");
+                        return;
+                    }
+
                     String html = HttpUtil.vpn_kb_post(info.getXnxq());
 //                    String html = HttpUtil.vpn_kb_post_test(info.getXnxq(), usrId);
                     if (html != null){
@@ -522,6 +533,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     case R.id.logout:
                         //  清除用户的同时，清除课表
                         LitePal.deleteAll(User.class);
+                        LitePal.deleteAll(MySubject.class);
                         Toast.makeText(MainActivity.this, "退出成功", Toast.LENGTH_SHORT).show();
                         Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
                         startActivity(loginIntent);
@@ -571,7 +583,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         public void onClick(View view) {
                             refreshDialog.hide();
                             showProgressDialog();
-                            getDataFromJwts();
+                            BmobQuery<Info> query = new BmobQuery<>();
+                            query.findObjects(new FindListener<Info>() {
+                                @Override
+                                public void done(List<Info> list, BmobException e) {
+                                    if (e == null && list.size() > 0){
+                                        Info bombInfo = list.get(0);
+                                        info = bombInfo.toMyInfo();
+                                        LitePal.deleteAll(MyInfo.class);
+                                        info.save();
+                                        makeToast("开始获取课表");
+                                        getDataFromJwts();
+                                    } else {
+                                        if (e!=null){
+                                            makeToast(e.getMessage());
+                                        } else {
+                                            makeToast("获取信息失败,请检查网络连接");
+                                        }
+                                    }
+                                }
+                            });
                         }
                     })
                     .addViewOnclick(R.id.btn_cancel, new View.OnClickListener() {
@@ -729,14 +760,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void done(List<Info> list, BmobException e) {
                 if (e == null && list.size() > 0){
                     Info bombInfo = list.get(0);
-                    info = bombInfo.toMyInfo();
-                    LitePal.deleteAll(MyInfo.class);
-                    info.save();
                     try {
-                        if(Util.compareVersion(info.getLatestVersion(), getVersionName().trim())){
+                        if(Util.compareVersion(bombInfo.getLatestVersion(), getVersionName().trim())){
                             SharedPreferences preferences = getSharedPreferences("data",MODE_PRIVATE);
                             String version = preferences.getString("version",null);
-                            if (version == null || !version.equals(info.getLatestVersion())){
+                            if (version == null || !version.equals(bombInfo.getLatestVersion())){
                                 showUpdateDialog();
                             }
                         }
