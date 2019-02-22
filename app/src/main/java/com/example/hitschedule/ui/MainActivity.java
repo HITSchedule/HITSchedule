@@ -472,6 +472,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 });
             }
         }
+
+        makeToast("更新课表成功");
     }
 
     @Override
@@ -710,9 +712,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     /**
      * 显示验证码 refreshDialog,供用户输入验证码,刷新课表时调用
-     * @param bitmap 验证码图片
+     * @param bitmap1 验证码图片
      */
-    private void showCapatchDialog(Bitmap bitmap){
+    private void showCapatchDialog(Bitmap bitmap1){
         CustomCaptchaDialog.Builder builder = new CustomCaptchaDialog.Builder(MainActivity.this);
         captchaDialog = builder
                 .style(R.style.Dialog)
@@ -720,7 +722,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //                            .heightDimenRes(R.dimen.dilog_identitychange_width)
                 .cancelTouchout(false)
                 .view(R.layout.dialog_captcha)
-                .img(bitmap)
+                .img(bitmap1)
                 .addViewOnclick(R.id.btn_sure, new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -733,6 +735,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         }else {
                             Toast.makeText(MainActivity.this, "验证码格式有误", Toast.LENGTH_SHORT).show();
                         }
+                    }
+                })
+                .addViewOnclick(R.id.capycha, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                try {
+                                    bitmap = HttpUtil.getCaptchaImage();
+                                    captchaDialog.setCaptcha(bitmap);
+                                    captchaDialog.show();
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }).start();
                     }
                 })
                 .build();

@@ -6,6 +6,17 @@
     android:layout_height="match_parent">
 
 
+    <androidx.appcompat.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:id="@+id/toolbar"
+        android:background="@color/colorPrimary"
+        app:titleTextColor="@color/app_white"
+        app:popupTheme="@style/OverflowMenuStyle"
+        app:title="使用说明"
+        />
+
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -13,252 +24,14 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-
             <TextView
                 android:layout_marginTop="20dp"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
-                android:gravity="center_horizontal"
+                android:gravity="center_vertical"
                 android:height="@dimen/tv_title_height"
-                android:text="v1.2.1"
-                android:textSize="17sp"
-                android:textColor="@color/new_black"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="#EFEFEF"/>
-
-            <TextView
-                android:layout_marginTop="8dp"
-                android:layout_marginLeft="@dimen/tv_margin_left"
-                android:layout_marginRight="@dimen/tv_margin_right"
-                android:lineSpacingExtra="@dimen/tv_line_space"
-                android:textColor="@color/new_black"
-                android:text="- 支持点击刷新验证码"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-            <TextView
-                android:layout_marginTop="8dp"
-                android:layout_marginLeft="@dimen/tv_margin_left"
-                android:layout_marginRight="@dimen/tv_margin_right"
-                android:lineSpacingExtra="@dimen/tv_line_space"
-                android:textColor="@color/new_black"
-                android:text="- 更改刷新机制"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-            <TextView
-                android:layout_marginTop="8dp"
-                android:layout_marginLeft="@dimen/tv_margin_left"
-                android:layout_marginRight="@dimen/tv_margin_right"
-                android:lineSpacingExtra="@dimen/tv_line_space"
-                android:textColor="@color/new_black"
-                android:text="- 添加使用说明,在“更多-关于软件下”"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-            <TextView
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:gravity="center_horizontal"
-                android:height="@dimen/tv_title_height"
-                android:text="v1.2.0"
-                android:textSize="17sp"
-                android:textColor="@color/new_black"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="#EFEFEF"/>
-
-            <TextView
-                android:layout_marginTop="8dp"
-                android:layout_marginLeft="@dimen/tv_margin_left"
-                android:layout_marginRight="@dimen/tv_margin_right"
-                android:lineSpacingExtra="@dimen/tv_line_space"
-                android:textColor="@color/new_black"
-                android:text="- 支持修改已有课表"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-            <TextView
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:gravity="center_horizontal"
-                android:height="@dimen/tv_title_height"
-                android:text="v1.1.0"
-                android:textSize="17sp"
-                android:textColor="@color/new_black"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="#EFEFEF"/>
-
-            <TextView
-                android:layout_marginTop="8dp"
-                android:layout_marginLeft="@dimen/tv_margin_left"
-                android:layout_marginRight="@dimen/tv_margin_right"
-                android:lineSpacingExtra="@dimen/tv_line_space"
-                android:textColor="@color/new_black"
-                android:text="- 加入刷新时手动输入验证码"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-            <TextView
-                android:layout_marginTop="8dp"
-                android:layout_marginLeft="@dimen/tv_margin_left"
-                android:layout_marginRight="@dimen/tv_margin_right"
-                android:lineSpacingExtra="@dimen/tv_line_space"
-                android:textColor="@color/new_black"
-                android:text="- 暂时移除使用校园网刷新"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-            <TextView
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:gravity="center_horizontal"
-                android:height="@dimen/tv_title_height"
-                android:text="v1.0.10"
-                android:textSize="17sp"
-                android:textColor="@color/new_black"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="#EFEFEF"/>
-
-            <TextView
-                android:layout_marginTop="8dp"
-                android:layout_marginLeft="@dimen/tv_margin_left"
-                android:layout_marginRight="@dimen/tv_margin_right"
-                android:lineSpacingExtra="@dimen/tv_line_space"
-                android:textColor="@color/new_black"
-                android:text="- 修复刷新不出课表问题"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-            <TextView
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:gravity="center_horizontal"
-                android:height="@dimen/tv_title_height"
-                android:text="v1.0.9"
-                android:textSize="17sp"
-                android:textColor="@color/new_black"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="#EFEFEF"/>
-
-            <TextView
-                android:layout_marginTop="8dp"
-                android:layout_marginLeft="@dimen/tv_margin_left"
-                android:layout_marginRight="@dimen/tv_margin_right"
-                android:lineSpacingExtra="@dimen/tv_line_space"
-                android:textColor="@color/new_black"
-                android:text="- 修复体育课显示bug"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-            <TextView
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:gravity="center_horizontal"
-                android:height="@dimen/tv_title_height"
-                android:text="v1.0.8"
-                android:textSize="17sp"
-                android:textColor="@color/new_black"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="#EFEFEF"/>
-
-            <TextView
-                android:layout_marginTop="8dp"
-                android:layout_marginLeft="@dimen/tv_margin_left"
-                android:layout_marginRight="@dimen/tv_margin_right"
-                android:lineSpacingExtra="@dimen/tv_line_space"
-                android:textColor="@color/new_black"
-                android:text="- 增加自定义背景功能"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-            <TextView
-                android:layout_marginTop="8dp"
-                android:layout_marginLeft="@dimen/tv_margin_left"
-                android:layout_marginRight="@dimen/tv_margin_right"
-                android:lineSpacingExtra="@dimen/tv_line_space"
-                android:textColor="@color/new_black"
-                android:text="- 完善添加课表功能"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-
-            <TextView
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:gravity="center_horizontal"
-                android:height="@dimen/tv_title_height"
-                android:text="v1.0.7"
-                android:textSize="17sp"
-                android:textColor="@color/new_black"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="#EFEFEF"/>
-
-
-            <TextView
-                android:layout_marginTop="8dp"
-                android:layout_marginLeft="@dimen/tv_margin_left"
-                android:layout_marginRight="@dimen/tv_margin_right"
-                android:lineSpacingExtra="@dimen/tv_line_space"
-                android:textColor="@color/new_black"
-                android:text="- 解决一些手机的适配"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-
-            <TextView
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:gravity="center_horizontal"
-                android:height="@dimen/tv_title_height"
-                android:text="v1.0.6"
-                android:textSize="17sp"
-                android:textColor="@color/new_black"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="#EFEFEF"/>
-
-
-            <TextView
-                android:layout_marginTop="8dp"
-                android:layout_marginLeft="@dimen/tv_margin_left"
-                android:layout_marginRight="@dimen/tv_margin_right"
-                android:lineSpacingExtra="@dimen/tv_line_space"
-                android:textColor="@color/new_black"
-                android:text="- 更改课表存储及刷新方式"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-            <TextView
-                android:layout_marginTop="8dp"
-                android:layout_marginLeft="@dimen/tv_margin_left"
-                android:layout_marginRight="@dimen/tv_margin_right"
-                android:lineSpacingExtra="@dimen/tv_line_space"
-                android:textColor="@color/new_black"
-                android:text="- 完善课表解析方式"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-
-            <TextView
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:gravity="center_horizontal"
-                android:height="@dimen/tv_title_height"
-                android:text="v1.0.5"
+                android:id="@+id/title1"
+                android:text="  1.查询课表"
                 android:textSize="17sp"
                 android:textColor="@color/new_black"
                 android:layout_width="match_parent"
@@ -273,18 +46,244 @@
                 android:lineSpacingExtra="@dimen/tv_line_space"
                 android:id="@+id/text11"
                 android:textColor="@color/new_black"
-                android:text="- 增加使用校园网访问jwts，当移动网络刷新不出课表时，可以尝试使用校园网"
+                android:text="登录界面使用统一身份认证信息登录后即可查看。"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_marginTop="@dimen/tv_margin_top"
+                android:layout_marginLeft="@dimen/tv_margin_left"
+                android:layout_marginRight="@dimen/tv_margin_right"
+                android:lineSpacingExtra="@dimen/tv_line_space"
+                android:textColor="@color/new_black"
+                android:id="@+id/text12"
+                android:text="调用教务处数据接口，与教务系统中的课表一致。"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_marginTop="@dimen/tv_margin_top"
+                android:layout_marginLeft="@dimen/tv_margin_left"
+                android:layout_marginRight="@dimen/tv_margin_right"
+                android:lineSpacingExtra="@dimen/tv_line_space"
+                android:textColor="@color/new_black"
+                android:id="@+id/text13"
+                android:text="课表主界面默认只显示课程名称和上课地点信息(中间以“@”符号隔开)。"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_marginTop="@dimen/tv_margin_top"
+                android:layout_marginLeft="@dimen/tv_margin_left"
+                android:layout_marginRight="@dimen/tv_margin_right"
+                android:lineSpacingExtra="@dimen/tv_line_space"
+                android:textColor="@color/new_black"
+                android:id="@+id/text14"
+                android:text="点击对应课程可以查看详细信息。"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+
+
+            <TextView
+                android:layout_marginTop="3dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:id="@+id/title2"
+                android:height="@dimen/tv_title_height"
+                android:text="  2.自定义添加及删除课程"
+                android:textColor="@color/new_black"
+                android:textSize="17sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#EFEFEF"/>
+
+            <TextView
+                android:layout_marginTop="4dp"
+                android:layout_marginLeft="@dimen/tv_margin_left"
+                android:layout_marginRight="@dimen/tv_margin_right"
+                android:lineSpacingExtra="@dimen/tv_line_space"
+                android:textColor="@color/new_black"
+                android:id="@+id/title2_1"
+                android:textSize="17sp"
+                android:text="2.1 添加课程"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="@dimen/tv_margin_left"
+                android:layout_marginRight="@dimen/tv_margin_right"
+                android:lineSpacingExtra="@dimen/tv_line_space"
+                android:textColor="@color/new_black"
+                android:id="@+id/text2_11"
+                android:text="点击右上角加号,可自定义添加课程"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:layout_marginTop="@dimen/tv_margin_top"
+                android:layout_marginLeft="@dimen/tv_margin_left"
+                android:layout_marginRight="@dimen/tv_margin_right"
+                android:lineSpacingExtra="@dimen/tv_line_space"
+                android:textColor="@color/new_black"
+                android:id="@+id/text2_12"
+                android:text="或在任意周的空白上课时间位置轻触，可添加对应上课时间的课程。"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_marginTop="@dimen/tv_margin_top"
+                android:layout_marginLeft="@dimen/tv_margin_left"
+                android:layout_marginRight="@dimen/tv_margin_right"
+                android:lineSpacingExtra="@dimen/tv_line_space"
+                android:textColor="@color/new_black"
+                android:id="@+id/text2_13"
+                android:text="在“添加课程”界面可填写课名、上课教室、授课教师、周数等相关信息"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
 
             <TextView
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="@dimen/tv_margin_top"
+                android:layout_marginLeft="@dimen/tv_margin_left"
+                android:layout_marginRight="@dimen/tv_margin_right"
+                android:lineSpacingExtra="@dimen/tv_line_space"
+                android:textColor="@color/new_black"
+                android:id="@+id/text2_14"
+                android:text="其中"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_marginTop="@dimen/tv_margin_top"
+                android:layout_marginLeft="@dimen/tv_margin_left"
+                android:layout_marginRight="@dimen/tv_margin_right"
+                android:lineSpacingExtra="@dimen/tv_line_space"
+                android:textColor="@color/new_black"
+                android:id="@+id/text2_15"
+                android:text="点击“周数”将弹出选择界面，请根据课程信息点亮对应周，然后轻触空白处返回"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_marginTop="@dimen/tv_margin_top"
+                android:layout_marginLeft="@dimen/tv_margin_left"
+                android:layout_marginRight="@dimen/tv_margin_right"
+                android:lineSpacingExtra="@dimen/tv_line_space"
+                android:textColor="@color/new_black"
+                android:id="@+id/text2_16"
+                android:text="点击“节数”可滑动选择上课时间,建议step为2+"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_marginTop="@dimen/tv_margin_top"
+                android:layout_marginLeft="@dimen/tv_margin_left"
+                android:layout_marginRight="@dimen/tv_margin_right"
+                android:lineSpacingExtra="@dimen/tv_line_space"
+                android:textColor="@color/new_black"
+                android:id="@+id/text2_17"
+                android:text="其他信息由使用者手动输入"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_marginTop="4dp"
+                android:layout_marginLeft="@dimen/tv_margin_left"
+                android:layout_marginRight="@dimen/tv_margin_right"
+                android:id="@+id/title2_2"
+                android:text="2.2 删除课程"
+                android:textSize="17dp"
+                android:textColor="@color/new_black"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="@dimen/tv_margin_left"
+                android:layout_marginRight="@dimen/tv_margin_right"
+                android:lineSpacingExtra="@dimen/tv_line_space"
+                android:textColor="@color/new_black"
+                android:id="@+id/text2_21"
+                android:text="在主界面点击任意课程可弹出课程详细信息。"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_marginTop="@dimen/tv_margin_top"
+                android:layout_marginLeft="@dimen/tv_margin_left"
+                android:layout_marginRight="@dimen/tv_margin_right"
+                android:lineSpacingExtra="@dimen/tv_line_space"
+                android:textColor="@color/new_black"
+                android:id="@+id/text2_22"
+                android:text="点击详细信息界面可选择修改或删除该课程的上课信息"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_marginTop="@dimen/tv_margin_top"
+                android:layout_marginLeft="@dimen/tv_margin_left"
+                android:layout_marginRight="@dimen/tv_margin_right"
+                android:lineSpacingExtra="@dimen/tv_line_space"
+                android:textColor="@color/red"
+                android:id="@+id/text2_23"
+                android:text="删除教务处已选课程请慎重！"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_marginTop="3dp"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
-                android:gravity="center_horizontal"
+                android:id="@+id/title3"
                 android:height="@dimen/tv_title_height"
-                android:text="v1.0.4"
+                android:text="  3.刷新课表"
+                android:textColor="@color/new_black"
+                android:textSize="17sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#EFEFEF"/>
+
+            <TextView
+                android:layout_marginTop="8dp"
+                android:layout_marginLeft="@dimen/tv_margin_left"
+                android:layout_marginRight="@dimen/tv_margin_right"
+                android:lineSpacingExtra="@dimen/tv_line_space"
+                android:textColor="@color/new_black"
+                android:id="@+id/text31"
+                android:text="如果课表信息缺失/进行了重新选课等，可点击右上角刷新按钮刷新课表。"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_marginTop="@dimen/tv_margin_top"
+                android:layout_marginLeft="@dimen/tv_margin_left"
+                android:layout_marginRight="@dimen/tv_margin_right"
+                android:lineSpacingExtra="@dimen/tv_line_space"
+                android:textColor="@color/red"
+                android:id="@+id/text32"
+                android:text="刷新不会删除自定义添加的课程信息。"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_marginTop="@dimen/tv_margin_top"
+                android:layout_marginLeft="@dimen/tv_margin_left"
+                android:layout_marginRight="@dimen/tv_margin_right"
+                android:lineSpacingExtra="@dimen/tv_line_space"
+                android:textColor="@color/red"
+                android:id="@+id/text33"
+                android:text="如果不慎误删教务处已选课程，可以通过刷新课表恢复。"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_marginTop="3dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:id="@+id/title4"
+                android:height="@dimen/tv_title_height"
+                android:text="  4.查看课程缩略图及各周上课信息。"
                 android:textSize="17sp"
                 android:textColor="@color/new_black"
                 android:layout_width="match_parent"
@@ -297,17 +296,40 @@
                 android:layout_marginRight="@dimen/tv_margin_right"
                 android:lineSpacingExtra="@dimen/tv_line_space"
                 android:textColor="@color/new_black"
-                android:text="- 界面微小调整"
+                android:id="@+id/text41"
+                android:text="点击右上角“日历”图标 可查看课程缩略图及各周上课信息。再次点击可取消。"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
             <TextView
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="@dimen/tv_margin_top"
+                android:layout_marginLeft="@dimen/tv_margin_left"
+                android:layout_marginRight="@dimen/tv_margin_right"
+                android:lineSpacingExtra="@dimen/tv_line_space"
+                android:textColor="@color/red"
+                android:id="@+id/text42"
+                android:text="“修改当前周”功能暂不可用。"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_marginTop="@dimen/tv_margin_top"
+                android:layout_marginLeft="@dimen/tv_margin_left"
+                android:layout_marginRight="@dimen/tv_margin_right"
+                android:lineSpacingExtra="@dimen/tv_line_space"
+                android:textColor="@color/red"
+                android:id="@+id/text43"
+                android:text="课程缩略图只有周一到周五的信息。"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_marginTop="3dp"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
-                android:gravity="center_horizontal"
+                android:id="@+id/title5"
                 android:height="@dimen/tv_title_height"
-                android:text="v1.0.3"
+                android:text="  5.自定义背景"
                 android:textSize="17sp"
                 android:textColor="@color/new_black"
                 android:layout_width="match_parent"
@@ -320,28 +342,20 @@
                 android:layout_marginRight="@dimen/tv_margin_right"
                 android:lineSpacingExtra="@dimen/tv_line_space"
                 android:textColor="@color/new_black"
-                android:text="- 完成手动添加/删除课表功能"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-            <TextView
-                android:layout_marginTop="8dp"
-                android:layout_marginLeft="@dimen/tv_margin_left"
-                android:layout_marginRight="@dimen/tv_margin_right"
-                android:lineSpacingExtra="@dimen/tv_line_space"
-                android:textColor="@color/new_black"
-                android:text="- 完善about页，增加使用说明"
+                android:id="@+id/text51"
+                android:text="点击右上角“更多-设置背景”,即可选择设置自定义背景"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
 
+
             <TextView
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="3dp"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
-                android:gravity="center_horizontal"
+                android:id="@+id/title6"
                 android:height="@dimen/tv_title_height"
-                android:text="v1.0.2"
+                android:text="  6.反馈途径"
                 android:textSize="17sp"
                 android:textColor="@color/new_black"
                 android:layout_width="match_parent"
@@ -354,17 +368,18 @@
                 android:layout_marginRight="@dimen/tv_margin_right"
                 android:lineSpacingExtra="@dimen/tv_line_space"
                 android:textColor="@color/new_black"
-                android:text="- 更改课表总周数"
+                android:id="@+id/text61"
+                android:text="如果你在使用的过程中发现任何bug,或对本软件的发展有任何建议,请联系yuxiang.wei.cs@gmail.com.感谢您的支持"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
             <TextView
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="3dp"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
-                android:gravity="center_horizontal"
+                android:id="@+id/title7"
                 android:height="@dimen/tv_title_height"
-                android:text="v1.0.1"
+                android:text="  特别说明"
                 android:textSize="17sp"
                 android:textColor="@color/new_black"
                 android:layout_width="match_parent"
@@ -376,34 +391,22 @@
                 android:layout_marginLeft="@dimen/tv_margin_left"
                 android:layout_marginRight="@dimen/tv_margin_right"
                 android:lineSpacingExtra="@dimen/tv_line_space"
-                android:textColor="@color/new_black"
-                android:text="- 修复课表单双周显示错误bug"
+                android:textColor="@color/red"
+                android:id="@+id/text71"
+                android:text="1.对安卓过低版本未作适配。无法登录可尝试更新安卓版本或更换设备。"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
             <TextView
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:gravity="center_horizontal"
-                android:height="@dimen/tv_title_height"
-                android:text="v1.0.0"
-                android:textSize="17sp"
-                android:textColor="@color/new_black"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="#EFEFEF"/>
-
-            <TextView
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="@dimen/tv_margin_top"
                 android:layout_marginLeft="@dimen/tv_margin_left"
                 android:layout_marginRight="@dimen/tv_margin_right"
                 android:lineSpacingExtra="@dimen/tv_line_space"
-                android:textColor="@color/new_black"
-                android:text="- 初次更新"
+                android:textColor="@color/red"
+                android:id="@+id/text72"
+                android:text="2.手机字体过大或使用个性字体可能导致部分信息显示不全。"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
-
 
         </LinearLayout>
     </ScrollView>

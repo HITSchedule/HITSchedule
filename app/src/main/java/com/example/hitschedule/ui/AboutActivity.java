@@ -39,7 +39,7 @@ public class AboutActivity extends AppCompatActivity {
 
         Element help = new Element();
         help.setTitle("点此查看使用说明");
-//        help.setIntent(new Intent(AboutActivity.this, HelpActivity.class));
+        help.setIntent(new Intent(AboutActivity.this, HelpActivity.class));
 
         View aboutPage = new AboutPage(this)
                 .isRTL(false)

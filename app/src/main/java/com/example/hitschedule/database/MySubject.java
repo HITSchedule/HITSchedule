@@ -233,8 +233,8 @@ public class MySubject extends LitePalSupport implements ScheduleEnable, Seriali
 
     public boolean _save() {
 
-        List<MySubject> list = LitePal.where("usrId = ? and name = ? and xnxq = ? and day = ? and start = ? and step = ? and room = ? and info = ?",
-                usrId, name, xnxq, String.valueOf(day), String.valueOf(start), String.valueOf(step), room, info).find(MySubject.class);
+        List<MySubject> list = LitePal.where("usrId = ? and name = ? and xnxq = ? and day = ? and start = ?",
+                usrId, name, xnxq, String.valueOf(day), String.valueOf(start)).find(MySubject.class);
 
         if (list.isEmpty()) {
             return this.save();
@@ -261,11 +261,11 @@ public class MySubject extends LitePalSupport implements ScheduleEnable, Seriali
 
         return subject.getName().equals(name) &&
                 subject.getDay() == day &&
-                subject.getInfo().equals(info) &&
+//                subject.getInfo().equals(info) &&
                 subject.getXnxq().equals(xnxq) &&
-                subject.getRoom().equals(room) &&
+//                subject.getRoom().equals(room) &&
                 subject.getStart() == start &&
-                subject.getStep() == step &&
+//                subject.getStep() == step &&
                 subject.getUsrId().equals(usrId);
 
     }

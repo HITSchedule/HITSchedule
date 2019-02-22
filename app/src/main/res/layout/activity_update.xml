@@ -41,6 +41,15 @@
             android:text="检 查 更 新"
             android:textColor="@android:color/background_dark" />
 
+        <TextView
+            android:layout_marginTop="5dp"
+            android:gravity="center"
+            android:id="@+id/website"
+            android:textColor="@color/app_blue_bg"
+            android:text="软件官网: hitschedule.bmob.site"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
     </LinearLayout>
 
 </RelativeLayout>

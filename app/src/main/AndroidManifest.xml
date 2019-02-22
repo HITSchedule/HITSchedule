@@ -39,6 +39,7 @@
         <activity android:name=".ui.AboutActivity"/>
         <activity android:name=".ui.UpdateActivity"/>
         <activity android:name=".ui.AddCourseActivity"/>
+        <activity android:name=".ui.HelpActivity"/>
         <activity android:name=".ui.SetBgActivity"
             android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
 

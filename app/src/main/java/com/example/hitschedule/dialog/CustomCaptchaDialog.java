@@ -38,6 +38,11 @@ public class CustomCaptchaDialog extends Dialog {
         view = builder.view;
     }
 
+    public void setCaptcha(Bitmap bitmap){
+        ImageView imageView = view.findViewById(R.id.capycha);
+        imageView.setImageBitmap(bitmap);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

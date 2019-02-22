@@ -42,6 +42,7 @@ public class UpdateActivity extends AppCompatActivity {
     private String TAG = getClass().getName();
 
     private TextView tv_version;
+    private TextView website;
 
     private Button update;
 
@@ -65,6 +66,7 @@ public class UpdateActivity extends AppCompatActivity {
         Bmob.initialize(this, "d2ad693a0277f5fc81c6dc84a91ca08f");
 
         tv_version = findViewById(R.id.version);
+        website = findViewById(R.id.website);
         update = findViewById(R.id.update);
         base_path = getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).getPath();
 
@@ -98,6 +100,16 @@ public class UpdateActivity extends AppCompatActivity {
                 queryUpdate();
             }
         });
+
+        website.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent();//创建Intent对象
+                intent.setAction(Intent.ACTION_VIEW);//为Intent设置动作
+                intent.setData(Uri.parse("http://hitschedule.bmob.site/"));//为Intent设置数据
+                startActivity(intent);//将Intent传递给Activity
+            }
+        });
     }
 
     private void queryUpdate() {
@@ -116,7 +128,10 @@ public class UpdateActivity extends AppCompatActivity {
                         Toast.makeText(UpdateActivity.this, "检查到新版本", Toast.LENGTH_SHORT).show();
                         if (file.exists()){
 //                                    Log.d(TAG, "done: 删除文件" + file.delete());
-                            install(file);
+                            file.delete();
+                            BmobFile bmobFile = new BmobFile(name,"",list.get(0).getApkUrl());
+                            downloadFile(bmobFile);
+//                            install(file);
                             Log.d(TAG, "done: 文件已存在" + file.getAbsolutePath());
                         } else {
                             BmobFile bmobFile = new BmobFile(name,"",list.get(0).getApkUrl());
