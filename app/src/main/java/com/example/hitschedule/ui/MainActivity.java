@@ -415,6 +415,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     subject.setObjectId(subjects.get(index).getObjectId());
                     subject._save();
                     delete.add(subject);
+                } else {
+                    if(subject.getName().equals(subject.getRoom()) || subject.getInfo().equals("周")){
+                        subjects.get(index).setRoom(subject.getRoom());
+                        subjects.get(index).setInfo(subject.getInfo());
+                        subjects.get(index).save();
+                    }
                 }
             }else {
                 Log.d(TAG, "updateDateBase: 保存" + subject.getName());
