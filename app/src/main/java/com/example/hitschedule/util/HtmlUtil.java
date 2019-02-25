@@ -198,7 +198,10 @@ public class HtmlUtil {
         // 连上两节课
         mySubject.setStep(2);
 
-        mySubject.setInfo(info.split("周")[0] + "周");
+        int index = info.lastIndexOf("周");
+//        mySubject.setInfo(info.split("周")[0] + "周");
+
+        mySubject.setInfo(info.substring(0, index));
 
         boolean isEven = false;
         boolean isOdd = false;

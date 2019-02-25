@@ -86,6 +86,9 @@ public class SubjectAdapter extends BaseAdapter {
             }
             for(String each : ss){
                 String inf = each.replace("周", "");
+                if (each.startsWith("周")){
+                    inf = "周" + inf;
+                }
                 content.append(inf).append("周\n");
             }
         }

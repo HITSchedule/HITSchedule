@@ -192,7 +192,7 @@
                 android:layout_marginLeft="@dimen/tv_margin_left"
                 android:layout_marginRight="@dimen/tv_margin_right"
                 android:id="@+id/title2_2"
-                android:text="2.2 删除课程"
+                android:text="2.2 修改/删除课程"
                 android:textSize="17dp"
                 android:textColor="@color/new_black"
                 android:layout_width="match_parent"

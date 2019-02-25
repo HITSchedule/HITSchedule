@@ -151,7 +151,6 @@ public class AddCourseActivity extends AppCompatActivity {
                 OptionsPickerView pvNoLinkOptions = new OptionsPickerBuilder(AddCourseActivity.this, new OnOptionsSelectListener() {
                     @Override
                     public void onOptionsSelect(int options1, int options2, int options3, View v) {
-
                         day = options1;
                         start = options2 + 1;
                         end = options3 + 1;
@@ -280,7 +279,7 @@ public class AddCourseActivity extends AppCompatActivity {
         }
 
         if(subject.getRoom() != null){
-            et_room.setText(subject.getName());
+            et_room.setText(subject.getRoom());
         }
 
         if (subject.getInfo() != null){
