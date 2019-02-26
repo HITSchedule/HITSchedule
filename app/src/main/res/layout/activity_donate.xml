@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.appcompat.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:background="@color/colorPrimary"
+        app:titleTextColor="@color/app_white"
+        app:title="打赏软件"/>
+
+    <TextView
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:textSize="@dimen/textSize_normal"
+        android:textColor="@color/new_black"
+        android:text="没想到藏得这么深都被你发现了,如果你觉得Schedule还不错,并且想为之做些贡献的话,欢迎打赏,打赏金额最好在0.01-1RMB之间,打赏与否全看心情,祝您使用愉快"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+
+    <Button
+        android:layout_marginTop="40dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:id="@+id/donate"
+        android:text="打赏"
+        style="@style/RbButton.Blue"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+</LinearLayout>

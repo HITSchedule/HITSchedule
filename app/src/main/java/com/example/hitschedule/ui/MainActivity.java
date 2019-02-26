@@ -371,12 +371,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                     String html = HttpUtil.vpn_kb_post(info.getXnxq());
 //                    String html = HttpUtil.vpn_kb_post_test(info.getXnxq(), usrId);
+
                     if (html != null){
                         // 捕获一下解析异常
                         try{
                             HtmlUtil util = new HtmlUtil(html);
                             List<MySubject> newSubjects = util.getzkb();
-                            updateDateBase(newSubjects);
+                            subjects = newSubjects;
+//                            updateDateBase(newSubjects);
                         }catch (Exception e){
                             makeToast("获取课表失败");
                         }
@@ -566,6 +568,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                 .setExpanded(true)
                                 .create();
                         dialog.show();
+                        break;
+                    case R.id.search:
+                        Intent searchIntent = new Intent(MainActivity.this, SearchActivity.class);
+                        startActivity(searchIntent);
                         break;
                 }
                 return false;

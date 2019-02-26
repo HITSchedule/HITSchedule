@@ -41,6 +41,10 @@ public class AboutActivity extends AppCompatActivity {
         help.setTitle("点此查看使用说明");
         help.setIntent(new Intent(AboutActivity.this, HelpActivity.class));
 
+        Element donate = new Element();
+        donate.setTitle("点此打赏APP");
+        donate.setIntent(new Intent(AboutActivity.this, DonateActivity.class));
+
         View aboutPage = new AboutPage(this)
                 .isRTL(false)
                 .setDescription("本软件仅供哈工大本科生进行课表相关操作使用，项目已开源。如果您在使用的过程中发现任何bug，或对本软件的发展有建议，请联系yuxiang.wei.cs@gmail.com。感谢您的支持。")
@@ -53,7 +57,7 @@ public class AboutActivity extends AppCompatActivity {
                 .addItem(timetableView)
                 .addItem(dialogplus)
                 .addItem(android_about_page)
-
+                .addItem(donate)
                 .create();
 
         setContentView(aboutPage);

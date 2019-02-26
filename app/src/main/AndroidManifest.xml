@@ -40,6 +40,9 @@
         <activity android:name=".ui.UpdateActivity"/>
         <activity android:name=".ui.AddCourseActivity"/>
         <activity android:name=".ui.HelpActivity"/>
+        <activity android:name=".ui.DonateActivity"/>
+        <activity android:name=".ui.WebViewActivity"/>
+        <activity android:name=".ui.SearchActivity"/>
         <activity android:name=".ui.SetBgActivity"
             android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
 

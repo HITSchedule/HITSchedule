@@ -38,6 +38,16 @@
                 android:layout_height="wrap_content" />
 
             <TextView
+                android:layout_marginTop="8dp"
+                android:layout_marginLeft="@dimen/tv_margin_left"
+                android:layout_marginRight="@dimen/tv_margin_right"
+                android:lineSpacingExtra="@dimen/tv_line_space"
+                android:textColor="@color/new_black"
+                android:text="- 加入空教室查询,校车查询,校历查询"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
                 android:layout_marginTop="10dp"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
