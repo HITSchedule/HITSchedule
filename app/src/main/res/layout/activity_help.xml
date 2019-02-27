@@ -91,7 +91,7 @@
                 android:layout_marginRight="20dp"
                 android:id="@+id/title2"
                 android:height="@dimen/tv_title_height"
-                android:text="  2.自定义添加及删除课程"
+                android:text="  2.自定义添加、修改及删除课程"
                 android:textColor="@color/new_black"
                 android:textSize="17sp"
                 android:layout_width="match_parent"
@@ -106,7 +106,7 @@
                 android:textColor="@color/new_black"
                 android:id="@+id/title2_1"
                 android:textSize="17sp"
-                android:text="2.1 添加课程"
+                android:text="2.1 自定义添加课程"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
@@ -348,14 +348,13 @@
                 android:layout_height="wrap_content" />
 
 
-
             <TextView
                 android:layout_marginTop="3dp"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
                 android:id="@+id/title6"
                 android:height="@dimen/tv_title_height"
-                android:text="  6.反馈途径"
+                android:text="  6.信息查询"
                 android:textSize="17sp"
                 android:textColor="@color/new_black"
                 android:layout_width="match_parent"
@@ -369,7 +368,18 @@
                 android:lineSpacingExtra="@dimen/tv_line_space"
                 android:textColor="@color/new_black"
                 android:id="@+id/text61"
-                android:text="如果你在使用的过程中发现任何bug,或对本软件的发展有任何建议,请联系yuxiang.wei.cs@gmail.com.感谢您的支持"
+                android:text="点击右上角“搜索”图标，可在其中进行校车查询、校历查询和空教室查询。"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_marginTop="@dimen/tv_margin_top"
+                android:layout_marginLeft="@dimen/tv_margin_left"
+                android:layout_marginRight="@dimen/tv_margin_right"
+                android:lineSpacingExtra="@dimen/tv_line_space"
+                android:textColor="@color/red"
+                android:id="@+id/text62"
+                android:text="数据来源：哈尔滨工业大学服务号"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
@@ -378,6 +388,31 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
                 android:id="@+id/title7"
+                android:height="@dimen/tv_title_height"
+                android:text="  7.反馈途径"
+                android:textSize="17sp"
+                android:textColor="@color/new_black"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#EFEFEF"/>
+
+            <TextView
+                android:layout_marginTop="8dp"
+                android:layout_marginLeft="@dimen/tv_margin_left"
+                android:layout_marginRight="@dimen/tv_margin_right"
+                android:lineSpacingExtra="@dimen/tv_line_space"
+                android:textColor="@color/new_black"
+                android:id="@+id/text71"
+                android:text="如果你在使用的过程中发现任何bug,或对本软件的发展有任何建议,请联系yuxiang.wei.cs@gmail.com.感谢您的支持"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+
+            <TextView
+                android:layout_marginTop="3dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:id="@+id/title8"
                 android:height="@dimen/tv_title_height"
                 android:text="  特别说明"
                 android:textSize="17sp"
@@ -392,7 +427,7 @@
                 android:layout_marginRight="@dimen/tv_margin_right"
                 android:lineSpacingExtra="@dimen/tv_line_space"
                 android:textColor="@color/red"
-                android:id="@+id/text71"
+                android:id="@+id/text81"
                 android:text="1.对安卓过低版本未作适配。无法登录可尝试更新安卓版本或更换设备。"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
@@ -403,7 +438,7 @@
                 android:layout_marginRight="@dimen/tv_margin_right"
                 android:lineSpacingExtra="@dimen/tv_line_space"
                 android:textColor="@color/red"
-                android:id="@+id/text72"
+                android:id="@+id/text82"
                 android:text="2.手机字体过大或使用个性字体可能导致部分信息显示不全。"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />

@@ -48,6 +48,16 @@
                 android:layout_height="wrap_content" />
 
             <TextView
+                android:layout_marginTop="8dp"
+                android:layout_marginLeft="@dimen/tv_margin_left"
+                android:layout_marginRight="@dimen/tv_margin_right"
+                android:lineSpacingExtra="@dimen/tv_line_space"
+                android:textColor="@color/new_black"
+                android:text="- 取消课表云端备份"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
                 android:layout_marginTop="10dp"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
@@ -86,7 +96,7 @@
                 android:layout_marginRight="@dimen/tv_margin_right"
                 android:lineSpacingExtra="@dimen/tv_line_space"
                 android:textColor="@color/new_black"
-                android:text="- 添加使用说明,在“更多-关于软件下”"
+                android:text="- 添加使用说明,在“更多-关于软件”下"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 

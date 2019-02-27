@@ -14,14 +14,73 @@
 
     <TextView
         android:layout_marginTop="10dp"
-        android:layout_marginLeft="10dp"
+        android:layout_marginLeft="20dp"
         android:layout_marginRight="10dp"
         android:textSize="@dimen/textSize_normal"
         android:textColor="@color/new_black"
-        android:text="没想到藏得这么深都被你发现了,如果你觉得Schedule还不错,并且想为之做些贡献的话,欢迎打赏,打赏金额最好在0.01-1RMB之间,打赏与否全看心情,祝您使用愉快"
+        android:text="没想到藏得这么深都被你发现了！"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
+    <TextView
+        android:layout_marginTop="2dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="10dp"
+        android:textSize="@dimen/textSize_normal"
+        android:textColor="@color/new_black"
+        android:text="我们承诺不会以接广告等方式流量变现；"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:layout_marginTop="2dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="10dp"
+        android:textSize="@dimen/textSize_normal"
+        android:textColor="@color/new_black"
+        android:text="但用爱发电不易，且行且珍惜。"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:layout_marginTop="2dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="10dp"
+        android:textSize="@dimen/textSize_normal"
+        android:textColor="@color/new_black"
+        android:text="如果您觉得Schedule还不错并愿意打赏它，欢迎点击↓"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:layout_marginTop="2dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="10dp"
+        android:textSize="@dimen/textSize_normal"
+        android:textColor="@color/new_black"
+        android:text="打赏金额最好在0.01-1rmb之间，我不想因此落下敛财的嫌疑。"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:layout_marginTop="2dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="10dp"
+        android:textSize="@dimen/textSize_normal"
+        android:textColor="@color/new_black"
+        android:text="打赏与否全看个人意愿，祝您使用愉快。"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:layout_marginTop="2dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="10dp"
+        android:textSize="@dimen/textSize_normal"
+        android:textColor="@color/new_black"
+        android:text="谢谢。"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
     <Button
         android:layout_marginTop="40dp"

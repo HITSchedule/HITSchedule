@@ -57,6 +57,8 @@ public class LoginActivity extends AppCompatActivity {
                     user.setPwd(pwd);
                     user.save();
                     progress_dialog.dismiss();
+                    progress_dialog.cancel();
+
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                     startActivity(intent);
                     finish();
@@ -126,6 +128,14 @@ public class LoginActivity extends AppCompatActivity {
             progress_dialog.show();
         } else {
             progress_dialog.show();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (progress_dialog != null){
+            progress_dialog.dismiss();
         }
     }
 }

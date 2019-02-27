@@ -74,7 +74,7 @@ public class AddCourseActivity extends AppCompatActivity {
 
         subject = (MySubject) getIntent().getSerializableExtra("subject");
         // 获取已有的存储S
-        if (subject.getObjectId() != null){
+        if (subject.getName() != null){
             List<MySubject> subjects = LitePal.where("name = ? and day = ? and start = ?",
                     subject.getName(),
                     String.valueOf(subject.getDay()),
@@ -209,39 +209,10 @@ public class AddCourseActivity extends AppCompatActivity {
                     subject.setRoom(room);
                     subject.setWeekList(weekList);
                     subject.setType("SELF");
-                    if (subject.getObjectId() != null){
-                        subject.toSubject().update(subject.getObjectId(), new UpdateListener() {
-                            @Override
-                            public void done(BmobException e) {
-                                save.setClickable(true);
-                                if (e == null){
-                                    Toast.makeText(getApplicationContext(), "修改成功", Toast.LENGTH_SHORT).show();
-                                    Log.d(TAG, "done: is saved=" + subject.isSaved());
-                                    subject.save();
-                                    finish();
-                                } else {
-                                    Toast.makeText(getApplicationContext(), "修改失败,请重试", Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                        });
-                    }else {
-                        subject.toSubject().save(new SaveListener<String>() {
-                            @Override
-                            public void done(String s, BmobException e) {
-                                save.setClickable(true);
-                                if(e == null){
-                                    Toast.makeText(getApplicationContext(), "添加成功", Toast.LENGTH_SHORT).show();
-                                    subject.save();
-                                    finish();
-                                }else {
-                                    Toast.makeText(getApplicationContext(), "添加失败,请重试", Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                        });
-                    }
 
-
-
+                    Toast.makeText(getApplicationContext(), "添加/修改成功", Toast.LENGTH_SHORT).show();
+                    subject.save();
+                    finish();
 
                 } else {
                     Toast.makeText(AddCourseActivity.this, "请填写完整信息", Toast.LENGTH_SHORT).show();

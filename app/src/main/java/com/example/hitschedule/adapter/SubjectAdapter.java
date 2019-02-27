@@ -89,7 +89,12 @@ public class SubjectAdapter extends BaseAdapter {
                 if (each.startsWith("周")){
                     inf = "周" + inf;
                 }
-                content.append(inf).append("周\n");
+                if(s.endsWith("周")){
+                    content.append(inf).append("周\n");
+                }else {
+                    content.append(inf).append("\n");
+                }
+
             }
         }
 

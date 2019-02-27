@@ -6,8 +6,6 @@ import cn.bmob.v3.Bmob;
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.FindListener;
-import cn.bmob.v3.listener.SaveListener;
-import cn.bmob.v3.listener.UpdateListener;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
@@ -104,13 +102,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d(TAG, "onCreate: sdsd");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Bmob.initialize(this, "d2ad693a0277f5fc81c6dc84a91ca08f");
-        checkForLogin();
         chechForUpdate();
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        checkForLogin();
+    }
 
     /**
      * 检查是否已登录，若用户未登录，调至登录界面
@@ -136,7 +139,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      */
     private void initView() {
         mTimetableView = findViewById(R.id.timetableView);
-        mWeekView=findViewById(R.id.weekView);
+        mWeekView = findViewById(R.id.weekView);
         toolbar = findViewById(R.id.m_toolbar);
         setBackground();
         int height = ScreenUtil.getScreenHeight(getWindowManager());
@@ -255,16 +258,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Log.d(TAG, "initData: " + info.getXnxq());
             subjects = LitePal.where("usrId = ? and xnxq = ?",
                     usrId, info.getXnxq()).find(MySubject.class);
-            for (MySubject subject : subjects){
-                Log.d(TAG, "initData: " + subject.getName() + subject.getUsrId());
-            }
+//            for (MySubject subject : subjects){
+//                Log.d(TAG, "initData: " + subject.getName() + subject.getUsrId());
+//            }
+            showUpdateDialog();
+
             Log.d(TAG, "initData: subject size=" + subjects.size());
             if (subjects.size() > 0){
                 updateTimeTable();
             } else {
                 Log.d(TAG, "initData: get from bmob");
                 showProgressDialog();
-                getDataFromBmob();
+//                getDataFromBmob();
+                getDataFromJwts();
             }
 
         } else {
@@ -283,7 +289,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         if (subjects.size() > 0){
                             updateTimeTable();
                         } else {
-                            getDataFromBmob();
+//                            getDataFromBmob();
+                            getDataFromJwts();
                         }
                     } else {
                         makeToast("获取信息失败,请检查网络后重试");
@@ -378,7 +385,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             HtmlUtil util = new HtmlUtil(html);
                             List<MySubject> newSubjects = util.getzkb();
                             subjects = newSubjects;
-//                            updateDateBase(newSubjects);
+                            updateDataBase(newSubjects);
                         }catch (Exception e){
                             makeToast("获取课表失败");
                         }
@@ -399,7 +406,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      * 更新数据库
      * @param newSubjects 新数据
      */
-    private void updateDateBase(List<MySubject> newSubjects){
+    private void updateDataBase(List<MySubject> newSubjects){
 
         newSubjects = Util.mergeSubject(newSubjects);
         subjects = LitePal.findAll(MySubject.class);
@@ -411,7 +418,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             subject.setXnxq(info.getXnxq());
             subject.setType("JWTS");
             if (subjects.contains(subject)){
-                Log.d(TAG, "updateDateBase: 替换" + subject.getName());
+                Log.d(TAG, "updateDataBase: 替换" + subject.getName());
                 int index = subjects.indexOf(subject);
                 if (!subjects.get(index).getType().equals("SELF")){
                     subject.setObjectId(subjects.get(index).getObjectId());
@@ -425,8 +432,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     }
                 }
             }else {
-                Log.d(TAG, "updateDateBase: 保存" + subject.getName());
-                Log.d(TAG, "updateDateBase: " + subject.save());
+                subject.save();
+                Log.d(TAG, "updateDataBase: 保存" + subject.getName());
             }
         }
 
@@ -436,50 +443,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // 遍历原列表中剩余部分,若非自定义项,直接移除
         for (final MySubject subject : subjects){
             if (!subject.getType().equals("SELF")){
-                Log.d(TAG, "updateDateBase: 删除" + subject.getName());
+                Log.d(TAG, "updateDataBase: 删除" + subject.getName());
                 subject.delete();
-                if (subject.getObjectId() != null){
-                    Subject s = new Subject();
-                    s.setObjectId(subject.getObjectId());
-                    s.delete(new UpdateListener() {
-                        @Override
-                        public void done(BmobException e) {
-                            if (e == null){
-                                Log.d(TAG, "done: 删除成功" + subject.getName());
-                            }
-                        }
-                    });
-                }
             }
         }
 
         subjects = LitePal.findAll(MySubject.class);
-
-        // 更新Bmob
-        for (final MySubject subject : subjects){
-
-            if (subject.getObjectId() == null){
-                subject.toSubject().save(new SaveListener<String>() {
-                    @Override
-                    public void done(String s, BmobException e) {
-                        if (e == null){
-                            subject.setObjectId(s);
-                            subject.save();
-                            Log.d(TAG, "updateDateBase done: 保存成功 " + subject.getName() + s);
-                        } else {
-                            Log.d(TAG, "updateDateBase done: 保存失败 " + subject.getName() + s);
-                        }
-                    }
-                });
-            }else {
-                subject.toSubject().update(subject.getObjectId(), new UpdateListener() {
-                    @Override
-                    public void done(BmobException e) {
-                        Log.d(TAG, "updateDateBase done: 更新成功 " + subject.getName());
-                    }
-                });
-            }
-        }
 
         makeToast("更新课表成功");
     }
@@ -727,6 +696,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      * @param bitmap1 验证码图片
      */
     private void showCapatchDialog(Bitmap bitmap1){
+        Log.d(TAG, "showCapatchDialog: ");
         CustomCaptchaDialog.Builder builder = new CustomCaptchaDialog.Builder(MainActivity.this);
         captchaDialog = builder
                 .style(R.style.Dialog)
@@ -767,6 +737,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     }
                 })
                 .build();
+        captchaDialog.show();
         captchaDialog.show();
     }
 
@@ -813,13 +784,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void showUpdateDialog(){
         if (refreshDialog == null){
             CustomDialog.Builder builder = new CustomDialog.Builder(MainActivity.this);
+            String changelog = "";
+            if (info.getReserved1() != null){
+                changelog = changelog + info.getReserved1();
+            }
             updateDialog = builder
                     .style(R.style.fillet_dialog)
-                    .heightdp(180)
+                    .heightdp(220)
                     .widthpx(getResources().getDisplayMetrics().widthPixels - DensityUtil.dp2px(MainActivity.this, 50f))
                     .cancelTouchout(true)
                     .view(R.layout.dialog_select)
-                    .text(R.id.show_text, "检测到新版本,是否更新")
+                    .text(R.id.show_text, "检测到新版本,是否更新?\n\n " + changelog)
                     .addViewOnclick(R.id.btn_sure, new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
@@ -871,15 +846,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             public void onClick(View view) {
                                 deleteDialog.hide();
                                 subject.delete();
-                                subject.toSubject().delete(subject.getObjectId(), new UpdateListener() {
-                                    @Override
-                                    public void done(BmobException e) {
-                                        subjects = LitePal.findAll(MySubject.class);
-                                        makeToast("删除成功");
-                                        scheduleDialog.dismiss();
-                                        updateTimeTable();
-                                    }
-                                });
+                                subjects.remove(subject);
+                                updateTimeTable();
+                                makeToast("删除成功");
                             }
                         })
                         .addViewOnclick(R.id.btn_cancel, new View.OnClickListener() {
