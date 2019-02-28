@@ -58,7 +58,7 @@
         android:layout_marginRight="10dp"
         android:textSize="@dimen/textSize_normal"
         android:textColor="@color/new_black"
-        android:text="打赏金额最好在0.01-1rmb之间，我不想因此落下敛财的嫌疑。"
+        android:text="打赏金额最好在0.01-1rmb之间，免得因此被认为是敛财。"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 

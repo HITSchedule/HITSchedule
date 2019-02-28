@@ -261,8 +261,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //            for (MySubject subject : subjects){
 //                Log.d(TAG, "initData: " + subject.getName() + subject.getUsrId());
 //            }
-            showUpdateDialog();
-
             Log.d(TAG, "initData: subject size=" + subjects.size());
             if (subjects.size() > 0){
                 updateTimeTable();
@@ -767,7 +765,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             SharedPreferences preferences = getSharedPreferences("data",MODE_PRIVATE);
                             String version = preferences.getString("version",null);
                             if (version == null || !version.equals(bombInfo.getLatestVersion())){
-                                showUpdateDialog();
+                                showUpdateDialog(bombInfo);
                             }
                         }
                     } catch (Exception e1) {
@@ -781,12 +779,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     /**
      * 显示更新dialog
      */
-    private void showUpdateDialog(){
+    private void showUpdateDialog(Info bmobInfo){
         if (refreshDialog == null){
             CustomDialog.Builder builder = new CustomDialog.Builder(MainActivity.this);
             String changelog = "";
-            if (info.getReserved1() != null){
-                changelog = changelog + info.getReserved1();
+            if (bmobInfo.getReserved1() != null){
+                changelog = changelog + bmobInfo.getReserved1();
+                Log.d(TAG, "showUpdateDialog:");
             }
             updateDialog = builder
                     .style(R.style.fillet_dialog)
