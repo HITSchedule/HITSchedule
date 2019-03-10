@@ -143,8 +143,8 @@ public class AddCourseActivity extends AppCompatActivity {
                 /**
                  * 点击空白位置 隐藏软键盘
                  */
-                InputMethodManager mInputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-                mInputMethodManager.hideSoftInputFromWindow(AddCourseActivity.this.getCurrentFocus().getWindowToken(), 0);
+//                InputMethodManager mInputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+//                mInputMethodManager.hideSoftInputFromWindow(AddCourseActivity.this.getCurrentFocus().getWindowToken(), 0);
 
                 String mCurrentLanguage = Locale.getDefault().getLanguage();
                 String title = mCurrentLanguage.equals("en") ? "Time" : "设置时间";

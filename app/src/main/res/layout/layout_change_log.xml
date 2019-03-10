@@ -20,6 +20,39 @@
                 android:layout_marginRight="20dp"
                 android:gravity="center_horizontal"
                 android:height="@dimen/tv_title_height"
+                android:text="v1.2.3"
+                android:textSize="17sp"
+                android:textColor="@color/new_black"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#EFEFEF"/>
+
+            <TextView
+                android:layout_marginTop="8dp"
+                android:layout_marginLeft="@dimen/tv_margin_left"
+                android:layout_marginRight="@dimen/tv_margin_right"
+                android:lineSpacingExtra="@dimen/tv_line_space"
+                android:textColor="@color/new_black"
+                android:text="- 修复周数显示错误和空白"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_marginTop="8dp"
+                android:layout_marginLeft="@dimen/tv_margin_left"
+                android:layout_marginRight="@dimen/tv_margin_right"
+                android:lineSpacingExtra="@dimen/tv_line_space"
+                android:textColor="@color/new_black"
+                android:text="- 修复Android9.0无法修改节数问题"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:gravity="center_horizontal"
+                android:height="@dimen/tv_title_height"
                 android:text="v1.2.2"
                 android:textSize="17sp"
                 android:textColor="@color/new_black"

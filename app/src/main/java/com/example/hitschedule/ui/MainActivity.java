@@ -884,9 +884,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     mTimetableView.source(subjects)
                             .curWeek(info.getStartTime())  // 设置课表开始时间
                             .updateView();
+                    cWeek = mTimetableView.curWeek();
                     //设置周次选择属性
                     mWeekView.source(subjects)
                             .itemCount(info.getWeekNum())
+                            .curWeek(cWeek)
                             .showView();
                     hideProgressDialog();
                     break;
