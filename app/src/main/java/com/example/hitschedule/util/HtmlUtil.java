@@ -73,6 +73,9 @@ public class HtmlUtil {
                             if (isNum.matches()) {
                                 num = x;
                                 break;
+                            } else if (strings[k+x].endsWith("其他")){
+                                num = x;
+                                break;
                             }
                         }
 
