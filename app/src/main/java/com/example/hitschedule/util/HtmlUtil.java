@@ -84,10 +84,17 @@ public class HtmlUtil {
                         }
 
                         try{
+                            // 如果含有研究生课程，替换为本科客户才能形式
+                            if (strings[k].startsWith("[研]")){
+                                for (int m = 0; m < num; m++){
+                                    strings[k+m] = strings[k+m].replace("周]", "]周");
+                                }
+                            }
+
                             // 不好解析，略过
                             if(strings[k].contains("机械设计A")){
                                 k = k + num + 1;
-                            } else if(strings[k].contains("考试")){
+                            }  else if(strings[k].contains("考试")){
                                 MySubject mySubject = getMyExam(i, j, strings[k], strings[k + 1]);
                                 k += 2;
                                 if(mySubject != null){
@@ -234,6 +241,66 @@ public class HtmlUtil {
     }
 
 
+    // TODO  考虑将每个老师设为一门课程
+    /**
+     * 处理一门课有多个老师上课的情况
+     * @param i
+     * @param j
+     * @param course
+     * @param info
+     * @param room
+     * @return
+     */
+    private MySubject getMySubject(int i, int j, String course, String info, String room){
+        MySubject mySubject = new MySubject();
+        // 周几，由第几列决定
+        mySubject.setDay(j-1);
+        // 课程名  split分割的偶数位为课程名
+        mySubject.setName(course);
+        // 开始时间 由id决定
+        mySubject.setStart(2*(i-1) + 1);
+        // 连上两节课
+        mySubject.setStep(2);
+
+        mySubject.setInfo(info);
+
+
+        // 使用[]来分割为N部分，每一部分是一个上课老师的信息
+        String [] infos = info.split("周，");
+
+        List<Integer> weekList = new ArrayList<>();
+        for(String each : infos){
+
+            boolean isDoubole = false;
+
+            boolean isOdd = false;
+
+            // 这里考虑replace之后就不再是同一个字符串了
+            String s = each.replace("周", "");
+
+            if (each.contains("双")){
+                isDoubole = true;
+                s = s.replace("双", "");
+            }
+
+            if (each.contains("单")){
+                isOdd = true;
+                info = info.replace("单", "");
+            }
+
+            String[] eaches = s.split("[\\[\\]]");
+
+            mySubject.setTeacher(eaches[0]);
+            Log.d(TAG, "getMySubject: each1" + eaches[1] + isDoubole + isOdd);
+            weekList.addAll(getWeeks(eaches[1], isDoubole, isOdd));
+
+            Log.d(TAG, "getzkb: mySubject" + mySubject);
+        }
+        mySubject.setRoom(room);
+        mySubject.setWeekList(weekList);
+        return mySubject;
+    }
+
     /**
      * 处理一门课一个老师，多个教室的情况,针对18级新生，青年公寓
      * @param i
@@ -312,65 +379,6 @@ public class HtmlUtil {
         return mySubjects;
     }
 
-    // TODO  考虑将每隔老师设为一门课程
-    /**
-     * 处理一门课有多个老师上课的情况
-     * @param i
-     * @param j
-     * @param course
-     * @param info
-     * @param room
-     * @return
-     */
-    private MySubject getMySubject(int i, int j, String course, String info, String room){
-        MySubject mySubject = new MySubject();
-        // 周几，由第几列决定
-        mySubject.setDay(j-1);
-        // 课程名  split分割的偶数位为课程名
-        mySubject.setName(course);
-        // 开始时间 由id决定
-        mySubject.setStart(2*(i-1) + 1);
-        // 连上两节课
-        mySubject.setStep(2);
-
-        mySubject.setInfo(info);
-
-
-        // 使用[]来分割为N部分，每一部分是一个上课老师的信息
-        String [] infos = info.split("周，");
-
-        List<Integer> weekList = new ArrayList<>();
-        for(String each : infos){
-
-            boolean isDoubole = false;
-
-            boolean isOdd = false;
-
-            // 这里考虑replace之后就不再是同一个字符串了
-            String s = each.replace("周", "");
-
-            if (each.contains("双")){
-                isDoubole = true;
-                s = s.replace("双", "");
-            }
-
-            if (each.contains("单")){
-                isOdd = true;
-                info = info.replace("单", "");
-            }
-
-            String[] eaches = s.split("[\\[\\]]");
-
-            mySubject.setTeacher(eaches[0]);
-            Log.d(TAG, "getMySubject: each1" + eaches[1] + isDoubole + isOdd);
-            weekList.addAll(getWeeks(eaches[1], isDoubole, isOdd));
-
-            Log.d(TAG, "getzkb: mySubject" + mySubject);
-        }
-        mySubject.setRoom(room);
-        mySubject.setWeekList(weekList);
-        return mySubject;
-    }
 
     /**
      * 解析上课周数
