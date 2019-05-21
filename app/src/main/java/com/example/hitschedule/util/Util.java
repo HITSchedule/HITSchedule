@@ -44,6 +44,7 @@ public class Util {
      * @return
      */
     public static boolean compareVersion(String newVersion, String oldVersion){
+
         return ver2num(newVersion) > ver2num(oldVersion);
     }
 
