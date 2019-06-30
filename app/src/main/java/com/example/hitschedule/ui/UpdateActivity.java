@@ -106,7 +106,7 @@ public class UpdateActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent=new Intent();//创建Intent对象
                 intent.setAction(Intent.ACTION_VIEW);//为Intent设置动作
-                intent.setData(Uri.parse("http://hitschedule.bmob.site/"));//为Intent设置数据
+                intent.setData(Uri.parse("http://hitschedule.github.io/"));//为Intent设置数据
                 startActivity(intent);//将Intent传递给Activity
             }
         });
