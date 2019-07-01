@@ -1,13 +1,19 @@
 package com.example.hitschedule.view;
 
+import android.app.Activity;
 import android.content.Context;
+import android.os.Message;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ScrollView;
 
+import com.example.hitschedule.ui.MainActivity;
 import com.zhuangfei.timetable.TimetableView;
 import com.zhuangfei.timetable.view.WeekView;
+
+import java.util.logging.Handler;
 
 /**
  * 自定义ScrollView，方便左右滑动
@@ -18,9 +24,15 @@ public class MyScrollView extends ScrollView {
     private TimetableView mTimeTableView;
     private WeekView mWeekView;
     private int week;
+    private MainActivity.UIHandler handler;
+    private final int CHANGE_WEEK = 2115;
 
     public MyScrollView(Context context) {
         super(context);
+    }
+
+    public void setHandler(MainActivity.UIHandler handler){
+        this.handler = handler;
     }
 
     public void setWeek(int week) {
@@ -53,21 +65,29 @@ public class MyScrollView extends ScrollView {
             }
             case MotionEvent.ACTION_UP:{
                 int deltaX = x - lx;
+                Log.d("xxxxxxxxxxxxx", "dispatchTouchEvent: " + week + "  " + mTimeTableView.curWeek());
                 if (deltaX > 200 && week > 1){
                     week = week - 1;
                     //更新切换后的日期，从当前周cur->切换的周week
+                    mTimeTableView.changeWeekOnly(week);
+//                    mTimeTableView.updateDateView();
                     mTimeTableView.onDateBuildListener()
                             .onUpdateDate(mTimeTableView.curWeek(), week);
-                    mTimeTableView.curWeek(week).updateView();
-                    mWeekView.onWeekItemClickedListener().onWeekClicked(week);
+                    Message msg = new Message();
+                    msg.what = CHANGE_WEEK;
+                    msg.arg1 = week;
+                    handler.sendMessage(msg);
                     mWeekView.updateView();
                 }else if(deltaX < -200 && week < mWeekView.itemCount()){
                     week = week + 1;
                     //更新切换后的日期，从当前周cur->切换的周week
+                    mTimeTableView.changeWeekOnly(week);
                     mTimeTableView.onDateBuildListener()
                             .onUpdateDate(mTimeTableView.curWeek(), week);
-                    mTimeTableView.curWeek(week).updateView();
-                    mWeekView.onWeekItemClickedListener().onWeekClicked(week);
+                    Message msg = new Message();
+                    msg.what = CHANGE_WEEK;
+                    msg.arg1 = week;
+                    handler.sendMessage(msg);
                     mWeekView.updateView();
                 }
                 break;

@@ -93,6 +93,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private final int UPDATEVIEW = 2112;
     private final int CAPTCHAVIEW = 2113;
     private final int TOAST = 2114;
+    private final int CHANGE_WEEK = 2115;
 
     private Dialog progressDialog;
     private Dialog refreshDialog;
@@ -208,7 +209,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         mScrollView = (MyScrollView) mInflate.inflate(R.layout.custom_myscrollview, null, false);
                         mScrollView.setTimeTableView(mTimetableView);
                         mScrollView.setWeekView(mWeekView);
-                        mScrollView.setWeek(mTimetableView.curWeek());
+                        mScrollView.setWeek(mTimetableView.curWeek()); // 将当前周传入
+                        mScrollView.setHandler(handler); // 处理周数改变
                         return mScrollView;
                     }
                 })
@@ -887,10 +889,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(addIntent);
                 break;
         }
+
     }
 
     @SuppressLint("HandlerLeak")
-    class UIHandler extends Handler{
+    public class UIHandler extends Handler{
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what){
@@ -916,6 +919,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 case TOAST:
                     String text = (String) msg.obj;
                     Toast.makeText(MainActivity.this, text, Toast.LENGTH_SHORT).show();
+                    break;
+                case CHANGE_WEEK:
+                    cWeek = msg.arg1;
                     break;
             }
         }
@@ -952,5 +958,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         super.onDestroy();
+    }
+
+    public void setCWeek(int week){
+        cWeek = week;
     }
 }

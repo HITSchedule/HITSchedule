@@ -21,7 +21,7 @@
                 android:layout_marginRight="20dp"
                 android:gravity="center_horizontal"
                 android:height="@dimen/tv_title_height"
-                android:text="v1.2.5"
+                android:text="v1.2.6"
                 android:textSize="17sp"
                 android:textColor="@color/new_black"
                 android:layout_width="match_parent"
