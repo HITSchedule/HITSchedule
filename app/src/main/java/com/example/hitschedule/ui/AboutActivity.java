@@ -35,7 +35,7 @@ public class AboutActivity extends AppCompatActivity {
 
         Element webpage = new Element();
         webpage.setTitle("软件官网");
-        webpage.setIntent(new Intent(Intent.ACTION_VIEW, Uri.parse("http://hitschedule.bmob.site/")));
+        webpage.setIntent(new Intent(Intent.ACTION_VIEW, Uri.parse("https://hitschedule.github.io/")));
 
         Element help = new Element();
         help.setTitle("点此查看使用说明");
@@ -57,7 +57,7 @@ public class AboutActivity extends AppCompatActivity {
                 .addItem(timetableView)
                 .addItem(dialogplus)
                 .addItem(android_about_page)
-                .addItem(donate)
+//                .addItem(donate)
                 .create();
 
         setContentView(aboutPage);

@@ -22,6 +22,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -43,6 +44,7 @@ import com.example.hitschedule.util.HtmlUtil;
 import com.example.hitschedule.util.HttpUtil;
 import com.example.hitschedule.util.ScreenUtil;
 import com.example.hitschedule.util.Util;
+import com.example.hitschedule.view.MyScrollView;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.OnItemClickListener;
 import com.zhuangfei.timetable.TimetableView;
@@ -70,11 +72,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     // 课表控件
     private TimetableView mTimetableView;
     private WeekView mWeekView;
-
+    private MyScrollView mScrollView;
     // 个人基本信息
     private String usrId;
     private String pwd;
-
+    private String type;
     private String captcha;
     private Bitmap bitmap;
 
@@ -98,13 +100,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Dialog updateDialog;
     private CustomCaptchaDialog captchaDialog;
     private DialogPlus scheduleDialog;
-
+    
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.d(TAG, "onCreate: sdsd");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        type = getIntent().getStringExtra("type");
         Bmob.initialize(this, "d2ad693a0277f5fc81c6dc84a91ca08f");
         chechForUpdate();
     }
@@ -156,6 +158,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         mTimetableView.onDateBuildListener()
                                 .onUpdateDate(cur, week);
                         mTimetableView.changeWeekOnly(week);
+//                        mTimetableView.curWeek(week).updateView();
+                        mScrollView.setWeek(week);
                         cWeek = week;
                     }
                 })
@@ -170,8 +174,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .showView();
 
         mTimetableView
-//                .curWeek("2018-09-03 00:00:00")
-//                .curTerm("大三下学期")
                 //透明度
                 //日期栏0.1f、侧边栏0.1f，周次选择栏0.6f
                 //透明度范围为0->1，0为全透明，1为不透明
@@ -198,6 +200,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     @Override
                     public void onWeekChanged(int curWeek) {
                         toolbar.setTitle("第" + curWeek + "周");
+                    }
+                })
+                .callback(new ISchedule.OnScrollViewBuildListener() {
+                    @Override
+                    public View getScrollView(LayoutInflater mInflate) {
+                        mScrollView = (MyScrollView) mInflate.inflate(R.layout.custom_myscrollview, null, false);
+                        mScrollView.setTimeTableView(mTimetableView);
+                        mScrollView.setWeekView(mWeekView);
+                        mScrollView.setWeek(mTimetableView.curWeek());
+                        return mScrollView;
                     }
                 })
                 //旗标布局点击监听
@@ -249,8 +261,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      * 加载Info项以及本地课表
      */
     private void initData() {
-//        LitePal.deleteAll(MyInfo.class);
-//        LitePal.deleteAll(MySubject.class);
         final List<MyInfo> infos = LitePal.findAll(MyInfo.class);
         Log.d(TAG, "initData: info size=" + infos.size());
         if (infos.size() > 0){
@@ -258,21 +268,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Log.d(TAG, "initData: " + info.getXnxq());
             subjects = LitePal.where("usrId = ? and xnxq = ?",
                     usrId, info.getXnxq()).find(MySubject.class);
-//            for (MySubject subject : subjects){
-//                Log.d(TAG, "initData: " + subject.getName() + subject.getUsrId());
-//            }
-            Log.d(TAG, "initData: subject size=" + subjects.size());
             if (subjects.size() > 0){
                 updateTimeTable();
             } else {
-                Log.d(TAG, "initData: get from bmob");
-                showProgressDialog();
-//                getDataFromBmob();
-                getDataFromJwts();
+                if (type != null){
+                    showProgressDialog();
+                    getDataFromJwts();
+                    Log.d(TAG, "done: 首次登录");
+                }else {
+                    Log.d(TAG, "done: 非首次登录");
+                }
+
             }
 
         } else {
-            Log.d(TAG, "initData: dialog");
             showProgressDialog();
             BmobQuery<Info> query = new BmobQuery<>();
             query.findObjects(new FindListener<Info>() {
@@ -287,8 +296,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         if (subjects.size() > 0){
                             updateTimeTable();
                         } else {
-//                            getDataFromBmob();
-                            getDataFromJwts();
+                            if (type != null){
+                                getDataFromJwts();
+                                Log.d(TAG, "done: 首次登录");
+                            }else {
+                                Log.d(TAG, "done: 非首次登录");
+                            }
+                            
                         }
                     } else {
                         makeToast("获取信息失败,请检查网络后重试");
@@ -885,6 +899,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             .curWeek(info.getStartTime())  // 设置课表开始时间
                             .updateView();
                     cWeek = mTimetableView.curWeek();
+                    mScrollView.setWeek(cWeek);
                     //设置周次选择属性
                     mWeekView.source(subjects)
                             .itemCount(info.getWeekNum())
@@ -913,6 +928,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         PackageInfo packInfo = packageManager.getPackageInfo(getPackageName(),0);
         return packInfo.versionName;
     }
+
 
     @Override
     protected void onDestroy() {

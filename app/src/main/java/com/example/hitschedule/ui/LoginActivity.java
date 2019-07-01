@@ -58,8 +58,8 @@ public class LoginActivity extends AppCompatActivity {
                     user.save();
                     progress_dialog.dismiss();
                     progress_dialog.cancel();
-
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    intent.putExtra("type", "init");
                     startActivity(intent);
                     finish();
                     break;
