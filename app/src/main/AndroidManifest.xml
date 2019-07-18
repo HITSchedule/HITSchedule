@@ -46,6 +46,9 @@
         <activity android:name=".ui.SetBgActivity"
             android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
 
+        <activity android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
+            android:theme="@style/Base.Theme.AppCompat"/>
+
         <provider
             android:name="cn.bmob.v3.util.BmobContentProvider"
             android:authorities="com.example.hitschedule.BmobContentProvider">
