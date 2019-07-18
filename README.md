@@ -23,6 +23,7 @@ Android版工大课表app。[下载网页](http://hitschedule.github.io/)
 1. [TimetableView](https://github.com/zfman/TimetableView)
 2. [Dialogplus](https://github.com/orhanobut/dialogplus)
 3. [AboutPage](https://github.com/medyo/android-about-page)
+4. [ImageCropper](https://github.com/ArthurHub/Android-Image-Cropper)
 
 
 持续更新...

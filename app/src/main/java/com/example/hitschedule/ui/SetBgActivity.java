@@ -28,6 +28,8 @@ import android.widget.Toast;
 import com.example.hitschedule.R;
 import com.example.hitschedule.dialog.CustomDialog;
 import com.example.hitschedule.util.DensityUtil;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -68,8 +70,9 @@ public class SetBgActivity extends Activity {
                 .addViewOnclick(R.id.album_choose, new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        openAlbum();
-                        // TODO 裁剪图片
+                        CropImage.activity()
+                                .setGuidelines(CropImageView.Guidelines.ON)
+                                .start(SetBgActivity.this);
                         dialog.hide();
                     }
                 })
@@ -138,6 +141,24 @@ public class SetBgActivity extends Activity {
             }
         } else if (requestCode == REQUEST_SYSTEM_PIC && resultCode == RESULT_CANCELED) {
             finish();
+        } else  if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            if (resultCode == RESULT_OK) {
+                Uri resultUri = result.getUri();
+                String imagePath = resultUri.getPath();
+                String s[] = imagePath.split("\\.");
+                File img = new File(base_path, "bg." + s[s.length-1]);
+                copyFile(imagePath, img.getPath());
+                SharedPreferences.Editor editor = getSharedPreferences("data",MODE_PRIVATE).edit();
+                editor.putString("bgPath", img.getPath());
+                editor.apply();
+                Log.d(TAG, "handleImageOnKitkat: " + imagePath);
+
+                finish();
+            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                Exception error = result.getError();
+                Log.d(TAG, "crop Error:" + error.getMessage());
+            }
         }
 
         Log.d(TAG, "onActivityResult: 什么也没干 " + resultCode);
