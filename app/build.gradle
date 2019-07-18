@@ -8,6 +8,12 @@ android {
             storeFile file('/home/wyxiang/Android/jks/hitschedule.jks')
             storePassword 'hitschedule'
         }
+        debug{
+            keyAlias 'key0'
+            keyPassword 'hitschedule'
+            storeFile file('/home/wyxiang/Android/jks/hitschedule.jks')
+            storePassword 'hitschedule'
+        }
     }
     compileSdkVersion 28
     defaultConfig {
