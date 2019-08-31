@@ -375,7 +375,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void run() {
                 try {
                     int code = HttpUtil.vpn_jwts_login(usrId, pwd, captcha);
-
                     if (code == CAPTCHA_ERROR){
                         makeToast("验证码错误");
                         Message msg = new Message();
@@ -386,22 +385,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     }
 
                     if (info == null){
-                        makeToast("info is null");
+                        makeToast("初始信息为空，请联系维护人员检查");
                         return;
                     }
 
                     String html = HttpUtil.vpn_kb_post(info.getXnxq());
-//                    String html = HttpUtil.vpn_kb_post_test(info.getXnxq(), usrId);
 
                     if (html != null){
                         // 捕获一下解析异常
                         try{
                             HtmlUtil util = new HtmlUtil(html);
-                            List<MySubject> newSubjects = util.getzkb();
+                            List<MySubject> newSubjects = util.getzkb(info.getXnxq(), usrId);
                             subjects = newSubjects;
                             updateDataBase(newSubjects);
                         }catch (Exception e){
                             makeToast("获取课表失败");
+                            Log.d(TAG, "run: 获取课表失败 Error" + e);
                         }
 
                     } else {

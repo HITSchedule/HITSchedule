@@ -36,7 +36,7 @@ public class HtmlUtil {
      * 解析总课表
      * @return
      */
-    public List<MySubject> getzkb(){
+    public List<MySubject> getzkb(String xnxq, String usrId){
         Document doc = Jsoup.parse(html);
 
         Elements elements = doc.getElementsByClass("addlist_01");
@@ -153,6 +153,10 @@ public class HtmlUtil {
 
         }
 
+        for (MySubject subject : mySubjects){
+            subject.setXnxq(xnxq);
+            subject.setUsrId(usrId);
+        }
         return mySubjects;
     }
 
