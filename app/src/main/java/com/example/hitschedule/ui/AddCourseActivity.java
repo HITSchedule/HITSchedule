@@ -172,11 +172,13 @@ public class AddCourseActivity extends AppCompatActivity {
                 save.setClickable(false);
                 if(end < start){
                     Toast.makeText(AddCourseActivity.this, "节次选择不合理", Toast.LENGTH_SHORT).show();
+                    save.setClickable(true);
                     return;
                 }
 
                 if (weekList.isEmpty()){
                     Toast.makeText(AddCourseActivity.this, "周数不能为空", Toast.LENGTH_SHORT).show();
+                    save.setClickable(true);
                     return;
                 }
 
