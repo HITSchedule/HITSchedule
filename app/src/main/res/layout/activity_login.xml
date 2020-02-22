@@ -32,6 +32,7 @@
             android:drawableTint="@android:color/background_dark"
             android:hint="学号"
             android:padding="10dp"
+            android:singleLine="true"
             android:textColor="@android:color/background_dark"
             android:textColorHint="#787878" />
 
