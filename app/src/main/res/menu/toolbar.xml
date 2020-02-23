@@ -12,46 +12,46 @@
     -->
 
     <item android:id="@+id/refresh"
-        android:title="刷新课表"
+        android:title="@string/refresh_curriculum"
         android:icon="@drawable/refresh"
         app:showAsAction="always" />
 
     <item android:id="@+id/week_choose"
-        android:title="选择周次"
+        android:title="@string/choose_week"
         android:icon="@drawable/week"
         app:showAsAction="always" />
 
     <item android:id="@+id/addCourse"
-        android:title="添加课程"
+        android:title="@string/add_course"
         android:icon="@drawable/add_course"
         app:showAsAction="always" />
 
     <item android:id="@+id/search"
-        android:title="搜索"
+        android:title="@string/search"
         android:icon="@drawable/search"
         app:showAsAction="always" />
 
     <item android:id="@+id/update"
-        android:title="检查更新"
+        android:title="@string/check_update"
         android:icon="@drawable/menu"
         app:showAsAction="collapseActionView" />
 
     <item android:id="@+id/setbg"
-        android:title="设置背景"
+        android:title="@string/set_background"
         app:showAsAction="collapseActionView" />
 
     <item android:id="@+id/changelog"
-        android:title="更新说明"
+        android:title="@string/changelog"
         android:icon="@drawable/menu"
         app:showAsAction="collapseActionView" />
 
     <item android:id="@+id/about"
-        android:title="关于软件"
+        android:title="@string/about"
         android:icon="@drawable/menu"
         app:showAsAction="collapseActionView" />
 
     <item android:id="@+id/logout"
-        android:title="退出登录"
+        android:title="@string/logout"
         android:icon="@drawable/menu"
         app:showAsAction="collapseActionView" />
 

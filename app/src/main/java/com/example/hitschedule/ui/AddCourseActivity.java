@@ -83,7 +83,7 @@ public class AddCourseActivity extends AppCompatActivity {
         }
 
         toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitle("添加课程");   //设置标题
+        toolbar.setTitle(R.string.add_course);   //设置标题
 
         et_course_name = findViewById(R.id.et_course_name);
         et_room = findViewById(R.id.et_room);
@@ -177,7 +177,7 @@ public class AddCourseActivity extends AppCompatActivity {
                 }
 
                 if (weekList.isEmpty()){
-                    Toast.makeText(AddCourseActivity.this, "周数不能为空", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AddCourseActivity.this, R.string.no_empty_weeks, Toast.LENGTH_SHORT).show();
                     save.setClickable(true);
                     return;
                 }
@@ -212,12 +212,12 @@ public class AddCourseActivity extends AppCompatActivity {
                     subject.setWeekList(weekList);
                     subject.setType("SELF");
 
-                    Toast.makeText(getApplicationContext(), "添加/修改成功", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), R.string.add_or_modify_succeeded, Toast.LENGTH_SHORT).show();
                     subject.save();
                     finish();
 
                 } else {
-                    Toast.makeText(AddCourseActivity.this, "请填写完整信息", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AddCourseActivity.this, R.string.fill_complete_info, Toast.LENGTH_SHORT).show();
                     save.setClickable(true);
                 }
             }

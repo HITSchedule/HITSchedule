@@ -35,7 +35,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="课名"
+                    android:text="@string/course"
                     android:textSize="@dimen/textSize_normal"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="15dp"
@@ -47,7 +47,7 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
                     android:singleLine="true"
-                    android:hint="未填写"
+                    android:hint="@string/empty"
                     android:layout_centerVertical="true"
                     android:layout_weight="1"
                     android:layout_width="0dp"
@@ -67,7 +67,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="教室"
+                    android:text="@string/classroom"
                     android:textSize="@dimen/textSize_normal"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="15dp"
@@ -79,7 +79,7 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
                     android:singleLine="true"
-                    android:hint="未填写"
+                    android:hint="@string/empty"
                     android:layout_centerVertical="true"
                     android:layout_weight="1"
                     android:layout_width="0dp"
@@ -97,7 +97,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="周数"
+                    android:text="@string/week_num"
                     android:textSize="@dimen/textSize_normal"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="15dp"
@@ -109,7 +109,7 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
                     android:singleLine="true"
-                    android:hint="未填写"
+                    android:hint="@string/empty"
                     android:layout_centerVertical="true"
                     android:layout_weight="1"
                     android:layout_width="0dp"
@@ -127,7 +127,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="节数"
+                    android:text="@string/period"
                     android:textSize="@dimen/textSize_normal"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="15dp"
@@ -139,7 +139,7 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
                     android:singleLine="true"
-                    android:hint="未填写"
+                    android:hint="@string/empty"
                     android:layout_centerVertical="true"
                     android:layout_weight="1"
                     android:layout_width="0dp"
@@ -158,7 +158,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="老师"
+                    android:text="@string/teacher"
                     android:textSize="@dimen/textSize_normal"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="15dp"
@@ -170,7 +170,7 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
                     android:singleLine="true"
-                    android:hint="未填写"
+                    android:hint="@string/empty"
                     android:layout_centerVertical="true"
                     android:layout_weight="1"
                     android:layout_width="0dp"
@@ -219,7 +219,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
                 android:textSize="20sp"
-                android:text="确    定"
+                android:text="@string/confirm"
                 android:textColor="@android:color/background_dark" />
 
         </LinearLayout>
