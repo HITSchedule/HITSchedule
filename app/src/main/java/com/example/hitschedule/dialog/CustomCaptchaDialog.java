@@ -11,7 +11,6 @@ import android.widget.ImageView;
 
 import com.example.hitschedule.R;
 import com.example.hitschedule.util.DensityUtil;
-import com.example.hitschedule.util.Util;
 
 public class CustomCaptchaDialog extends Dialog {
     private Context context;

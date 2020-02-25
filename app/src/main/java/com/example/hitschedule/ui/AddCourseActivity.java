@@ -1,5 +1,6 @@
 package com.example.hitschedule.ui;
 
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -62,7 +63,6 @@ public class AddCourseActivity extends AppCompatActivity {
 
     private List<Integer> weekList;
     private Button save;
-    private String theDay;
 
     private List<String> days = new ArrayList<>();
     private List<Integer> starts = new ArrayList<>();
@@ -243,7 +243,6 @@ public class AddCourseActivity extends AppCompatActivity {
     private void initView() {
 
         day = subject.getDay() - 1;
-        theDay = getDay(day);
 
         if (subject.getStart() == 0){
             subject.setStart(1);

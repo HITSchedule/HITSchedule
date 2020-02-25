@@ -1,12 +1,5 @@
 package com.example.hitschedule.ui;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import cn.bmob.v3.Bmob;
-import cn.bmob.v3.BmobQuery;
-import cn.bmob.v3.exception.BmobException;
-import cn.bmob.v3.listener.FindListener;
-
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
@@ -29,12 +22,15 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+
 import com.example.hitschedule.R;
 import com.example.hitschedule.adapter.ChangeLogAdapter;
 import com.example.hitschedule.adapter.OnEnglishDateBuildAdapter;
 import com.example.hitschedule.adapter.SubjectAdapter;
-import com.example.hitschedule.database.MyInfo;
 import com.example.hitschedule.database.Info;
+import com.example.hitschedule.database.MyInfo;
 import com.example.hitschedule.database.MySubject;
 import com.example.hitschedule.database.Subject;
 import com.example.hitschedule.database.User;
@@ -61,6 +57,12 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+
+import cn.bmob.v3.Bmob;
+import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.FindListener;
 
 import static com.example.hitschedule.util.Constant.CAPTCHA_ERROR;
 
