@@ -739,7 +739,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         }
                     }
                 })
-                .addViewOnclick(R.id.capycha, new View.OnClickListener() {
+                .addViewOnclick(R.id.captcha, new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         new Thread(new Runnable() {

@@ -18,7 +18,7 @@
         />
 
     <ImageView
-        android:id="@+id/capycha"
+        android:id="@+id/captcha"
         android:layout_marginTop="15dp"
         android:layout_width="100dp"
         android:layout_height="33dp"

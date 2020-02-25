@@ -39,7 +39,7 @@ public class CustomCaptchaDialog extends Dialog {
     }
 
     public void setCaptcha(Bitmap bitmap){
-        ImageView imageView = view.findViewById(R.id.capycha);
+        ImageView imageView = view.findViewById(R.id.captcha);
         imageView.setImageBitmap(bitmap);
     }
 
@@ -80,7 +80,7 @@ public class CustomCaptchaDialog extends Dialog {
         }
 
         public Builder img(Bitmap bitmap){
-            ImageView imageView = view.findViewById(R.id.capycha);
+            ImageView imageView = view.findViewById(R.id.captcha);
             imageView.setImageBitmap(bitmap);
             return this;
         }
