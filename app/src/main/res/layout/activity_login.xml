@@ -30,7 +30,7 @@
             android:drawablePadding="16dp"
 
             android:drawableTint="@android:color/background_dark"
-            android:hint="学号"
+            android:hint="@string/stu_id"
             android:padding="10dp"
             android:singleLine="true"
             android:textColor="@android:color/background_dark"
@@ -45,9 +45,9 @@
             android:drawableLeft="@drawable/ic_lock_outline_24dp"
             android:drawablePadding="16dp"
             android:drawableTint="@android:color/background_dark"
-            android:hint="统一身份认证密码"
-            android:padding="10dp"
+            android:hint="@string/auth_pwd"
             android:inputType="textPassword"
+            android:padding="10dp"
             android:textColor="@android:color/background_dark"
             android:textColorHint="#787878" />
 
@@ -57,7 +57,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
             android:background="@drawable/shape_round"
-            android:text="登               录"
+            android:text="@string/login"
             android:textColor="@android:color/background_dark" />
 
     </LinearLayout>

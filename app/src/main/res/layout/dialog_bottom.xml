@@ -15,7 +15,7 @@
         android:drawablePadding="10dp"
         android:gravity="center_vertical"
         android:padding="16dp"
-        android:text="从相册选择背景"
+        android:text="@string/choose_from_album"
         android:textColor="#666666"
         android:textSize="@dimen/textSize_normal"/>
 
@@ -30,7 +30,7 @@
         android:drawablePadding="10dp"
         android:gravity="center_vertical"
         android:padding="16dp"
-        android:text="设置为无背景"
+        android:text="@string/set_blank_background"
         android:textColor="#666666"
         android:textSize="@dimen/textSize_normal"/>
 
@@ -41,7 +41,7 @@
         android:background="?android:attr/selectableItemBackground"
         android:clickable="true"
         android:gravity="center"
-        android:text="取消"
+        android:text="@string/cancel"
         android:padding="16dp"
         android:textColor="#FF0000"
         android:textSize="@dimen/textSize_normal"/>

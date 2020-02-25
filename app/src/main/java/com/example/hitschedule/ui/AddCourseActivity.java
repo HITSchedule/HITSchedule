@@ -38,6 +38,7 @@ import cn.bmob.v3.listener.UpdateListener;
 public class AddCourseActivity extends AppCompatActivity {
 
     private String TAG = getClass().getName();
+    private final String mCurrentLanguage = Locale.getDefault().getLanguage();
 
     private int start;
     private int day;
@@ -146,16 +147,14 @@ public class AddCourseActivity extends AppCompatActivity {
 //                InputMethodManager mInputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
 //                mInputMethodManager.hideSoftInputFromWindow(AddCourseActivity.this.getCurrentFocus().getWindowToken(), 0);
 
-                String mCurrentLanguage = Locale.getDefault().getLanguage();
-                String title = mCurrentLanguage.equals("en") ? "Time" : "设置时间";
+                String title = getString(R.string.set_time);
                 OptionsPickerView pvNoLinkOptions = new OptionsPickerBuilder(AddCourseActivity.this, new OnOptionsSelectListener() {
                     @Override
                     public void onOptionsSelect(int options1, int options2, int options3, View v) {
                         day = options1;
                         start = options2 + 1;
                         end = options3 + 1;
-                        theDay = getDay(day);
-                        et_start.setText("周" + theDay + " 第" + start + "-" + end + " 节");
+                        et_start.setText(timeToString(day, start, end));
                     }
                 })
                         .setTitleText(title)
@@ -171,7 +170,7 @@ public class AddCourseActivity extends AppCompatActivity {
             public void onClick(View view) {
                 save.setClickable(false);
                 if(end < start){
-                    Toast.makeText(AddCourseActivity.this, "节次选择不合理", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AddCourseActivity.this, R.string.wrong_period, Toast.LENGTH_SHORT).show();
                     save.setClickable(true);
                     return;
                 }
@@ -203,7 +202,7 @@ public class AddCourseActivity extends AppCompatActivity {
 
                     if(other.isEmpty()){
                         Log.d(TAG, "onClick: other is empty");
-                        subject.setInfo(teacher + weekList + "周");
+                        subject.setInfo(teacher + weekList);
                     }else {
                         subject.setInfo(other);
                     }
@@ -227,6 +226,20 @@ public class AddCourseActivity extends AppCompatActivity {
 
     }
 
+    // 上课星期数和节数转为字符串
+    private String timeToString(int day, int start, int end)
+    {
+        String[] days_str = getResources().getStringArray(R.array.day);
+        String text;
+        if (mCurrentLanguage.equals("en")) {
+            text = days_str[day] + " " + start + "-" + end;
+        }
+        else {
+            text = days_str[day] + " 第" + start + "-" + end + " 节";
+        }
+        return text;
+    }
+
     private void initView() {
 
         day = subject.getDay() - 1;
@@ -241,7 +254,7 @@ public class AddCourseActivity extends AppCompatActivity {
             subject.setStep(2);
         }
         end = start + subject.getStep() - 1;
-        et_start.setText("周" + theDay + " 第" + start + "-" + end + " 节");
+        et_start.setText(timeToString(day, start, end));
 
         if (subject.getName() != null){
             et_course_name.setText(subject.getName());
@@ -266,7 +279,7 @@ public class AddCourseActivity extends AppCompatActivity {
     }
 
     private void initList() {
-        String s[] = {"周一", "周二", "周三", "周四", "周五", "周六", "周日"};
+        String s[] = getResources().getStringArray(R.array.day);
 
         days = Arrays.asList(s);
 

@@ -10,7 +10,7 @@
         android:textColor="@color/app_black"
         android:layout_marginTop="11dp"
         android:id="@+id/dialog_title"
-        android:text="版本更新"
+        android:text="@string/update_version"
         android:gravity="center_horizontal"
         android:textSize="@dimen/textSize_large"
         android:layout_width="match_parent"
@@ -51,7 +51,7 @@
         <Button
             android:padding="5dp"
             android:id="@+id/btn_cancel"
-            android:text="取消"
+            android:text="@string/cancel"
             android:textColor="@color/app_red"
             android:background="@drawable/btn_left"
             android:textSize="@dimen/textSize_normal"
@@ -62,7 +62,7 @@
 
         <Button
             android:padding="5dp"
-            android:text="确定"
+            android:text="@string/sure"
             android:id="@+id/btn_sure"
             android:background="@drawable/btn_right"
             android:textColor="@color/app_blue1"

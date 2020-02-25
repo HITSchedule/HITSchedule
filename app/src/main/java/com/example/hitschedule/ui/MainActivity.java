@@ -131,7 +131,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             initView();
             initData();
         } else {
-            Toast.makeText(MainActivity.this, "您尚未登录，请先登录", Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainActivity.this, R.string.not_logged_in, Toast.LENGTH_SHORT).show();
             Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
             startActivity(loginIntent);
             finish();
@@ -199,14 +199,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     @Override
                     public void onLongClick(View v, int day, int start) {
                         Toast.makeText(MainActivity.this,
-                                "当前为:周" + day  + ",第" + start + "节",
+                                getString(R.string.cur_class_time_format,
+                                        getResources().getStringArray(R.array.day)[day - 1], start),
                                 Toast.LENGTH_SHORT).show();
                     }
                 })
                 .callback(new ISchedule.OnWeekChangedListener() {
                     @Override
                     public void onWeekChanged(int curWeek) {
-                        toolbar.setTitle("第" + curWeek + "周");
+                        toolbar.setTitle(getString(R.string.week_format, curWeek));
                     }
                 })
                 .callback(new ISchedule.OnScrollViewBuildListener() {
@@ -313,7 +314,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             
                         }
                     } else {
-                        makeToast("获取信息失败,请检查网络后重试");
+                        makeToast(getString(R.string.data_update_failed));
                     }
                 }
             });
@@ -382,7 +383,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 try {
                     int code = HttpUtil.vpn_jwts_login(usrId, pwd, captcha);
                     if (code == CAPTCHA_ERROR){
-                        makeToast("验证码错误");
+                        makeToast(getString(R.string.wrong_captcha));
                         Message msg = new Message();
                         msg.what = CAPTCHAVIEW;
                         msg.obj = bitmap;
@@ -405,12 +406,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             subjects = newSubjects;
                             updateDataBase(newSubjects);
                         }catch (Exception e){
-                            makeToast("获取课表失败");
+                            makeToast(getString(R.string.curriculum_update_failed));
                             Log.d(TAG, "run: 获取课表失败 Error" + e);
                         }
 
                     } else {
-                        makeToast("获取课表失败,请检查网络连接");
+                        makeToast(getString(R.string.table_update_failed_check_connection));
                         hideProgressDialog();
                     }
                     updateTimeTable();
@@ -469,7 +470,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         subjects = LitePal.findAll(MySubject.class);
 
-        makeToast("更新课表成功");
+        makeToast(getString(R.string.update_succeeded));
     }
 
     @Override
@@ -501,7 +502,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      * 设置toolbar
      */
     private void setToolbar() {
-        toolbar.setTitle("第" + mTimetableView.curWeek() + "周");   //设置标题
+        toolbar.setTitle(getString(R.string.week_format, mTimetableView.curWeek()));   //设置标题
         toolbar.setSubtitleTextColor(Color.WHITE);  //设置副标题字体颜色
         setSupportActionBar(toolbar);   //必须使用
 
@@ -579,7 +580,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     .widthpx(getResources().getDisplayMetrics().widthPixels - DensityUtil.dp2px(MainActivity.this, 50f))
                     .cancelTouchout(true)
                     .view(R.layout.dialog_select)
-                    .text(R.id.show_text, "是否要刷新课表?")
+                    .text(R.id.show_text, getString(R.string.confirm_refresh_curriculum))
                     .addViewOnclick(R.id.btn_sure, new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
@@ -594,13 +595,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                         info = bombInfo.toMyInfo();
                                         LitePal.deleteAll(MyInfo.class);
                                         info.save();
-                                        makeToast("开始获取课表");
+                                        makeToast(getString(R.string.start_fetch_curriculum));
                                         getDataFromJwts();
                                     } else {
                                         if (e!=null){
                                             makeToast(e.getMessage());
                                         } else {
-                                            makeToast("获取信息失败,请检查网络连接");
+                                            makeToast(getString(R.string.table_update_failed_check_connection));
                                         }
                                     }
                                 }
