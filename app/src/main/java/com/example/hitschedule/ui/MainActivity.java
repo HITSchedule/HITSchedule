@@ -347,7 +347,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     }
                 } else {
                     Log.d(TAG, "done: " + e.getMessage());
-                    makeToast("获取课表失败,请检查网络连接");
+                    makeToast(getString(R.string.table_update_failed_check_connection));
                     hideProgressDialog();
                 }
             }
@@ -864,7 +864,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         .widthpx(getResources().getDisplayMetrics().widthPixels - DensityUtil.dp2px(MainActivity.this, 50f))
                         .cancelTouchout(true)
                         .view(R.layout.dialog_select)
-                        .text(R.id.show_text, "是否删除" + subject.getName())
+                        .text(R.id.show_text, getString(R.string.delete_confirm) + subject.getName())
                         .addViewOnclick(R.id.btn_sure, new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
@@ -872,7 +872,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                 subject.delete();
                                 subjects.remove(subject);
                                 updateTimeTable();
-                                makeToast("删除成功");
+                                makeToast(getString(R.string.delete_succeeded));
                             }
                         })
                         .addViewOnclick(R.id.btn_cancel, new View.OnClickListener() {

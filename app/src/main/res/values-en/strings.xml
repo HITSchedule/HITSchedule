@@ -49,4 +49,7 @@
     <string name="logging_in">Logging in...</string>
     <string name="ok">OK</string>
     <string name="yes">Yes</string>
+    <string name="start_time_string">%1$s %2$d-%3$d</string>
+    <string name="delete_confirm">"Do you want to delete "</string>
+    <string name="delete_succeeded">Deleted successfully</string>
 </resources>

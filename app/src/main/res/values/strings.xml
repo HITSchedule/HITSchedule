@@ -51,4 +51,7 @@
     <string name="logging_in">登录中...</string>
     <string name="ok">确定</string>
     <string name="yes">确定</string>
+    <string name="start_time_string">%1$s 第%2$d-%3$d节</string>
+    <string name="delete_confirm">是否删除</string>
+    <string name="delete_succeeded">删除成功</string>
 </resources>

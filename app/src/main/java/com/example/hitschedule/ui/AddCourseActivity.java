@@ -231,12 +231,7 @@ public class AddCourseActivity extends AppCompatActivity {
     {
         String[] days_str = getResources().getStringArray(R.array.day);
         String text;
-        if (mCurrentLanguage.equals("en")) {
-            text = days_str[day] + " " + start + "-" + end;
-        }
-        else {
-            text = days_str[day] + " 第" + start + "-" + end + " 节";
-        }
+        text = getString(R.string.start_time_string, days_str[day], start, end);
         return text;
     }
 
