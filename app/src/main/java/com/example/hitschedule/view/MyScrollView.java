@@ -11,7 +11,7 @@ import android.widget.ScrollView;
 
 import com.example.hitschedule.ui.MainActivity;
 import com.zhuangfei.timetable.TimetableView;
-import com.zhuangfei.timetable.view.WeekView;
+import com.example.hitschedule.view.WeekView;
 
 import java.util.logging.Handler;
 

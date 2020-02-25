@@ -31,6 +31,7 @@ import android.widget.Toast;
 
 import com.example.hitschedule.R;
 import com.example.hitschedule.adapter.ChangeLogAdapter;
+import com.example.hitschedule.adapter.OnEnglishDateBuildAdapter;
 import com.example.hitschedule.adapter.SubjectAdapter;
 import com.example.hitschedule.database.MyInfo;
 import com.example.hitschedule.database.Info;
@@ -45,6 +46,7 @@ import com.example.hitschedule.util.HttpUtil;
 import com.example.hitschedule.util.ScreenUtil;
 import com.example.hitschedule.util.Util;
 import com.example.hitschedule.view.MyScrollView;
+import com.example.hitschedule.view.WeekView;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.OnItemClickListener;
 import com.zhuangfei.timetable.TimetableView;
@@ -52,7 +54,6 @@ import com.zhuangfei.timetable.listener.ISchedule;
 import com.zhuangfei.timetable.listener.IWeekView;
 import com.zhuangfei.timetable.listener.OnSlideBuildAdapter;
 import com.zhuangfei.timetable.model.Schedule;
-import com.zhuangfei.timetable.view.WeekView;
 
 import org.litepal.LitePal;
 
@@ -149,6 +150,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         int itemHeight = height * 1380 / (1920 * 12);
         Log.d(TAG, "initView: itemHeight=" + itemHeight);
 
+        // 设置英语日期栏
+        if (Locale.getDefault().getLanguage().equals("en"))
+            mTimetableView.callback(new OnEnglishDateBuildAdapter());
+
         //设置周次选择属性
         mWeekView.curWeek(mTimetableView.curWeek())
                 .callback(new IWeekView.OnWeekItemClickedListener() {
@@ -172,6 +177,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     }
                 })
                 .isShow(false)//设置隐藏，默认显示
+                .setHitScheduleContext(this)    // 传入Activity以获取资源
                 .showView();
 
         mTimetableView
