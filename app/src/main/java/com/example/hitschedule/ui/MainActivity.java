@@ -177,6 +177,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     }
                 })
                 .isShow(false)//设置隐藏，默认显示
+                .hideLeftLayout() // 隐藏尚未实现的周次选择
                 .setHitScheduleContext(this)    // 传入Activity以获取资源
                 .showView();
 
