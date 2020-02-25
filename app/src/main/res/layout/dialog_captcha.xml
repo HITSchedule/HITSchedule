@@ -39,7 +39,7 @@
         android:layout_marginTop="20dp"
         android:layout_width="200dp"
         android:layout_height="50dp"
-        android:text="@string/sure"
+        android:text="@string/ok"
         />
     <!--<View-->
         <!--android:layout_width="match_parent"-->

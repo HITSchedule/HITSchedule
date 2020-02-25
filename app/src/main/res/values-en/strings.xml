@@ -41,10 +41,12 @@
     <string name="present_week">(Present week)</string>
     <string name="set_blank_background">Remove background</string>
     <string name="sure">Sure</string>
-    <string name="update_version">Update to latest version</string>
+    <string name="update_version">Update to the latest version</string>
     <string name="cancel">Cancel</string>
     <string name="choose_from_album">Choose photo from gallery</string>
     <string name="enter_captcha">Please enter captcha</string>
     <string name="enter_here">Captcha</string>
     <string name="logging_in">Logging in...</string>
+    <string name="ok">OK</string>
+    <string name="yes">Yes</string>
 </resources>

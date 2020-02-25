@@ -62,7 +62,7 @@
 
         <Button
             android:padding="5dp"
-            android:text="@string/sure"
+            android:text="@string/yes"
             android:id="@+id/btn_sure"
             android:background="@drawable/btn_right"
             android:textColor="@color/app_blue1"

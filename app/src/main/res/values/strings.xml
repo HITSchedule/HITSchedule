@@ -49,4 +49,6 @@
     <string name="set_blank_background">设置为无背景</string>
     <string name="update_version">版本更新</string>
     <string name="logging_in">登录中...</string>
+    <string name="ok">确定</string>
+    <string name="yes">确定</string>
 </resources>
