@@ -54,4 +54,8 @@
     <string name="start_time_string">%1$s 第%2$d-%3$d节</string>
     <string name="delete_confirm">是否删除</string>
     <string name="delete_succeeded">删除成功</string>
+    <string name="select_language">选择语言</string>
+    <string name="auto_language">自动选择语言</string>
+    <string name="zh_hans" translatable="false">简体中文</string>
+    <string name="en" translatable="false">English</string>
 </resources>

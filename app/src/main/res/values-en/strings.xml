@@ -7,7 +7,7 @@
     <string name="confirm">OK</string>
     <string name="course">Course</string>
     <string name="empty">Empty</string>
-    <string name="period">Periods</string>
+    <string name="period">Period</string>
     <string name="teacher">Teacher</string>
     <string name="week_num">Weeks</string>
     <string name="add_course">Add Course</string>
@@ -30,7 +30,7 @@
     <string name="data_update_failed">Failed to download data. Please check your network.</string>
     <string name="about">About</string>
     <string name="changelog">Changelog</string>
-    <string name="check_update">Check update</string>
+    <string name="check_update">Check for updates</string>
     <string name="choose_week">Choose week</string>
     <string name="logout">Logout</string>
     <string name="refresh_curriculum">Refresh the curriculum</string>
@@ -52,4 +52,5 @@
     <string name="start_time_string">%1$s %2$d-%3$d</string>
     <string name="delete_confirm">"Do you want to delete "</string>
     <string name="delete_succeeded">Deleted successfully</string>
+    <string name="select_language">Select Language</string>
 </resources>
