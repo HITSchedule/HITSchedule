@@ -26,7 +26,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.example.hitschedule.R;
 import com.example.hitschedule.adapter.ChangeLogAdapter;
-import com.example.hitschedule.adapter.OnEnglishDateBuildAdapter;
+import com.example.hitschedule.adapter.OnDateBuildAdapterLocale;
 import com.example.hitschedule.adapter.SubjectAdapter;
 import com.example.hitschedule.database.Info;
 import com.example.hitschedule.database.MyInfo;
@@ -151,10 +151,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         int itemHeight = height * 1380 / (1920 * 12);
         Log.d(TAG, "initView: itemHeight=" + itemHeight);
 
-        // 设置英语日期栏
-        if (Locale.getDefault().getLanguage().equals("en"))
-            mTimetableView.callback(new OnEnglishDateBuildAdapter());
-
         //设置周次选择属性
         mWeekView.curWeek(mTimetableView.curWeek())
                 .callback(new IWeekView.OnWeekItemClickedListener() {
@@ -179,7 +175,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
                 })
                 .isShow(false)//设置隐藏，默认显示
                 .hideLeftLayout() // 隐藏尚未实现的周次选择
-                .setHitScheduleContext(this)    // 传入Activity以获取资源
                 .showView();
 
         mTimetableView
@@ -240,6 +235,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
                         startActivity(addIntent);
                     }
                 })
+                .callback(new OnDateBuildAdapterLocale()) // 设置多语言日期栏
                 .isShowNotCurWeek(false)
                 .showView();
         setToolbar();

@@ -21,6 +21,8 @@ import com.zhuangfei.timetable.view.PerWeekView;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.example.hitschedule.Application.applicationContext;
+
 /**
  * 周次选择栏自定义View.
  * 每一项均为PerWeekView<br/>
@@ -29,7 +31,6 @@ import java.util.List;
 public class WeekView extends LinearLayout implements WeekViewEnable<WeekView>{
 
     private static final String TAG = "WeekView";
-    private Context hitScheduleContext;
     LayoutInflater mInflate;
 
     //周次的容器
@@ -178,16 +179,6 @@ public class WeekView extends LinearLayout implements WeekViewEnable<WeekView>{
     }
 
     /**
-     * 传入activity以使用getstring方法获取资源
-     * @param context
-     * @return
-     */
-    public WeekView setHitScheduleContext(Context context) {
-        hitScheduleContext = context;
-        return this;
-    }
-
-    /**
      * 初次构建时调用，显示周次选择布局
      */
     @Override
@@ -214,7 +205,7 @@ public class WeekView extends LinearLayout implements WeekViewEnable<WeekView>{
             TextView weekText = view.findViewById(R.id.id_weektext);
             TextView bottomText = view.findViewById(R.id.id_weektext_bottom);
 
-            weekText.setText(hitScheduleContext.getString(com.example.hitschedule.R.string.week_format, i));
+            weekText.setText(applicationContext.getString(com.example.hitschedule.R.string.week_format, i));
             //weekText.setText("第" + i + "周");
             if(i==curWeek) bottomText.setText(com.example.hitschedule.R.string.present_week);
             PerWeekView perWeekView = view.findViewById(R.id.id_perweekview);
