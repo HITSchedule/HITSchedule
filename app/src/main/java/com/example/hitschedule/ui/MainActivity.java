@@ -22,7 +22,6 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.example.hitschedule.R;
@@ -66,7 +65,7 @@ import cn.bmob.v3.listener.FindListener;
 
 import static com.example.hitschedule.util.Constant.CAPTCHA_ERROR;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener{
+public class MainActivity extends BaseActivity implements View.OnClickListener{
 
     private String TAG = getClass().getName();
 

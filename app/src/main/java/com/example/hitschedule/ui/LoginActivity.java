@@ -24,7 +24,7 @@ import cn.bmob.v3.Bmob;
 import static com.example.hitschedule.util.Constant.ACCONUT_ERROR;
 
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends BaseActivity {
 
     private String TAG = getClass().getName();
 

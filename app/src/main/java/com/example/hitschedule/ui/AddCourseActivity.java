@@ -36,7 +36,7 @@ import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UpdateListener;
 
-public class AddCourseActivity extends AppCompatActivity {
+public class AddCourseActivity extends BaseActivity {
 
     private String TAG = getClass().getName();
     private final String mCurrentLanguage = Locale.getDefault().getLanguage();

@@ -37,7 +37,7 @@ import cn.bmob.v3.listener.DownloadFileListener;
 import cn.bmob.v3.listener.FindListener;
 
 
-public class UpdateActivity extends AppCompatActivity {
+public class UpdateActivity extends BaseActivity {
 
     private String TAG = getClass().getName();
 

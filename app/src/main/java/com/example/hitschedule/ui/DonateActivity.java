@@ -10,7 +10,7 @@ import com.example.hitschedule.util.AlipayDonate;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-public class DonateActivity extends AppCompatActivity {
+public class DonateActivity extends BaseActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
