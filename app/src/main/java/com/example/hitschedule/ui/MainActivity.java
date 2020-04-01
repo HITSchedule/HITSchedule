@@ -108,6 +108,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d(TAG, "onCreate: " + getResources().getConfiguration().getLocales().get(0));
         setContentView(R.layout.activity_main);
         type = getIntent().getStringExtra("type");
         Bmob.initialize(this, "d2ad693a0277f5fc81c6dc84a91ca08f");
@@ -181,7 +182,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
                 //透明度
                 //日期栏0.1f、侧边栏0.1f，周次选择栏0.6f
                 //透明度范围为0->1，0为全透明，1为不透明
-                .alpha(0.3f, 0.1f, 0.8f)
+                .alpha(0.4f, 0.4f, 0.8f)
                 .itemHeight(itemHeight)  // 设置每一项的高度，适配屏幕
                 .callback(new ISchedule.OnItemClickListener() {
                     @Override
