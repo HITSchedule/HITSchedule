@@ -38,7 +38,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="60dp"
             android:textSize="20sp"
-            android:text="检 查 更 新"
+            android:text="@string/check_update_btn"
             android:textColor="@android:color/background_dark" />
 
         <TextView
@@ -46,7 +46,7 @@
             android:gravity="center"
             android:id="@+id/website"
             android:textColor="@color/app_blue_bg"
-            android:text="软件官网: hitschedule.github.io"
+            android:text="@string/home_page"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 

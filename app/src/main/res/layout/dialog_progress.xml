@@ -18,7 +18,7 @@
     <TextView
         android:layout_marginTop="20dp"
         android:id="@+id/progress_text"
-        android:text="登录中..."
+        android:text="@string/logging_in"
         android:textSize="20sp"
         android:gravity="center"
         android:layout_width="match_parent"

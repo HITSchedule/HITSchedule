@@ -5,13 +5,13 @@ android {
         release {
             keyAlias 'key0'
             keyPassword 'hitschedule'
-            storeFile file('/home/wyxiang/Android/jks/hitschedule.jks')
+            storeFile file('D:\\leylee\\hitschedule.jks')
             storePassword 'hitschedule'
         }
         debug{
             keyAlias 'key0'
             keyPassword 'hitschedule'
-            storeFile file('/home/wyxiang/Android/jks/hitschedule.jks')
+            storeFile file('D:\\leylee\\hitschedule.jks')
             storePassword 'hitschedule'
         }
     }
@@ -41,7 +41,7 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'androidx.appcompat:appcompat:1.1.0-alpha01'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
-    implementation 'com.android.support:support-annotations:28.0.0-alpha1'
+    implementation 'com.android.support:support-annotations:28.0.0'
     testImplementation 'junit:junit:4.12'
     //    androidTestImplementation 'androidx.logo:runner:1.1.1'
     //    androidTestImplementation 'androidx.logo.espresso:espresso-core:3.1.1'

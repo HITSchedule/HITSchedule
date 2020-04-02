@@ -7,7 +7,7 @@ import com.example.hitschedule.R;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-public class HelpActivity extends AppCompatActivity {
+public class HelpActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

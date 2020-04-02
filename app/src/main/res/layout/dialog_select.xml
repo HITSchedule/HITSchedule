@@ -26,7 +26,7 @@
         <Button
             android:padding="5dp"
             android:id="@+id/btn_cancel"
-            android:text="取消"
+            android:text="@string/cancel"
             android:textColor="@color/app_red"
             android:background="@drawable/btn_left"
             android:textSize="@dimen/textSize_normal"
@@ -37,7 +37,7 @@
 
         <Button
             android:padding="5dp"
-            android:text="确定"
+            android:text="@string/ok"
             android:id="@+id/btn_sure"
             android:background="@drawable/btn_right"
             android:textColor="@color/app_blue1"

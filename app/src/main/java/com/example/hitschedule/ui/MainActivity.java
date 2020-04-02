@@ -1,12 +1,5 @@
 package com.example.hitschedule.ui;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import cn.bmob.v3.Bmob;
-import cn.bmob.v3.BmobQuery;
-import cn.bmob.v3.exception.BmobException;
-import cn.bmob.v3.listener.FindListener;
-
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
@@ -26,14 +19,19 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.RadioGroup;
 import android.widget.Toast;
+
+import androidx.appcompat.widget.Toolbar;
 
 import com.example.hitschedule.R;
 import com.example.hitschedule.adapter.ChangeLogAdapter;
+import com.example.hitschedule.adapter.OnDateBuildAdapterLocale;
 import com.example.hitschedule.adapter.SubjectAdapter;
-import com.example.hitschedule.database.MyInfo;
 import com.example.hitschedule.database.Info;
+import com.example.hitschedule.database.MyInfo;
 import com.example.hitschedule.database.MySubject;
 import com.example.hitschedule.database.Subject;
 import com.example.hitschedule.database.User;
@@ -42,9 +40,11 @@ import com.example.hitschedule.dialog.CustomDialog;
 import com.example.hitschedule.util.DensityUtil;
 import com.example.hitschedule.util.HtmlUtil;
 import com.example.hitschedule.util.HttpUtil;
+import com.example.hitschedule.util.LocaleUtil;
 import com.example.hitschedule.util.ScreenUtil;
 import com.example.hitschedule.util.Util;
 import com.example.hitschedule.view.MyScrollView;
+import com.example.hitschedule.view.WeekView;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.OnItemClickListener;
 import com.zhuangfei.timetable.TimetableView;
@@ -52,18 +52,24 @@ import com.zhuangfei.timetable.listener.ISchedule;
 import com.zhuangfei.timetable.listener.IWeekView;
 import com.zhuangfei.timetable.listener.OnSlideBuildAdapter;
 import com.zhuangfei.timetable.model.Schedule;
-import com.zhuangfei.timetable.view.WeekView;
 
 import org.litepal.LitePal;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import cn.bmob.v3.Bmob;
+import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.FindListener;
 
 import static com.example.hitschedule.util.Constant.CAPTCHA_ERROR;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener{
+public class MainActivity extends BaseActivity implements View.OnClickListener{
 
     private String TAG = getClass().getName();
 
@@ -101,11 +107,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Dialog updateDialog;
     private CustomCaptchaDialog captchaDialog;
     private DialogPlus scheduleDialog;
+    private CustomDialog languageDialog;
+    private View localeDialogInstance;
     
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //Log.d(TAG, "onCreate: " + getResources().getConfiguration().getLocales().get(0));
         setContentView(R.layout.activity_main);
         type = getIntent().getStringExtra("type");
         Bmob.initialize(this, "d2ad693a0277f5fc81c6dc84a91ca08f");
@@ -130,7 +139,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             initView();
             initData();
         } else {
-            Toast.makeText(MainActivity.this, "您尚未登录，请先登录", Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainActivity.this, R.string.not_logged_in, Toast.LENGTH_SHORT).show();
             Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
             startActivity(loginIntent);
             finish();
@@ -172,13 +181,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     }
                 })
                 .isShow(false)//设置隐藏，默认显示
+                .hideLeftLayout() // 隐藏尚未实现的周次选择
+                .attachContext(this)
                 .showView();
 
         mTimetableView
                 //透明度
                 //日期栏0.1f、侧边栏0.1f，周次选择栏0.6f
                 //透明度范围为0->1，0为全透明，1为不透明
-                .alpha(0.3f, 0.1f, 0.8f)
+                .alpha(0.4f, 0.4f, 0.8f)
                 .itemHeight(itemHeight)  // 设置每一项的高度，适配屏幕
                 .callback(new ISchedule.OnItemClickListener() {
                     @Override
@@ -193,14 +204,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     @Override
                     public void onLongClick(View v, int day, int start) {
                         Toast.makeText(MainActivity.this,
-                                "当前为:周" + day  + ",第" + start + "节",
+                                getString(R.string.cur_class_time_format,
+                                        getResources().getStringArray(R.array.day)[day - 1], start),
                                 Toast.LENGTH_SHORT).show();
                     }
                 })
                 .callback(new ISchedule.OnWeekChangedListener() {
                     @Override
                     public void onWeekChanged(int curWeek) {
-                        toolbar.setTitle("第" + curWeek + "周");
+                        toolbar.setTitle(getString(R.string.week_format, curWeek));
                     }
                 })
                 .callback(new ISchedule.OnScrollViewBuildListener() {
@@ -231,6 +243,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         startActivity(addIntent);
                     }
                 })
+                .callback(new OnDateBuildAdapterLocale().attachContext(this)) // 设置多语言日期栏
                 .isShowNotCurWeek(false)
                 .showView();
         setToolbar();
@@ -307,7 +320,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             
                         }
                     } else {
-                        makeToast("获取信息失败,请检查网络后重试");
+                        makeToast(getString(R.string.data_update_failed));
                     }
                 }
             });
@@ -337,7 +350,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     }
                 } else {
                     Log.d(TAG, "done: " + e.getMessage());
-                    makeToast("获取课表失败,请检查网络连接");
+                    makeToast(getString(R.string.table_update_failed_check_connection));
                     hideProgressDialog();
                 }
             }
@@ -376,7 +389,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 try {
                     int code = HttpUtil.vpn_jwts_login(usrId, pwd, captcha);
                     if (code == CAPTCHA_ERROR){
-                        makeToast("验证码错误");
+                        makeToast(getString(R.string.wrong_captcha));
                         Message msg = new Message();
                         msg.what = CAPTCHAVIEW;
                         msg.obj = bitmap;
@@ -399,12 +412,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             subjects = newSubjects;
                             updateDataBase(newSubjects);
                         }catch (Exception e){
-                            makeToast("获取课表失败");
+                            makeToast(getString(R.string.curriculum_update_failed));
                             Log.d(TAG, "run: 获取课表失败 Error" + e);
                         }
 
                     } else {
-                        makeToast("获取课表失败,请检查网络连接");
+                        makeToast(getString(R.string.table_update_failed_check_connection));
                         hideProgressDialog();
                     }
                     updateTimeTable();
@@ -463,7 +476,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         subjects = LitePal.findAll(MySubject.class);
 
-        makeToast("更新课表成功");
+        makeToast(getString(R.string.update_succeeded));
     }
 
     @Override
@@ -495,7 +508,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      * 设置toolbar
      */
     private void setToolbar() {
-        toolbar.setTitle("第" + mTimetableView.curWeek() + "周");   //设置标题
+        toolbar.setTitle(getString(R.string.week_format, mTimetableView.curWeek()));   //设置标题
         toolbar.setSubtitleTextColor(Color.WHITE);  //设置副标题字体颜色
         setSupportActionBar(toolbar);   //必须使用
 
@@ -505,6 +518,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 switch (item.getItemId()){
                     case R.id.week_choose:
                         mWeekView.isShow(!mWeekView.isShowing());
+                        break;
+                    case R.id.language:
+                        selectLanguage();
                         break;
                     case R.id.refresh:
                         // TODO 确定一下dialog的统一大小
@@ -562,6 +578,67 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     /**
+     * 语言选择dialog
+     */
+    private void selectLanguage() {
+        Log.d(TAG, "selectLanguage: ");
+        if (languageDialog == null) {
+            CustomDialog.Builder builder = new CustomDialog.Builder(MainActivity.this);
+            languageDialog = builder
+                    .style(R.style.fillet_dialog)
+                    .heightpx(ViewGroup.LayoutParams.WRAP_CONTENT)
+                    .widthdp(280)
+                    .cancelTouchout(true)
+                    .view(R.layout.dialog_locale)
+                    .addViewOnclick(R.id.btn_sure, new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            languageDialog.hide();
+                            RadioGroup languageGroup = languageDialog.getView()
+                                    .findViewById(R.id.language_group);
+                            Log.d(TAG, "onClick: LanguageGroup is " + languageGroup);
+                            switch (languageGroup.getCheckedRadioButtonId()) {
+                                case R.id.btn_default:
+                                    LocaleUtil.saveLanguage(LocaleUtil.LOCALE_DEFAULT);
+                                    break;
+                                case R.id.btn_zh_cn:
+                                    LocaleUtil.saveLanguage(LocaleUtil.LOCALE_CHINESE);
+                                    break;
+                                case R.id.btn_en:
+                                    LocaleUtil.saveLanguage(LocaleUtil.LOCALE_ENGLISH);
+                                    break;
+                            }
+                            languageDialog.dismiss();
+                            Intent intent = getIntent();
+                            finish();
+                            startActivity(intent);
+                        }
+                    })
+                    .addViewOnclick(R.id.btn_cancel, new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            languageDialog.dismiss();
+                        }
+                    })
+                    .build();
+            languageDialog.show();
+
+            // 设置默认选择当前语言
+            Map languageMap = new HashMap<String, Integer>();
+            RadioGroup languageRadioGroup = languageDialog.getView().findViewById(R.id.language_group);
+            languageMap.put(LocaleUtil.LOCALE_DEFAULT, R.id.btn_default);
+            languageMap.put(LocaleUtil.LOCALE_CHINESE, R.id.btn_zh_cn);
+            languageMap.put(LocaleUtil.LOCALE_ENGLISH, R.id.btn_en);
+            String userLanguage = LocaleUtil.getUserLanguage(); // TODO implement LocalUtil
+            int userLanguageButtonId = (Integer) languageMap.get(userLanguage);
+            Log.d(TAG, "selectLanguage: default button is " + userLanguageButtonId);
+            languageRadioGroup.check(userLanguageButtonId);
+        } else {
+            languageDialog.show();
+        }
+    }
+
+    /**
      * 显示刷新dialog
      */
     private void showRefreshDialog() {
@@ -573,7 +650,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     .widthpx(getResources().getDisplayMetrics().widthPixels - DensityUtil.dp2px(MainActivity.this, 50f))
                     .cancelTouchout(true)
                     .view(R.layout.dialog_select)
-                    .text(R.id.show_text, "是否要刷新课表?")
+                    .text(R.id.show_text, getString(R.string.confirm_refresh_curriculum))
                     .addViewOnclick(R.id.btn_sure, new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
@@ -588,13 +665,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                         info = bombInfo.toMyInfo();
                                         LitePal.deleteAll(MyInfo.class);
                                         info.save();
-                                        makeToast("开始获取课表");
+                                        makeToast(getString(R.string.start_fetch_curriculum));
                                         getDataFromJwts();
                                     } else {
                                         if (e!=null){
                                             makeToast(e.getMessage());
                                         } else {
-                                            makeToast("获取信息失败,请检查网络连接");
+                                            makeToast(getString(R.string.table_update_failed_check_connection));
                                         }
                                     }
                                 }
@@ -732,7 +809,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         }
                     }
                 })
-                .addViewOnclick(R.id.capycha, new View.OnClickListener() {
+                .addViewOnclick(R.id.captcha, new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         new Thread(new Runnable() {
@@ -795,7 +872,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      * 显示更新dialog
      */
     private void showUpdateDialog(Info bmobInfo){
-        if (refreshDialog == null){
+        if (updateDialog == null){
             CustomDialog.Builder builder = new CustomDialog.Builder(MainActivity.this);
             String changelog = "";
             if (bmobInfo.getReserved1() != null){
@@ -854,7 +931,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         .widthpx(getResources().getDisplayMetrics().widthPixels - DensityUtil.dp2px(MainActivity.this, 50f))
                         .cancelTouchout(true)
                         .view(R.layout.dialog_select)
-                        .text(R.id.show_text, "是否删除" + subject.getName())
+                        .text(R.id.show_text, getString(R.string.delete_confirm) + subject.getName())
                         .addViewOnclick(R.id.btn_sure, new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
@@ -862,7 +939,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                 subject.delete();
                                 subjects.remove(subject);
                                 updateTimeTable();
-                                makeToast("删除成功");
+                                makeToast(getString(R.string.delete_succeeded));
                             }
                         })
                         .addViewOnclick(R.id.btn_cancel, new View.OnClickListener() {

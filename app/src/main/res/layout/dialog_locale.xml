@@ -1,50 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="300dp"
-    android:layout_gravity="center_horizontal"
-    android:layout_height="150dp"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
     android:background="@drawable/shape_fillet"
     android:orientation="vertical">
 
     <TextView
-        android:textColor="@color/app_black"
-        android:layout_marginTop="11dp"
-        android:id="@+id/dialog_title"
-        android:text="@string/update_version"
-        android:gravity="center_horizontal"
-        android:textSize="@dimen/textSize_large"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-    <View
-        android:layout_weight="0.4"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"/>
-    <TextView
-        android:id="@+id/dialog_text"
-        android:gravity="center_horizontal"
-        android:textSize="@dimen/textSize_normal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-    <ProgressBar
-        android:layout_marginTop="20dp"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:id="@+id/progress_bar1"
-        android:visibility="gone"
+        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:indeterminateTint="@color/app_blue1"
-        android:background="@drawable/progress_bar_bg"
-        android:layout_gravity="center" />
+        android:text="@string/select_language"
+        android:textSize="@dimen/textSize_normal"
+        android:gravity="center_horizontal"
+        android:textAppearance="@style/about_elementTextAppearance" />
 
-    <View
-        android:layout_weight="0.6"
+    <RadioGroup
+        android:layout_marginLeft="10dp"
+        android:id="@+id/language_group"
         android:layout_width="match_parent"
-        android:layout_height="0dp"/>
+        android:layout_height="wrap_content">
+
+        <RadioButton
+            android:layout_marginTop="10dp"
+            android:id="@+id/btn_default"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/textSize_normal"
+            android:text="@string/follow_system_language" />
+
+        <RadioButton
+            android:layout_marginTop="10dp"
+            android:id="@+id/btn_zh_cn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/textSize_normal"
+            android:text="@string/zh_cn" />
+
+        <RadioButton
+            android:id="@+id/btn_en"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/en_us"
+            android:textSize="@dimen/textSize_normal" />
+
+    </RadioGroup>
 
     <LinearLayout
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
@@ -72,5 +76,4 @@
             android:gravity="center"
             android:layout_height="wrap_content" />
     </LinearLayout>
-
 </LinearLayout>
