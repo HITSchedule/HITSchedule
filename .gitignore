@@ -58,3 +58,4 @@ freeline.py
 freeline/
 freeline_project_description.json
 .idea/caches/build_file_checksums.ser
+*.ser

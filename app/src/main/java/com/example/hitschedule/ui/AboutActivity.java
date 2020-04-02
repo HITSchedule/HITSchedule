@@ -50,7 +50,7 @@ public class AboutActivity extends BaseActivity {
                 .setDescription("本软件仅供哈工大本科生进行课表相关操作使用，项目已开源。如果您在使用的过程中发现任何bug，或对本软件的发展有建议，请联系leylee2001@gmail.com。感谢您的支持。")
                 .setImage(R.drawable.bg_black)
                 .addItem(help)
-                .addGitHub("leylee/HITSchedule")
+                .addGitHub("HITSchedule/HITSchedule")
                 .addEmail("leylee2001@gmail.com")
                 .addItem(webpage)
                 .addGroup("Thanks for")
