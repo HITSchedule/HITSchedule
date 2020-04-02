@@ -54,4 +54,5 @@
     <string name="delete_succeeded">Deleted successfully</string>
     <string name="select_language">Select Language</string>
     <string name="follow_system_language">System Language</string>
+    <string name="apply">Apply</string>
 </resources>

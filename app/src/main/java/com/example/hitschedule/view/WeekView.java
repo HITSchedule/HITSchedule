@@ -31,6 +31,7 @@ import static com.example.hitschedule.Application.applicationContext;
 public class WeekView extends LinearLayout implements WeekViewEnable<WeekView>{
 
     private static final String TAG = "WeekView";
+    private Context context;
     LayoutInflater mInflate;
 
     //周次的容器
@@ -205,7 +206,7 @@ public class WeekView extends LinearLayout implements WeekViewEnable<WeekView>{
             TextView weekText = view.findViewById(R.id.id_weektext);
             TextView bottomText = view.findViewById(R.id.id_weektext_bottom);
 
-            weekText.setText(applicationContext.getString(com.example.hitschedule.R.string.week_format, i));
+            weekText.setText(context.getString(com.example.hitschedule.R.string.week_format, i));
             //weekText.setText("第" + i + "周");
             if(i==curWeek) bottomText.setText(com.example.hitschedule.R.string.present_week);
             PerWeekView perWeekView = view.findViewById(R.id.id_perweekview);
@@ -293,5 +294,14 @@ public class WeekView extends LinearLayout implements WeekViewEnable<WeekView>{
     public boolean isShowing(){
         if(root.getVisibility()==GONE) return false;
         return true;
+    }
+
+    /**
+     * 设置Context
+     */
+    public WeekView attachContext(Context context)
+    {
+        this.context = context;
+        return this;
     }
 }

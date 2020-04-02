@@ -55,4 +55,8 @@
         android:icon="@drawable/menu"
         app:showAsAction="collapseActionView" />
 
+    <item android:id="@+id/language"
+        android:title="@string/select_language"
+        android:icon="@drawable/menu"
+        app:showAsAction="collapseActionView" />
 </menu>

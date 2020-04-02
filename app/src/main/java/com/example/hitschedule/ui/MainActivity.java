@@ -19,7 +19,9 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
@@ -38,6 +40,7 @@ import com.example.hitschedule.dialog.CustomDialog;
 import com.example.hitschedule.util.DensityUtil;
 import com.example.hitschedule.util.HtmlUtil;
 import com.example.hitschedule.util.HttpUtil;
+import com.example.hitschedule.util.LocaleUtil;
 import com.example.hitschedule.util.ScreenUtil;
 import com.example.hitschedule.util.Util;
 import com.example.hitschedule.view.MyScrollView;
@@ -55,8 +58,9 @@ import org.litepal.LitePal;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
+import java.util.Map;
 
 import cn.bmob.v3.Bmob;
 import cn.bmob.v3.BmobQuery;
@@ -103,15 +107,15 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
     private Dialog updateDialog;
     private CustomCaptchaDialog captchaDialog;
     private DialogPlus scheduleDialog;
-    private Dialog languageDialog;
+    private CustomDialog languageDialog;
+    private View localeDialogInstance;
     
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d(TAG, "onCreate: " + getResources().getConfiguration().getLocales().get(0));
+        //Log.d(TAG, "onCreate: " + getResources().getConfiguration().getLocales().get(0));
         setContentView(R.layout.activity_main);
-        
         type = getIntent().getStringExtra("type");
         Bmob.initialize(this, "d2ad693a0277f5fc81c6dc84a91ca08f");
         chechForUpdate();
@@ -178,6 +182,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
                 })
                 .isShow(false)//设置隐藏，默认显示
                 .hideLeftLayout() // 隐藏尚未实现的周次选择
+                .attachContext(this)
                 .showView();
 
         mTimetableView
@@ -238,7 +243,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
                         startActivity(addIntent);
                     }
                 })
-                .callback(new OnDateBuildAdapterLocale()) // 设置多语言日期栏
+                .callback(new OnDateBuildAdapterLocale().attachContext(this)) // 设置多语言日期栏
                 .isShowNotCurWeek(false)
                 .showView();
         setToolbar();
@@ -585,8 +590,49 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
                     .widthdp(280)
                     .cancelTouchout(true)
                     .view(R.layout.dialog_locale)
+                    .addViewOnclick(R.id.btn_sure, new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            languageDialog.hide();
+                            RadioGroup languageGroup = languageDialog.getView()
+                                    .findViewById(R.id.language_group);
+                            Log.d(TAG, "onClick: LanguageGroup is " + languageGroup);
+                            switch (languageGroup.getCheckedRadioButtonId()) {
+                                case R.id.btn_default:
+                                    LocaleUtil.saveLanguage(LocaleUtil.LOCALE_DEFAULT);
+                                    break;
+                                case R.id.btn_zh_cn:
+                                    LocaleUtil.saveLanguage(LocaleUtil.LOCALE_CHINESE);
+                                    break;
+                                case R.id.btn_en:
+                                    LocaleUtil.saveLanguage(LocaleUtil.LOCALE_ENGLISH);
+                                    break;
+                            }
+                            languageDialog.dismiss();
+                            Intent intent = getIntent();
+                            finish();
+                            startActivity(intent);
+                        }
+                    })
+                    .addViewOnclick(R.id.btn_cancel, new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            languageDialog.dismiss();
+                        }
+                    })
                     .build();
             languageDialog.show();
+
+            // 设置默认选择当前语言
+            Map languageMap = new HashMap<String, Integer>();
+            RadioGroup languageRadioGroup = languageDialog.getView().findViewById(R.id.language_group);
+            languageMap.put(LocaleUtil.LOCALE_DEFAULT, R.id.btn_default);
+            languageMap.put(LocaleUtil.LOCALE_CHINESE, R.id.btn_zh_cn);
+            languageMap.put(LocaleUtil.LOCALE_ENGLISH, R.id.btn_en);
+            String userLanguage = LocaleUtil.getUserLanguage(); // TODO implement LocalUtil
+            int userLanguageButtonId = (Integer) languageMap.get(userLanguage);
+            Log.d(TAG, "selectLanguage: default button is " + userLanguageButtonId);
+            languageRadioGroup.check(userLanguageButtonId);
         } else {
             languageDialog.show();
         }

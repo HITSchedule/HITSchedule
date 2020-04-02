@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="300dp"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:background="@drawable/shape_fillet"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/select_language"
+        android:textSize="@dimen/textSize_normal"
+        android:gravity="center_horizontal"
+        android:textAppearance="@style/about_elementTextAppearance" />
+
+    <RadioGroup
+        android:layout_marginLeft="10dp"
+        android:id="@+id/language_group"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RadioButton
+            android:layout_marginTop="10dp"
+            android:id="@+id/btn_default"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/textSize_normal"
+            android:text="@string/follow_system_language" />
+
+        <RadioButton
+            android:layout_marginTop="10dp"
+            android:id="@+id/btn_zh_cn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/textSize_normal"
+            android:text="@string/zh_cn" />
+
+        <RadioButton
+            android:id="@+id/btn_en"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/en_us"
+            android:textSize="@dimen/textSize_normal" />
+
+    </RadioGroup>
+
+    <LinearLayout
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <Button
+            android:padding="5dp"
+            android:id="@+id/btn_cancel"
+            android:text="@string/cancel"
+            android:textColor="@color/app_red"
+            android:background="@drawable/btn_left"
+            android:textSize="@dimen/textSize_normal"
+            android:layout_width="0dp"
+            android:layout_weight="0.5"
+            android:gravity="center"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:padding="5dp"
+            android:text="@string/yes"
+            android:id="@+id/btn_sure"
+            android:background="@drawable/btn_right"
+            android:textColor="@color/app_blue1"
+            android:textSize="@dimen/textSize_normal"
+            android:layout_width="0dp"
+            android:layout_weight="0.5"
+            android:gravity="center"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+</LinearLayout>

@@ -1,7 +1,6 @@
 package com.example.hitschedule.ui;
 
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -20,17 +19,15 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     private Context updateBaseContextLocale(Context context) {
-        String language = LocaleUtil.getSavedLanguage(); // Helper method to get saved language from SharedPreferences
-        if (language.equals(LocaleUtil.LOCALE_DEFAULT))
-            return context;
-        Locale locale = new Locale(language);
+        String language = LocaleUtil.getUserLanguage(); // Helper method to get saved language from SharedPreferences
+        Locale locale = LocaleUtil.getUserLocale();
         Locale.setDefault(locale);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+            return updateResourcesLocaleLegacy(context, locale);
+        } else {
             return updateResourcesLocale(context, locale);
         }
-
-        return updateResourcesLocaleLegacy(context, locale);
     }
 
     @TargetApi(Build.VERSION_CODES.N)
