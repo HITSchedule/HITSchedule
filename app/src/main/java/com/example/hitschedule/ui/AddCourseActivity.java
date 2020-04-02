@@ -177,6 +177,7 @@ public class AddCourseActivity extends BaseActivity {
 
                 if (weekList.isEmpty()){
                     Toast.makeText(AddCourseActivity.this, R.string.no_empty_weeks, Toast.LENGTH_SHORT).show();
+
                     save.setClickable(true);
                     return;
                 }
