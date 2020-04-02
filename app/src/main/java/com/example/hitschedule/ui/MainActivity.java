@@ -801,7 +801,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
      * 显示更新dialog
      */
     private void showUpdateDialog(Info bmobInfo){
-        if (refreshDialog == null){
+        if (updateDialog == null){
             CustomDialog.Builder builder = new CustomDialog.Builder(MainActivity.this);
             String changelog = "";
             if (bmobInfo.getReserved1() != null){
