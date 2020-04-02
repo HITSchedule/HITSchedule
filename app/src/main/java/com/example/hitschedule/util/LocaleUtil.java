@@ -14,7 +14,7 @@ import com.example.hitschedule.Application;
 import java.util.Locale;
 
 public class LocaleUtil {
-    public static final String LOCALE_CHINESE = "zh_cn";
+    public static final String LOCALE_CHINESE = "zh";
     public static final String LOCALE_ENGLISH = "en";
     public static final String LOCALE_DEFAULT = "default";
     private static final String TAG = "LocaleUtil";
