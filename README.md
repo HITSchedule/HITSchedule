@@ -13,6 +13,7 @@ Android版工大课表app。[下载网页](http://hitschedule.github.io/)
 - [x] 校历查询
 - [x] 校车查询
 - [x] 滑动切换周数
+- [x] 多语言切换
 
 #### 待实现
 
