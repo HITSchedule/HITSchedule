@@ -103,6 +103,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
     private Dialog updateDialog;
     private CustomCaptchaDialog captchaDialog;
     private DialogPlus scheduleDialog;
+    private Dialog languageDialog;
     
 
     @Override
@@ -110,6 +111,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate: " + getResources().getConfiguration().getLocales().get(0));
         setContentView(R.layout.activity_main);
+        
         type = getIntent().getStringExtra("type");
         Bmob.initialize(this, "d2ad693a0277f5fc81c6dc84a91ca08f");
         chechForUpdate();
@@ -512,6 +514,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
                     case R.id.week_choose:
                         mWeekView.isShow(!mWeekView.isShowing());
                         break;
+                    case R.id.language:
+                        selectLanguage();
+                        break;
                     case R.id.refresh:
                         // TODO 确定一下dialog的统一大小
                         showRefreshDialog();
@@ -565,6 +570,26 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
                 return false;
             }
         });
+    }
+
+    /**
+     * 语言选择dialog
+     */
+    private void selectLanguage() {
+        Log.d(TAG, "selectLanguage: ");
+        if (languageDialog == null) {
+            CustomDialog.Builder builder = new CustomDialog.Builder(MainActivity.this);
+            languageDialog = builder
+                    .style(R.style.fillet_dialog)
+                    .heightpx(ViewGroup.LayoutParams.WRAP_CONTENT)
+                    .widthdp(280)
+                    .cancelTouchout(true)
+                    .view(R.layout.dialog_locale)
+                    .build();
+            languageDialog.show();
+        } else {
+            languageDialog.show();
+        }
     }
 
     /**
