@@ -41,6 +41,8 @@ public class LocaleUtil {
         SharedPreferences preferences = getLanguagePreference();
         String language = preferences.getString("language", LOCALE_DEFAULT);
         Log.d(TAG, "getSavedLanguage: saved language is " + language);
+        if (!language.equals(LOCALE_CHINESE) && !language.equals(LOCALE_ENGLISH))
+            language = LOCALE_DEFAULT;
         return language;
     }
 

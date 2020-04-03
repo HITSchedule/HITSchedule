@@ -31,7 +31,7 @@
 
         <RadioButton
             android:layout_marginTop="10dp"
-            android:id="@+id/btn_zh_cn"
+            android:id="@+id/btn_zh"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="@dimen/textSize_normal"
