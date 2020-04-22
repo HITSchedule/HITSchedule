@@ -31,6 +31,11 @@
         android:icon="@drawable/search"
         app:showAsAction="always" />
 
+    <item android:id="@+id/report"
+        android:title="@string/health_report"
+        android:icon="@drawable/ic_report"
+        app:showAsAction="always" />
+
     <item android:id="@+id/update"
         android:title="@string/check_update"
         android:icon="@drawable/menu"
