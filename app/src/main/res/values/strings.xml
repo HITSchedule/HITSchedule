@@ -31,7 +31,7 @@
     <string name="captcha_format_wrong">验证码格式错误</string>
     <string name="refresh_curriculum">刷新课表</string>
     <string name="choose_week">选择周次</string>
-    <string name="search">搜索</string>
+    <string name="search">信息查询</string>
     <string name="check_update">检查更新</string>
     <string name="changelog">更新说明</string>
     <string name="set_background">设置背景</string>
