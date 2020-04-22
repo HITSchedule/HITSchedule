@@ -14,6 +14,59 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
+            <TextView
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:gravity="center_horizontal"
+                android:height="@dimen/tv_title_height"
+                android:text="v1.3.0"
+                android:textSize="17sp"
+                android:textColor="@color/new_black"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#EFEFEF"/>
+
+            <TextView
+                android:layout_marginTop="8dp"
+                android:layout_marginLeft="@dimen/tv_margin_left"
+                android:layout_marginRight="@dimen/tv_margin_right"
+                android:lineSpacingExtra="@dimen/tv_line_space"
+                android:textColor="@color/new_black"
+                android:text="- 点击菜单栏右上角“任务”图标，可进入学工系统，填写疫情“每日上报”"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_marginTop="8dp"
+                android:layout_marginLeft="@dimen/tv_margin_left"
+                android:layout_marginRight="@dimen/tv_margin_right"
+                android:lineSpacingExtra="@dimen/tv_line_space"
+                android:textColor="@color/new_black"
+                android:text="- 增加多语言切换功能"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_marginTop="8dp"
+                android:layout_marginLeft="@dimen/tv_margin_left"
+                android:layout_marginRight="@dimen/tv_margin_right"
+                android:lineSpacingExtra="@dimen/tv_line_space"
+                android:textColor="@color/new_black"
+                android:text="- 修复课程保存按钮失效问题"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_marginTop="8dp"
+                android:layout_marginLeft="@dimen/tv_margin_left"
+                android:layout_marginRight="@dimen/tv_margin_right"
+                android:lineSpacingExtra="@dimen/tv_line_space"
+                android:textColor="@color/new_black"
+                android:text="- 改进可读性，修复一些小bug"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
 
             <TextView
                 android:layout_marginTop="20dp"

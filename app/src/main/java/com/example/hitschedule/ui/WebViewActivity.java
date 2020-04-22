@@ -2,6 +2,7 @@ package com.example.hitschedule.ui;
 
 import android.os.Bundle;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 
 import com.example.hitschedule.R;
 
@@ -24,9 +25,9 @@ public class WebViewActivity extends BaseActivity {
 
         toolbar.setTitle(title);
 
-        webView.loadUrl(url);
+        webView.setWebViewClient(new WebViewClient());
 
         webView.getSettings().setJavaScriptEnabled(true);
-
+        webView.loadUrl(url);
     }
 }

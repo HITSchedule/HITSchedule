@@ -571,6 +571,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
                         Intent searchIntent = new Intent(MainActivity.this, SearchActivity.class);
                         startActivity(searchIntent);
                         break;
+                    case R.id.report:
+                        Intent reportIntent = new Intent(MainActivity.this, WebViewActivity.class);
+                        reportIntent.putExtra("title", getString(R.string.health_report));
+                        reportIntent.putExtra("url", "https://xg.hit.edu.cn/zhxy-xgzs/xg_mobile/shsj/common");
+                        startActivity(reportIntent);
                 }
                 return false;
             }
@@ -601,7 +606,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
                                 case R.id.btn_default:
                                     LocaleUtil.saveLanguage(LocaleUtil.LOCALE_DEFAULT);
                                     break;
-                                case R.id.btn_zh_cn:
+                                case R.id.btn_zh:
                                     LocaleUtil.saveLanguage(LocaleUtil.LOCALE_CHINESE);
                                     break;
                                 case R.id.btn_en:
@@ -627,7 +632,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
             Map languageMap = new HashMap<String, Integer>();
             RadioGroup languageRadioGroup = languageDialog.getView().findViewById(R.id.language_group);
             languageMap.put(LocaleUtil.LOCALE_DEFAULT, R.id.btn_default);
-            languageMap.put(LocaleUtil.LOCALE_CHINESE, R.id.btn_zh_cn);
+            languageMap.put(LocaleUtil.LOCALE_CHINESE, R.id.btn_zh);
             languageMap.put(LocaleUtil.LOCALE_ENGLISH, R.id.btn_en);
             String userLanguage = LocaleUtil.getUserLanguage(); // TODO implement LocalUtil
             int userLanguageButtonId = (Integer) languageMap.get(userLanguage);

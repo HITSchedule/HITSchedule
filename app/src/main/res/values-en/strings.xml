@@ -34,7 +34,7 @@
     <string name="choose_week">Choose week</string>
     <string name="logout">Logout</string>
     <string name="refresh_curriculum">Refresh the curriculum</string>
-    <string name="search">Search</string>
+    <string name="search">Search Info</string>
     <string name="set_background">Background</string>
     <string name="home_page">Homepage: hitschedule.github.io</string>
     <string name="check_update_btn">Check Update</string>
@@ -55,4 +55,5 @@
     <string name="select_language">Select Language</string>
     <string name="follow_system_language">System Language</string>
     <string name="apply">Apply</string>
+    <string name="health_report">Health Report</string>
 </resources>

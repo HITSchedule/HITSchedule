@@ -26,10 +26,15 @@
         android:icon="@drawable/add_course"
         app:showAsAction="always" />
 
+    <item android:id="@+id/report"
+        android:title="@string/health_report"
+        android:icon="@drawable/ic_report"
+        app:showAsAction="always" />
+
     <item android:id="@+id/search"
         android:title="@string/search"
         android:icon="@drawable/search"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom" />
 
     <item android:id="@+id/update"
         android:title="@string/check_update"
