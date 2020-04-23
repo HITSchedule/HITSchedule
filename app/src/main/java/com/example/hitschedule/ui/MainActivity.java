@@ -572,7 +572,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
                         startActivity(searchIntent);
                         break;
                     case R.id.report:
-                        Intent reportIntent = new Intent(MainActivity.this, WebViewActivity.class);
+                        Intent reportIntent = new Intent(MainActivity.this, ReportWebViewActivity.class);
                         reportIntent.putExtra("title", getString(R.string.health_report));
                         reportIntent.putExtra("url", "https://xg.hit.edu.cn/zhxy-xgzs/xg_mobile/shsj/common");
                         startActivity(reportIntent);

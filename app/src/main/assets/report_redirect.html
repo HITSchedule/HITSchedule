@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>report redirect</title>
+    <script>
+        function report_redirect(){
+            $.ajax({
+                url  : "/zhxy-xgzs/xg_mobile/xsHome/getWdxx",
+                type : "POST",
+                async : false,
+                dataType : "json",
+                contentType : "application/json",
+                success:function(result){
+                    nomessage = true;
+                    if(result.isSuccess){
+                        if(result.module.length0){
+                            var items =result.module;
+                            for(var i=0;i<items.length;i++){
+                                if(items[i].sfqzyd=="1"){
+                                    nomessage = false;
+                                    break;
+                                }
+                            }
+                        }
+                        if (nomessage) {
+                            alert("test");
+                            window.location.href="/zhxy-xgzs/xg_mobile/xs/yqxx";
+                        }
+                    }
+                },
+                error : function(){
+                    weui.topTips("获取新闻通知信息详情失败");
+                }
+            });
+        }
+    </script>
+</head>
+</html>
