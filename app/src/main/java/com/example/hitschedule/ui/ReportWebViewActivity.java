@@ -15,6 +15,7 @@ import androidx.appcompat.widget.Toolbar;
 import com.example.hitschedule.R;
 
 public class ReportWebViewActivity extends BaseActivity {
+    private String pwd, usrId;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -23,6 +24,8 @@ public class ReportWebViewActivity extends BaseActivity {
 
         String title = getIntent().getStringExtra("title");
         String url = getIntent().getStringExtra("url");
+        pwd = getIntent().getStringExtra("pwd");
+        usrId = getIntent().getStringExtra("usrId");
 
         Toolbar toolbar = findViewById(R.id.empty_toobar);
         WebView webView = findViewById(R.id.webview);
@@ -37,7 +40,7 @@ public class ReportWebViewActivity extends BaseActivity {
             @Override
             public boolean onJsAlert(WebView view, String url, String message, final JsResult result) {
                 AlertDialog.Builder b = new AlertDialog.Builder(ReportWebViewActivity.this);
-                b.setTitle("Alert");
+                //b.setTitle("Alert");
                 b.setMessage(message);
                 b.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
@@ -50,12 +53,14 @@ public class ReportWebViewActivity extends BaseActivity {
                 return true;
             }
         });
-        // 判断是否有未读消息, 若没有, 则跳转到每日上报
+
         webView.setWebViewClient(new WebViewClient() {
             private boolean firstLogin = true;
             @Override
             public void onPageFinished(final WebView view, String url) {
-                final String js = "function report_redirect(){ $.ajax({ url : \"/zhxy-xgzs/xg_mobile/xsHome/getWdxx\", type : \"POST\", async : false, dataType : \"json\", contentType : \"application/json\", success:function(result){ nomessage = true; if(result.isSuccess){ if(result.module.length0){ var items =result.module; for(var i=0;i<items.length;i++){ if(items[i].sfqzyd==\"1\"){ nomessage = false; break; } } } if (nomessage) { window.location.href=\"/zhxy-xgzs/xg_mobile/xs/yqxx\"; } } }, error : function(){ weui.topTips(\"获取新闻通知信息详情失败\"); } }); }";
+                // 如果是学工系统主页, 则判断是否有未读消息, 若没有, 则跳转到每日上报.
+                // 每日上报有固定开放时间, 所以使用js模拟点击每日上报按钮.
+                final String js = "function report_redirect(){ $.ajax({ url : \"/zhxy-xgzs/xg_mobile/xsHome/getWdxx\", type : \"POST\", async : false, dataType : \"json\", contentType : \"application/json\", success:function(result){ nomessage = true; if(result.isSuccess){ if(result.module.length0){ var items =result.module; for(var i=0;i<items.length;i++){ if(items[i].sfqzyd==\"1\"){ nomessage = false; break; } } } if (nomessage) { mrsb(); } } }, error : function(){ weui.topTips(\"获取新闻通知信息详情失败\"); } }); }";
                 if (firstLogin && url.contains("/xg_mobile/xsHome")) {
                     firstLogin = false;
                     // post request
@@ -67,6 +72,26 @@ public class ReportWebViewActivity extends BaseActivity {
                             view.loadUrl("javascript:report_redirect()");
                         }
                     });
+                }
+                // 如果是登录页面, 则自动填充用户名和密码并登录
+                if (url.contains("ids.hit.edu.cn/authserver/login?service=")) {
+                    view.loadUrl("javascript:usernameInput=document.getElementById(\"mobileUsername\");"
+                            + "passwordInput=document.getElementById(\"mobilePassword\");"
+                            + "usernameInput.value = \"" +
+                            usrId.replace("\"", "\\\"")
+                                    .replace("\'", "\\\'")
+                                    .replace("\\", "\\\\")
+                            + "\";"
+                            + "passwordInput.value = \"" +
+                            pwd.replace("\"", "\\\"")
+                                    .replace("\'", "\\\'")
+                                    .replace("\\", "\\\\")
+                            + "\";"
+                            // 保持一周登录
+                            + "document.getElementById(\"rememberMe\").checked = true;"
+                            // 如果不需要验证码, 就自动点击登录
+                            + "if(document.getElementById(\"cpatchaDiv\").style.display==\"none\")" +
+                                    "{document.getElementById(\"load\").click()}");
                 }
             }
         });
