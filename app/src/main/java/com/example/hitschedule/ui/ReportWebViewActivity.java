@@ -120,6 +120,7 @@ public class ReportWebViewActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        // 退出 Activity 时销毁 webView, 否则下次进入时webview可能无法正常加载网页
         webView.stopLoading();
         ((ViewGroup) webView.getParent()).removeView(webView);
         webView.removeAllViews();
