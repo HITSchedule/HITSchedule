@@ -2,6 +2,7 @@ package com.example.hitschedule.ui;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.view.ViewGroup;
 import android.webkit.JsResult;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
@@ -15,6 +16,7 @@ import com.example.hitschedule.R;
 
 public class ReportWebViewActivity extends BaseActivity {
     private String pwd, usrId;
+    private WebView webView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -27,7 +29,7 @@ public class ReportWebViewActivity extends BaseActivity {
         usrId = getIntent().getStringExtra("usrId");
 
         Toolbar toolbar = findViewById(R.id.empty_toobar);
-        WebView webView = findViewById(R.id.webview);
+        webView = findViewById(R.id.webview);
 
         toolbar.setTitle(title);
 
@@ -102,5 +104,14 @@ public class ReportWebViewActivity extends BaseActivity {
         });
 
         webView.loadUrl(url);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        webView.stopLoading();
+        ((ViewGroup) webView.getParent()).removeView(webView);
+        webView.removeAllViews();
+        webView.destroy();
     }
 }
