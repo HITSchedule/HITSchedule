@@ -1,7 +1,6 @@
 package com.example.hitschedule.ui;
 
 import android.content.DialogInterface;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.webkit.JsResult;
 import android.webkit.WebChromeClient;
@@ -55,14 +54,15 @@ public class ReportWebViewActivity extends BaseActivity {
         });
 
         webView.setWebViewClient(new WebViewClient() {
-            private boolean firstLogin = true;
+            private boolean firstHomePage = true;
+            private boolean firstReportPage = true;
             @Override
             public void onPageFinished(final WebView view, String url) {
                 // 如果是学工系统主页, 则判断是否有未读消息, 若没有, 则跳转到每日上报.
                 // 每日上报有固定开放时间, 所以使用js模拟点击每日上报按钮.
                 final String js = "function report_redirect(){ $.ajax({ url : \"/zhxy-xgzs/xg_mobile/xsHome/getWdxx\", type : \"POST\", async : false, dataType : \"json\", contentType : \"application/json\", success:function(result){ nomessage = true; if(result.isSuccess){ if(result.module.length0){ var items =result.module; for(var i=0;i<items.length;i++){ if(items[i].sfqzyd==\"1\"){ nomessage = false; break; } } } if (nomessage) { mrsb(); } } }, error : function(){ weui.topTips(\"获取新闻通知信息详情失败\"); } }); }";
-                if (firstLogin && url.contains("/xg_mobile/xsHome")) {
-                    firstLogin = false;
+                if (firstHomePage && url.contains("/xg_mobile/xsHome")) {
+                    firstHomePage = false;
                     // post request
                     //view.loadUrl("file:///android_asset/report_redirect.html");
                     view.post(new Runnable() {
@@ -92,6 +92,11 @@ public class ReportWebViewActivity extends BaseActivity {
                             // 如果不需要验证码, 就自动点击登录
                             + "if(document.getElementById(\"cpatchaDiv\").style.display==\"none\")" +
                                     "{document.getElementById(\"load\").click()}");
+                }
+                // 如果是每日上报页面, 则点击新增按钮
+                if (firstReportPage && url.endsWith("/zhxy-xgzs/xg_mobile/xs/yqxx")) {
+                    firstReportPage = false;
+                    view.loadUrl("javascript:add()");
                 }
             }
         });
