@@ -1,8 +1,8 @@
 package com.example.hitschedule.ui;
 
 import android.content.DialogInterface;
-import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.util.Log;
 import android.webkit.JsResult;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
@@ -37,6 +37,8 @@ public class ReportWebViewActivity extends BaseActivity {
 
         // 允许 js alert 创建对话框. 这段js存储在了assets/report_redirect.html中了.
         webView.setWebChromeClient(new WebChromeClient() {
+            private static final String TAG = "WebChromeClient";
+
             @Override
             public boolean onJsAlert(WebView view, String url, String message, final JsResult result) {
                 AlertDialog.Builder b = new AlertDialog.Builder(ReportWebViewActivity.this);
@@ -49,7 +51,16 @@ public class ReportWebViewActivity extends BaseActivity {
                     }
                 });
                 b.setCancelable(false);
-                b.create().show();
+
+                // 如果activity已经退出, 此时创建dialog会导致android.view.WindowLeaked异常
+                // 或者导致 android.view.WindowManager$BadTokenException 造成崩溃
+                if (!ReportWebViewActivity.this.isFinishing()) {
+                    b.create().show();
+                    Log.d(TAG, "onJsAlert: not finishing");
+                }
+                else {
+                    Log.d(TAG, "onJsAlert: is finishing");
+                }
                 return true;
             }
         });
