@@ -53,6 +53,8 @@ public class ReportWebViewActivity extends BaseActivity {
                     }
                 });
                 b.setCancelable(false);
+
+                // 如果activity已经退出, 此时创建dialog会导致android.view.WindowLeaked异常
                 if (!ReportWebViewActivity.this.isFinishing()) {
                     b.create().show();
                     Log.d(TAG, "onJsAlert: not finishing");
