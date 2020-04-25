@@ -2,6 +2,7 @@ package com.example.hitschedule.ui;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.view.ViewGroup;
 import android.util.Log;
 import android.webkit.JsResult;
 import android.webkit.WebChromeClient;
@@ -15,7 +16,9 @@ import androidx.appcompat.widget.Toolbar;
 import com.example.hitschedule.R;
 
 public class ReportWebViewActivity extends BaseActivity {
+    private static final String TAG = ReportWebViewActivity.class.getName();
     private String pwd, usrId;
+    private WebView webView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -114,5 +117,19 @@ public class ReportWebViewActivity extends BaseActivity {
         });
 
         webView.loadUrl(url);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // 退出 Activity 时销毁 webView, 否则下次进入时webview可能无法正常加载网页
+        try {
+            webView.stopLoading();
+            ((ViewGroup) webView.getParent()).removeView(webView);
+            webView.removeAllViews();
+            webView.destroy();
+        } catch (NullPointerException e) {
+            Log.d(TAG, "onDestroy: " + e);
+        }
     }
 }
