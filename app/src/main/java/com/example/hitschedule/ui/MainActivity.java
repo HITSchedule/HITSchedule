@@ -118,7 +118,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         setContentView(R.layout.activity_main);
         type = getIntent().getStringExtra("type");
         Bmob.initialize(this, "d2ad693a0277f5fc81c6dc84a91ca08f");
-        chechForUpdate();
+        checkForUpdate();
     }
 
     @Override
@@ -852,7 +852,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
     /**
      * 检查更新
      */
-    private void chechForUpdate() {
+    private void checkForUpdate() {
         BmobQuery<Info> query = new BmobQuery<>();
         query.findObjects(new FindListener<Info>() {
             @Override
