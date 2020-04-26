@@ -108,6 +108,13 @@ public class ReportWebViewActivity extends BaseActivity {
                     firstReportPage = false;
                     view.loadUrl("javascript:add()");
                 }
+                // 如果是新增上报内容页面, 则勾选"承诺"复选框. 若为初次上报, 则自动上报.
+                if (url.contains("https://xg.hit.edu.cn/zhxy-xgzs/xg_mobile/xs/editYqxx")) {
+                    view.loadUrl("javascript:document.getElementById(\"txfscheckbox\").checked = true;");
+                    if (url.endsWith("&zt=00")) { // 判断是否是初次上报信息
+                        view.loadUrl("javascript:save();");
+                    }
+                }
             }
         });
 
