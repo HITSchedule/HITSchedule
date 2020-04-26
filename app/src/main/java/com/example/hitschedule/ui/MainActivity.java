@@ -118,7 +118,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         setContentView(R.layout.activity_main);
         type = getIntent().getStringExtra("type");
         Bmob.initialize(this, "d2ad693a0277f5fc81c6dc84a91ca08f");
-        checkForUpdate();
+        // checkForUpdate();
     }
 
     @Override
