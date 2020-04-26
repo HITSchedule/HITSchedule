@@ -31,7 +31,7 @@ public class ReportWebViewActivity extends BaseActivity {
         usrId = getIntent().getStringExtra("usrId");
 
         Toolbar toolbar = findViewById(R.id.empty_toobar);
-        WebView webView = findViewById(R.id.webview);
+        webView = findViewById(R.id.webview);
 
         toolbar.setTitle(title);
 
