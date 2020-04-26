@@ -1,8 +1,9 @@
 package com.example.hitschedule.ui;
 
 import android.content.DialogInterface;
-import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.view.ViewGroup;
+import android.util.Log;
 import android.webkit.JsResult;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
@@ -15,7 +16,9 @@ import androidx.appcompat.widget.Toolbar;
 import com.example.hitschedule.R;
 
 public class ReportWebViewActivity extends BaseActivity {
+    private static final String TAG = ReportWebViewActivity.class.getName();
     private String pwd, usrId;
+    private WebView webView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -28,7 +31,7 @@ public class ReportWebViewActivity extends BaseActivity {
         usrId = getIntent().getStringExtra("usrId");
 
         Toolbar toolbar = findViewById(R.id.empty_toobar);
-        WebView webView = findViewById(R.id.webview);
+        webView = findViewById(R.id.webview);
 
         toolbar.setTitle(title);
 
@@ -37,6 +40,8 @@ public class ReportWebViewActivity extends BaseActivity {
 
         // 允许 js alert 创建对话框. 这段js存储在了assets/report_redirect.html中了.
         webView.setWebChromeClient(new WebChromeClient() {
+            private static final String TAG = "WebChromeClient";
+
             @Override
             public boolean onJsAlert(WebView view, String url, String message, final JsResult result) {
                 AlertDialog.Builder b = new AlertDialog.Builder(ReportWebViewActivity.this);
@@ -49,29 +54,34 @@ public class ReportWebViewActivity extends BaseActivity {
                     }
                 });
                 b.setCancelable(false);
-                b.create().show();
+
+                // 如果activity已经退出, 此时创建dialog会导致android.view.WindowLeaked异常
+                // 或者导致 android.view.WindowManager$BadTokenException 造成崩溃
+                if (!ReportWebViewActivity.this.isFinishing()) {
+                    b.create().show();
+                    Log.d(TAG, "onJsAlert: not finishing");
+                }
+                else {
+                    Log.d(TAG, "onJsAlert: is finishing");
+                }
                 return true;
             }
         });
 
         webView.setWebViewClient(new WebViewClient() {
-            private boolean firstLogin = true;
+            private boolean firstHomePage = true;
+            private boolean firstReportPage = true;
             @Override
             public void onPageFinished(final WebView view, String url) {
                 // 如果是学工系统主页, 则判断是否有未读消息, 若没有, 则跳转到每日上报.
                 // 每日上报有固定开放时间, 所以使用js模拟点击每日上报按钮.
                 final String js = "function report_redirect(){ $.ajax({ url : \"/zhxy-xgzs/xg_mobile/xsHome/getWdxx\", type : \"POST\", async : false, dataType : \"json\", contentType : \"application/json\", success:function(result){ nomessage = true; if(result.isSuccess){ if(result.module.length0){ var items =result.module; for(var i=0;i<items.length;i++){ if(items[i].sfqzyd==\"1\"){ nomessage = false; break; } } } if (nomessage) { mrsb(); } } }, error : function(){ weui.topTips(\"获取新闻通知信息详情失败\"); } }); }";
-                if (firstLogin && url.contains("/xg_mobile/xsHome")) {
-                    firstLogin = false;
+                if (firstHomePage && url.contains("/xg_mobile/xsHome")) {
+                    firstHomePage = false;
                     // post request
                     //view.loadUrl("file:///android_asset/report_redirect.html");
-                    view.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            view.loadUrl("javascript:"+js);
-                            view.loadUrl("javascript:report_redirect()");
-                        }
-                    });
+                    view.loadUrl("javascript:"+js
+                            + "javascript:report_redirect()");
                 }
                 // 如果是登录页面, 则自动填充用户名和密码并登录
                 if (url.contains("ids.hit.edu.cn/authserver/login?service=")) {
@@ -93,9 +103,28 @@ public class ReportWebViewActivity extends BaseActivity {
                             + "if(document.getElementById(\"cpatchaDiv\").style.display==\"none\")" +
                                     "{document.getElementById(\"load\").click()}");
                 }
+                // 如果是每日上报页面, 则点击新增按钮
+                if (firstReportPage && url.endsWith("/zhxy-xgzs/xg_mobile/xs/yqxx")) {
+                    firstReportPage = false;
+                    view.loadUrl("javascript:add()");
+                }
             }
         });
 
         webView.loadUrl(url);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // 退出 Activity 时销毁 webView, 否则下次进入时webview可能无法正常加载网页
+        try {
+            webView.stopLoading();
+            ((ViewGroup) webView.getParent()).removeView(webView);
+            webView.removeAllViews();
+            webView.destroy();
+        } catch (NullPointerException e) {
+            Log.d(TAG, "onDestroy: " + e);
+        }
     }
 }
