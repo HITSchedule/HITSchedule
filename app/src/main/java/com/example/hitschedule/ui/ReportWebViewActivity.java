@@ -80,13 +80,8 @@ public class ReportWebViewActivity extends BaseActivity {
                     firstHomePage = false;
                     // post request
                     //view.loadUrl("file:///android_asset/report_redirect.html");
-                    view.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            view.loadUrl("javascript:"+js);
-                            view.loadUrl("javascript:report_redirect()");
-                        }
-                    });
+                    view.loadUrl("javascript:"+js
+                            + "javascript:report_redirect()");
                 }
                 // 如果是登录页面, 则自动填充用户名和密码并登录
                 if (url.contains("ids.hit.edu.cn/authserver/login?service=")) {
