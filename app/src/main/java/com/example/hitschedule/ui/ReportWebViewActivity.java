@@ -75,7 +75,7 @@ public class ReportWebViewActivity extends BaseActivity {
             public void onPageFinished(final WebView view, String url) {
                 // 如果是学工系统主页, 则判断是否有未读消息, 若没有, 则跳转到每日上报.
                 // 每日上报有固定开放时间, 所以使用js模拟点击每日上报按钮.
-                final String js = "function report_redirect(){ $.ajax({ url : \"/zhxy-xgzs/xg_mobile/xsHome/getWdxx\", type : \"POST\", async : false, dataType : \"json\", contentType : \"application/json\", success:function(result){ nomessage = true; if(result.isSuccess){ if(result.module.length0){ var items =result.module; for(var i=0;i<items.length;i++){ if(items[i].sfqzyd==\"1\"){ nomessage = false; break; } } } if (nomessage) { mrsb(); } } }, error : function(){ weui.topTips(\"获取新闻通知信息详情失败\"); } }); }";
+                final String js = "function report_redirect(){ $.ajax({ url : \"/zhxy-xgzs/xg_mobile/xsHome/getWdxx\", type : \"POST\", async : false, dataType : \"json\", contentType : \"application/json\", success:function(result){ nomessage = true; if(result.isSuccess){ if(result.module.length){ var items =result.module; for(var i=0;i<items.length;i++){ if(items[i].sfqzyd==\"1\"){ nomessage = false; break; } } } if (nomessage) { mrsb(); } } }, error : function(){ weui.topTips(\"获取新闻通知信息详情失败\"); } }); }";
                 if (firstHomePage && url.contains("/xg_mobile/xsHome")) {
                     firstHomePage = false;
                     // post request
