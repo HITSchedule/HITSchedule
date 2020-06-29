@@ -277,18 +277,4 @@ public class MySubject extends LitePalSupport implements ScheduleEnable, Seriali
     public void setObjectId(String objectId) {
         this.objectId = objectId;
     }
-
-    @Override
-    public String toString() {
-        return "MySubject{" +
-                "name='" + name + '\'' +
-                ", room='" + room + '\'' +
-                ", teacher='" + teacher + '\'' +
-                ", weekList=" + weekList +
-                ", start=" + start +
-                ", step=" + step +
-                ", day=" + day +
-                ", objectId='" + objectId + '\'' +
-                '}';
-    }
 }
