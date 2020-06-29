@@ -79,6 +79,8 @@ public class HtmlUtil {
                             } else if (strings[x+k].endsWith("线上教学") || strings[x+k].endsWith("线上考试")) {
                                 num = x;
                                 break;
+                            } else if (strings[k+x].endsWith("]")) {
+                                strings[k+x] += "周";
                             }
                         }
 
