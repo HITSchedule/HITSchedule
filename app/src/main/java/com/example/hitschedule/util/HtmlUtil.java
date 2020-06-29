@@ -65,7 +65,7 @@ public class HtmlUtil {
                         // 找到下一个k应该增加的数，这样即便解析出现异常，也不耽误下一个课表的解析
                         for(int x = 1; x < strings.length; x++){
                             Pattern pattern = Pattern.compile("[0-9]*");
-                            if(k+x >= strings.length){
+                            if(k+x == strings.length - 1){
                                 num = x;
                                 break;
                             }
@@ -74,6 +74,9 @@ public class HtmlUtil {
                                 num = x;
                                 break;
                             } else if (strings[k+x].endsWith("其他")){
+                                num = x;
+                                break;
+                            } else if (strings[x+k].endsWith("线上教学") || strings[x+k].endsWith("线上考试")) {
                                 num = x;
                                 break;
                             }
@@ -121,6 +124,7 @@ public class HtmlUtil {
                                     }
                                 } else {
                                     Log.d(TAG, "getzkb: 解析课表失败，一个老师多个教室" + strings[k] + strings[k + 1]);
+                                    k += num + 1;
                                 }
                             } else if(strings[k + 1].endsWith("周") && !strings[k].contains("体育")){
                                 // 这里要剔除体育课，因为体育课也可能没有教室
