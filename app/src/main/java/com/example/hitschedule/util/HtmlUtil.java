@@ -79,8 +79,6 @@ public class HtmlUtil {
                             } else if (strings[x+k].endsWith("线上教学") || strings[x+k].endsWith("线上考试")) {
                                 num = x;
                                 break;
-                            } else if (strings[k+x].endsWith("]")) {
-                                strings[k+x] += "周";
                             }
                         }
 
@@ -128,8 +126,8 @@ public class HtmlUtil {
                                     Log.d(TAG, "getzkb: 解析课表失败，一个老师多个教室" + strings[k] + strings[k + 1]);
                                     k += num + 1;
                                 }
-                            } else if(strings[k + 1].endsWith("周") && !strings[k].contains("体育")){
-                                // 这里要剔除体育课，因为体育课也可能没有教室
+                            } else if(strings[k + 1].endsWith("周") && !strings[k].contains("体育") && k+2 < strings.length){
+                                // 这里要剔除体育课，因为体育课也可能没有教室. 线上教学期间, 很多课都没有教室, 故判断数组是否越界.
                                 MySubject mySubject = getMySubject(i, j, strings[k], strings[k + 1], strings[k+2]);
                                 k += 3;
                                 if(mySubject != null){
