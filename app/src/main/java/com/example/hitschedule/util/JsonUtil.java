@@ -110,12 +110,6 @@ public class JsonUtil {
                     String[] startAndEndWeeks = weekString.split("-");
                     int startWeek = Integer.parseInt(startAndEndWeeks[0]);
                     int endWeek = Integer.parseInt(startAndEndWeeks[1]);
-                    if (mySubject.getTeacher().contains("郭萍"))
-                    {
-                        Log.d(TAG, "parseBksLesson: C语言debug: " + lesson);
-                        Log.d(TAG, "parseBksLesson: startweek: " + startWeek +
-                                "; endweek: " + endWeek);
-                    }
                     for (int i = startWeek; i <= endWeek; ++i) {
                         if (isEven && i % 2 == 1 || isOdd && i % 2 == 0) {
                             continue;
