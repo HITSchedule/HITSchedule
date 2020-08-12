@@ -24,33 +24,19 @@ import static com.example.hitschedule.util.Constant.XNXQ;
 public class MySubject extends LitePalSupport implements ScheduleEnable, Serializable {
 
     private String name; //课程名
-
     private String xnxq;
-
     private String usrId;
-
     private String room = "暂无"; // 教室
-
     private String teacher; // 教师
-
     private List<Integer> weekList; // 第几周至第几周上
-
     private int start; // 开始上课的节次
-
     private int step; // 上课节数
-
     private int day; // 周几上
-
     private String type;
-
     private String info;
-
     private String reserved1;
-
     private String reserved2;
-
     private String reserved3;
-
     private String reserved4;
 
     private int colorRandom = 0;; // 一个随机数，用于对应课程的颜色
