@@ -309,14 +309,14 @@ public class HttpUtil {
     }
 
     /**
-     * 从微信平台获取单一周数的json格式课表
+     * 从微信平台获取星期x的json格式课表
      * @param usrId 学生学号
      * @param xnxq 学年学期
      * @param day 星期几
      * @return json格式的课表原始数据, 错误时返回 null
      * @throws IOException
      */
-    public static String wechatKbPost(String usrId, String xnxq, int day) throws IOException {
+    public static String wechatBksKbPost(String usrId, String xnxq, int day) throws IOException {
         OkHttpClient httpClient = new OkHttpClient();
         final String url = "https://weixin.hit.edu.cn/app/bkskbcx/kbcxapp/getBkskb";
         JSONObject jsonBody = new JSONObject();
@@ -331,6 +331,7 @@ public class HttpUtil {
 
         final String key = "info";
         final String value = jsonBody.toString();
+        Log.d(TAG, "wechatKbPost: value=" + value);
 
         RequestBody requestBody = new FormBody.Builder()
                 .add(key, value)
@@ -341,11 +342,8 @@ public class HttpUtil {
                 .build();
 
         Response response = httpClient.newCall(request).execute();
-        if (response.body() != null) {
-            return response.body().string();
-        }
-        else {
-            return null;
-        }
+        String jsonResponse = response.body().string();
+        Log.d(TAG, "wechatKbPost: day=" + day + ", jsonResponse=" + jsonResponse);
+        return jsonResponse;
     }
 }
