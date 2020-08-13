@@ -10,7 +10,11 @@ import org.litepal.LitePal;
 import org.litepal.crud.LitePalSupport;
 
 import java.io.Serializable;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeMap;
 
 import static com.example.hitschedule.util.Constant.INFO;
 import static com.example.hitschedule.util.Constant.RESERVED1;
@@ -246,6 +250,7 @@ public class MySubject extends LitePalSupport implements ScheduleEnable, Seriali
         MySubject subject = (MySubject) obj;
 
         return subject.getName().equals(name) &&
+                new HashSet<Integer>(weekList).equals(new HashSet<Integer>(subject.getWeekList())) &&
                 subject.getDay() == day &&
 //                subject.getInfo().equals(info) &&
                 subject.getXnxq().equals(xnxq) &&
@@ -262,5 +267,21 @@ public class MySubject extends LitePalSupport implements ScheduleEnable, Seriali
 
     public void setObjectId(String objectId) {
         this.objectId = objectId;
+    }
+
+    @Override
+    public String toString() {
+        return "MySubject{" +
+                "name='" + name + '\'' +
+                ", xnxq='" + xnxq + '\'' +
+                ", room='" + room + '\'' +
+                ", teacher='" + teacher + '\'' +
+                ", weekList=" + weekList +
+                ", start=" + start +
+                ", step=" + step +
+                ", day=" + day +
+                ", type='" + type + '\'' +
+                ", info='" + info + '\'' +
+                '}';
     }
 }
