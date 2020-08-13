@@ -378,6 +378,38 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         }).start();
     }
 
+    /**
+     * 从微信平台抓取课表
+     */
+    private void getDataFromWechat() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    ArrayList<String> jsonList = new ArrayList<>();
+                    jsonList.add("占位用字符串");
+                    for (int day = 1; day <= 7; ++day) {
+                        String json = HttpUtil.wechatBksKbPost(usrId, info.getReserved2(), day);
+                        if (json == null) {
+                            throw new IOException();
+                        }
+                        jsonList.add(json);
+                    }
+                    Log.d(TAG, "run: 课表json数据: " + jsonList);
+
+                    List<MySubject> newSubjects = JsonUtil.parseBksJson(jsonList,
+                            info.getReserved2(), usrId);
+                    subjects = newSubjects;
+                    updateDataBase(newSubjects);
+                } catch (IOException e) {
+                    makeToast(getString(R.string.table_update_failed_check_connection));
+                    Log.d(TAG, "run: 获取课表失败 Error" + e);
+                }
+
+                updateTimeTable();
+            }
+        }).start();
+    }
 
     /**
      * 获取课表
