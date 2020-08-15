@@ -10,6 +10,7 @@ import net.fortuna.ical4j.model.DateList;
 import net.fortuna.ical4j.model.DateTime;
 import net.fortuna.ical4j.model.TimeZone;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import net.fortuna.ical4j.model.Date;
@@ -25,6 +26,8 @@ import net.fortuna.ical4j.model.property.RDate;
 import net.fortuna.ical4j.model.property.Summary;
 import net.fortuna.ical4j.model.property.Version;
 import net.fortuna.ical4j.util.MapTimeZoneCache;
+import net.fortuna.ical4j.util.RandomUidGenerator;
+import net.fortuna.ical4j.util.UidGenerator;
 
 import java.util.List;
 import java.util.Locale;
@@ -58,7 +61,15 @@ public class IcalUtil {
     }
 
     public IcalUtil(MyInfo i) {
+        // 设置时区缓存, 否则会发生异常, 详见
+        // http://ical4j.github.io/2017/10/17/timezone-caching.html
+        // https://github.com/ical4j/ical4j/issues/195#issuecomment-393916985
         System.setProperty("net.fortuna.ical4j.timezone.cache.impl", MapTimeZoneCache.class.getName());
+        // 设置 ical4j.model.date 启用时区, 否则会报错, 详见
+        // http://ical4j.github.io/docs/ical4j/api/3.0.19/net/fortuna/ical4j/model/Date.html
+        System.setProperty("net.fortuna.ical4j.timezone.date.floating", "true");
+
+
         timeZone = TimeZoneRegistryFactory.getInstance().createRegistry()
                 .getTimeZone("Asia/Shanghai");
         info = i;
@@ -67,7 +78,7 @@ public class IcalUtil {
     }
 
     private void setTermStartDate(String startString) {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         sdf.setTimeZone(timeZone);
         long startTime = 0;
         try {
@@ -76,10 +87,14 @@ public class IcalUtil {
             e.printStackTrace();
         }
         termStartDate = new Date(startTime);
-        Log.d(TAG, "setStartDate: startDate=" + termStartDate);
+
+        java.util.Date debugDate = new java.util.Date(startTime);
+        DateFormat df = DateFormat.getDateTimeInstance();
+        df.setTimeZone(timeZone);
+        Log.d(TAG, "setStartDate: startDate=" + df.format(termStartDate));
     }
 
-    public String serializeIcal(List<MySubject> subjects) {
+    public Calendar serializeIcal(List<MySubject> subjects) {
         Calendar calendar = new Calendar();
         calendar.getProperties().add(new ProdId("-//HITSchedule//iCal4j 2.4.6//EN"));
         calendar.getProperties().add(Version.VERSION_2_0);
@@ -87,8 +102,11 @@ public class IcalUtil {
         VTimeZone vTimeZone = timeZone.getVTimeZone();
         calendar.getComponents().add(vTimeZone);
 
+        UidGenerator ug = new RandomUidGenerator();
+
         for (MySubject subject : subjects) {
             VEvent vEvent = new VEvent();
+            vEvent.getProperties().add(ug.generateUid());
 
             // 添加主题
             String summaryString = subject.getName();
@@ -115,13 +133,14 @@ public class IcalUtil {
                 DateList dateList = new DateList();
                 List<Integer> weekList = subject.getWeekList();
                 int day = subject.getDay();
-                for (int index = 1; index < weekList.size(); ++index) {
+                for (int index = 0; index < weekList.size(); ++index) {
                     java.util.Calendar subjectCalendar = java.util.Calendar.getInstance(timeZone);
                     subjectCalendar.setTime((java.util.Date) termStartDate);
                     int week = weekList.get(index);
 
                     subjectCalendar.add(java.util.Calendar.DATE, calcDateOffset(day, week));
-                    dateList.add(new Date(subjectCalendar.getTime()));
+                    setStartTime(subjectCalendar, subject.getStart());
+                    dateList.add(new DateTime(subjectCalendar.getTime()));
                 }
                 vEvent.getProperties().add(new RDate(dateList));
             }
@@ -131,7 +150,7 @@ public class IcalUtil {
 
         Log.d(TAG, "serializeIcal: " + calendar.toString());
 
-        return null;
+        return calendar;
     }
 
     private void addDtStartAndDtEnd(VEvent vEvent, MySubject subject) {

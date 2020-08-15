@@ -11,6 +11,7 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
@@ -55,9 +56,14 @@ import com.zhuangfei.timetable.listener.IWeekView;
 import com.zhuangfei.timetable.listener.OnSlideBuildAdapter;
 import com.zhuangfei.timetable.model.Schedule;
 
+import net.fortuna.ical4j.data.CalendarOutputter;
+import net.fortuna.ical4j.model.Calendar;
+
 import org.litepal.LitePal;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -574,8 +580,28 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()){
+                    case R.id.export_ics:
+                        Calendar calendar = new IcalUtil(info).serializeIcal(subjects);
+                        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
+                            String icsPath = getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS).getPath();
+                            File icsFile = new File(icsPath, "HITSchedule.ics");
+                            try {
+                                FileOutputStream icsOut = new FileOutputStream(icsFile);
+                                CalendarOutputter outputter = new CalendarOutputter();
+                                outputter.output(calendar, icsOut);
+                                icsOut.close();
+                                makeToast(getString(R.string.export_ics_success) + icsFile.getPath());
+                            } catch (FileNotFoundException e) {
+                                makeToast(getString(R.string.export_ics_failure));
+                                e.printStackTrace();
+                            } catch (IOException e) {
+                                makeToast(getString(R.string.export_ics_failure));
+                                e.printStackTrace();
+                            }
+                        } else {
+                            makeToast(getString(R.string.android_version_too_low));
+                        }
                     case R.id.week_choose:
-                        new IcalUtil(info).serializeIcal(subjects);
                         mWeekView.isShow(!mWeekView.isShowing());
                         break;
                     case R.id.language:

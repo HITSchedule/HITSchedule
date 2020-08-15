@@ -61,4 +61,8 @@
     <string name="apply">应用</string>
     <string name="health_report">每日上报</string>
     <string name="login_title">登录页面</string>
+    <string name="export_ics">导出 .ics 文件</string>
+    <string name="android_version_too_low">您的Android版本过低, 请更新系统</string>
+    <string name="export_ics_failure">导出 ics 失败, 请向开发者反馈</string>
+    <string name="export_ics_success">ics 导出成功, 保存到</string>
 </resources>
