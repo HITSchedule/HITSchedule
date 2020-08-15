@@ -40,6 +40,7 @@ import com.example.hitschedule.dialog.CustomDialog;
 import com.example.hitschedule.util.DensityUtil;
 import com.example.hitschedule.util.HtmlUtil;
 import com.example.hitschedule.util.HttpUtil;
+import com.example.hitschedule.util.IcalUtil;
 import com.example.hitschedule.util.LocaleUtil;
 import com.example.hitschedule.util.ScreenUtil;
 import com.example.hitschedule.util.Util;
@@ -517,6 +518,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()){
                     case R.id.week_choose:
+                        new IcalUtil(info).serializeIcal(subjects);
                         mWeekView.isShow(!mWeekView.isShowing());
                         break;
                     case R.id.language:
