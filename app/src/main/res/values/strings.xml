@@ -60,4 +60,5 @@
     <string name="en_us" translatable="false">English</string>
     <string name="apply">应用</string>
     <string name="health_report">每日上报</string>
+    <string name="login_title">登录页面</string>
 </resources>

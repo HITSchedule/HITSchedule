@@ -60,6 +60,15 @@
             android:text="@string/login"
             android:textColor="@android:color/background_dark" />
 
+        <Button
+            android:layout_width="match_parent"
+            android:id="@+id/web_login"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/shape_round"
+            android:text="@string/login"
+            android:textColor="@android:color/background_dark" />
+
     </LinearLayout>
 
 </RelativeLayout>

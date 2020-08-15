@@ -56,4 +56,5 @@
     <string name="follow_system_language">System Language</string>
     <string name="apply">Apply</string>
     <string name="health_report">Health Report</string>
+    <string name="login_title">Login Page</string>
 </resources>
