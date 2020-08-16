@@ -601,6 +601,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
                         } else {
                             makeToast(getString(R.string.android_version_too_low));
                         }
+                        break;
                     case R.id.week_choose:
                         mWeekView.isShow(!mWeekView.isShowing());
                         break;
