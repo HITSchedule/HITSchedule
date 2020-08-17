@@ -119,6 +119,7 @@ public class LoginActivity extends BaseActivity {
                 Intent loginWebViewActivityIntent = new Intent(LoginActivity.this, LoginWebViewActivity.class);
                 loginWebViewActivityIntent.putExtra("pwd", pwd);
                 loginWebViewActivityIntent.putExtra("usrId", usrId);
+                // 启动 ids 网页登录, 并等待回调.
                 startActivityForResult(loginWebViewActivityIntent, 1);
                 //startActivity(loginWebViewActivityIntent);
             }
@@ -155,8 +156,15 @@ public class LoginActivity extends BaseActivity {
         }
     }
 
+    /**
+     * 启动 web login 后的回调函数. 如果 success 字段为 true, 则登陆成功.
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         switch (resultCode) {
             case RESULT_OK:
                 if (data.getBooleanExtra("success", false)) {
