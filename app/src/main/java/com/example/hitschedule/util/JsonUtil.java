@@ -14,7 +14,14 @@ import java.util.List;
 public class JsonUtil {
     
     private static String TAG = JsonUtil.class.getName();
-    
+
+    /**
+     * 解析 json, 返回 MySubject 类型列表
+     * @param jsonList 一个星期中七天的json数组
+     * @param xnxq 学年学期, 如 "2020-2021;1"
+     * @param usrId 学号
+     * @return MySubject List. 若有异常, 返回 null
+     */
     public static List<MySubject> parseBksJson(ArrayList<String> jsonList,
                                                String xnxq, String usrId) {
         List<MySubject> bksSubjects = new ArrayList<>();
