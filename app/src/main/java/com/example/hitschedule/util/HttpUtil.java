@@ -2,6 +2,11 @@ package com.example.hitschedule.util;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.JSONStringer;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -11,6 +16,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import okhttp3.Call;
+import okhttp3.Callback;
 import okhttp3.CipherSuite;
 import okhttp3.ConnectionSpec;
 import okhttp3.Cookie;
@@ -19,6 +25,7 @@ import okhttp3.FormBody;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 import okhttp3.TlsVersion;
@@ -299,5 +306,44 @@ public class HttpUtil {
                 .connectionSpecs(Collections.singletonList(spec))
                 .build();
         return client;
+    }
+
+    /**
+     * 从微信平台获取星期x的json格式课表
+     * @param usrId 学生学号
+     * @param xnxq 学年学期
+     * @param day 星期几
+     * @return json格式的课表原始数据, 错误时返回 null
+     * @throws IOException
+     */
+    public static String wechatBksKbPost(String usrId, String xnxq, int day) throws IOException {
+        OkHttpClient httpClient = new OkHttpClient();
+        final String url = "https://weixin.hit.edu.cn/app/bkskbcx/kbcxapp/getBkskb";
+        JSONObject jsonBody = new JSONObject();
+        try {
+            jsonBody.put("gxh", usrId);
+            jsonBody.put("xqj", String.valueOf(day));
+            jsonBody.put("xnxq", xnxq);
+        } catch (JSONException e) {
+            Log.e(TAG, "wechatKbPost: JSON 操作失败");
+            e.printStackTrace();
+        }
+
+        final String key = "info";
+        final String value = jsonBody.toString();
+        Log.d(TAG, "wechatKbPost: value=" + value);
+
+        RequestBody requestBody = new FormBody.Builder()
+                .add(key, value)
+                .build();
+        Request request = new Request.Builder()
+                .url(url)
+                .post(requestBody)
+                .build();
+
+        Response response = httpClient.newCall(request).execute();
+        String jsonResponse = response.body().string();
+        Log.d(TAG, "wechatKbPost: day=" + day + ", jsonResponse=" + jsonResponse);
+        return jsonResponse;
     }
 }

@@ -36,6 +36,10 @@
         android:icon="@drawable/search"
         app:showAsAction="ifRoom" />
 
+    <item android:id="@+id/export_ics"
+        android:title="@string/export_ics"
+        app:showAsAction="ifRoom" />
+
     <item android:id="@+id/update"
         android:title="@string/check_update"
         android:icon="@drawable/menu"

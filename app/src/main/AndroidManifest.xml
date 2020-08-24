@@ -44,6 +44,7 @@
         <activity android:name=".ui.WebViewActivity"/>
         <activity android:name=".ui.ReportWebViewActivity"/>
         <activity android:name=".ui.SearchActivity"/>
+        <activity android:name=".ui.LoginWebViewActivity"/>
         <activity android:name=".ui.SetBgActivity"
             android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
 

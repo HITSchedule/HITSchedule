@@ -53,6 +53,17 @@
 
         <Button
             android:layout_width="match_parent"
+            android:id="@+id/web_login"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/shape_round"
+            android:text="@string/login"
+            android:textColor="@android:color/background_dark" />
+
+        <!--传统登录方式已经启用, 按钮设为不可见-->
+        <Button
+            android:visibility="invisible"
+            android:layout_width="match_parent"
             android:id="@+id/login"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"

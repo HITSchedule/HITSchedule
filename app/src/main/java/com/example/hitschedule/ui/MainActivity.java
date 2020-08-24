@@ -11,6 +11,7 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
@@ -40,6 +41,8 @@ import com.example.hitschedule.dialog.CustomDialog;
 import com.example.hitschedule.util.DensityUtil;
 import com.example.hitschedule.util.HtmlUtil;
 import com.example.hitschedule.util.HttpUtil;
+import com.example.hitschedule.util.IcalUtil;
+import com.example.hitschedule.util.JsonUtil;
 import com.example.hitschedule.util.LocaleUtil;
 import com.example.hitschedule.util.ScreenUtil;
 import com.example.hitschedule.util.Util;
@@ -53,9 +56,14 @@ import com.zhuangfei.timetable.listener.IWeekView;
 import com.zhuangfei.timetable.listener.OnSlideBuildAdapter;
 import com.zhuangfei.timetable.model.Schedule;
 
+import net.fortuna.ical4j.data.CalendarOutputter;
+import net.fortuna.ical4j.model.Calendar;
+
 import org.litepal.LitePal;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -288,7 +296,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
             } else {
                 if (type != null){
                     showProgressDialog();
-                    getDataFromJwts();
+                    getDataFromWechat();
                     Log.d(TAG, "done: 首次登录");
                 }else {
                     Log.d(TAG, "done: 非首次登录");
@@ -312,7 +320,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
                             updateTimeTable();
                         } else {
                             if (type != null){
-                                getDataFromJwts();
+                                showProgressDialog();
+                                getDataFromWechat();
                                 Log.d(TAG, "done: 首次登录");
                             }else {
                                 Log.d(TAG, "done: 非首次登录");
@@ -346,7 +355,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
                         }
                         updateTimeTable();
                     }else {
-                        getDataFromJwts();
+                        showProgressDialog();
+                        getDataFromWechat();
                     }
                 } else {
                     Log.d(TAG, "done: " + e.getMessage());
@@ -378,6 +388,38 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         }).start();
     }
 
+    /**
+     * 从微信平台抓取课表
+     */
+    private void getDataFromWechat() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    ArrayList<String> jsonList = new ArrayList<>();
+                    jsonList.add("占位用字符串");
+                    for (int day = 1; day <= 7; ++day) {
+                        String json = HttpUtil.wechatBksKbPost(usrId, info.getReserved2(), day);
+                        if (json == null) {
+                            throw new IOException();
+                        }
+                        jsonList.add(json);
+                    }
+                    Log.d(TAG, "run: 课表json数据: " + jsonList);
+
+                    List<MySubject> newSubjects = JsonUtil.parseBksJson(jsonList,
+                            info.getReserved2(), usrId);
+                    subjects = newSubjects;
+                    updateDataBase(newSubjects);
+                } catch (IOException e) {
+                    makeToast(getString(R.string.table_update_failed_check_connection));
+                    Log.d(TAG, "run: 获取课表失败 Error" + e);
+                }
+
+                updateTimeTable();
+            }
+        }).start();
+    }
 
     /**
      * 获取课表
@@ -438,34 +480,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         subjects = LitePal.findAll(MySubject.class);
         List<MySubject> delete = new ArrayList<>();
 
-        // 遍历新列表,替换重复项
-        for (MySubject subject : newSubjects){
-            subject.setUsrId(usrId);
-            subject.setXnxq(info.getXnxq());
-            subject.setType("JWTS");
-            if (subjects.contains(subject)){
-                Log.d(TAG, "updateDataBase: 替换" + subject.getName());
-                int index = subjects.indexOf(subject);
-                if (!subjects.get(index).getType().equals("SELF")){
-                    subject.setObjectId(subjects.get(index).getObjectId());
-                    subject._save();
-                    delete.add(subject);
-                } else {
-                    if(subject.getName().equals(subject.getRoom()) || subject.getInfo().equals("周")){
-                        subjects.get(index).setRoom(subject.getRoom());
-                        subjects.get(index).setInfo(subject.getInfo());
-                        subjects.get(index).save();
-                    }
-                }
-            }else {
-                subject.save();
-                Log.d(TAG, "updateDataBase: 保存" + subject.getName());
-            }
-        }
-
-        // 删除原列表中重复部分
-        subjects.removeAll(delete);
-
         // 遍历原列表中剩余部分,若非自定义项,直接移除
         for (final MySubject subject : subjects){
             if (!subject.getType().equals("SELF")){
@@ -473,6 +487,56 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
                 subject.delete();
             }
         }
+
+        // 将新列表的部分保存
+        for (MySubject subject : newSubjects) {
+            subject.setUsrId(usrId);
+            subject.setXnxq(info.getReserved2());
+            subject.setType("JWTS");
+            subject.save();
+        }
+
+//        // 遍历新列表,替换重复项
+//        for (MySubject subject : newSubjects){
+//            subject.setUsrId(usrId);
+//            subject.setXnxq(info.getXnxq());
+//            subject.setType("JWTS");
+//            if (subjects.contains(subject)){
+//                Log.d(TAG, "updateDataBase: before: " + subject);
+//                Log.d(TAG, "updateDataBase: 替换" + subject.getName());
+//                int index = subjects.indexOf(subject);
+//                if (!subjects.get(index).getType().equals("SELF")){
+//                    subject.setObjectId(subjects.get(index).getObjectId());
+//                    subject._save();
+//                    delete.add(subject);
+//                } else {
+//                    if(subject.getName().equals(subject.getRoom()) || subject.getInfo().equals("周")){
+//                        subjects.get(index).setRoom(subject.getRoom());
+//                        subjects.get(index).setInfo(subject.getInfo());
+//                        subjects.get(index).save();
+//                    }
+//                }
+//                Log.d(TAG, "updateDataBase: after: " + subject);
+//            }else {
+//                Log.d(TAG, "updateDataBase: subject: " + subject);
+//                subject.save();
+//                Log.d(TAG, "updateDataBase: 保存" + subject.getName());
+//            }
+//        }
+//
+//        // 删除原列表中重复部分
+//        subjects.removeAll(delete);
+//        for (MySubject subject : delete) {
+//            subject.delete();
+//        }
+//
+//        // 遍历原列表中剩余部分,若非自定义项,直接移除
+//        for (final MySubject subject : subjects){
+//            if (!subject.getType().equals("SELF")){
+//                Log.d(TAG, "updateDataBase: 删除" + subject.getName());
+//                subject.delete();
+//            }
+//        }
 
         subjects = LitePal.findAll(MySubject.class);
 
@@ -516,6 +580,28 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()){
+                    case R.id.export_ics:
+                        Calendar calendar = new IcalUtil(info).serializeIcal(subjects);
+                        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
+                            String icsPath = getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS).getPath();
+                            File icsFile = new File(icsPath, "HITSchedule.ics");
+                            try {
+                                FileOutputStream icsOut = new FileOutputStream(icsFile);
+                                CalendarOutputter outputter = new CalendarOutputter();
+                                outputter.output(calendar, icsOut);
+                                icsOut.close();
+                                makeToast(getString(R.string.export_ics_success) + icsFile.getPath());
+                            } catch (FileNotFoundException e) {
+                                makeToast(getString(R.string.export_ics_failure));
+                                e.printStackTrace();
+                            } catch (IOException e) {
+                                makeToast(getString(R.string.export_ics_failure));
+                                e.printStackTrace();
+                            }
+                        } else {
+                            makeToast(getString(R.string.android_version_too_low));
+                        }
+                        break;
                     case R.id.week_choose:
                         mWeekView.isShow(!mWeekView.isShowing());
                         break;
@@ -673,7 +759,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
                                         LitePal.deleteAll(MyInfo.class);
                                         info.save();
                                         makeToast(getString(R.string.start_fetch_curriculum));
-                                        getDataFromJwts();
+                                        //getDataFromJwts();
+                                        getDataFromWechat();
                                     } else {
                                         if (e!=null){
                                             makeToast(e.getMessage());

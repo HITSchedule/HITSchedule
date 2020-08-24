@@ -18,7 +18,6 @@ import com.example.hitschedule.database.User;
 import com.example.hitschedule.dialog.CustomDialog;
 import com.example.hitschedule.util.HttpUtil;
 
-import androidx.appcompat.app.AppCompatActivity;
 import cn.bmob.v3.Bmob;
 
 import static com.example.hitschedule.util.Constant.ACCONUT_ERROR;
@@ -35,6 +34,7 @@ public class LoginActivity extends BaseActivity {
     private String pwd;
 
     private Button login;
+    private Button webLogin;
 
     private final int ERROR = 1;
     private final int SUCCESS = 0;
@@ -56,8 +56,10 @@ public class LoginActivity extends BaseActivity {
                     user.setUsrId(usrId);
                     user.setPwd(pwd);
                     user.save();
-                    progress_dialog.dismiss();
-                    progress_dialog.cancel();
+                    if (progress_dialog != null) {
+                        progress_dialog.dismiss();
+                        progress_dialog.cancel();
+                    }
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                     intent.putExtra("type", "init");
                     startActivity(intent);
@@ -78,6 +80,7 @@ public class LoginActivity extends BaseActivity {
         et_stu_id = findViewById(R.id.stu_id);
         et_pwd = findViewById(R.id.pwd);
         login = findViewById(R.id.login);
+        webLogin = findViewById(R.id.web_login);
 
         login.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -105,6 +108,20 @@ public class LoginActivity extends BaseActivity {
                         }
                     }).start();
                 }
+            }
+        });
+
+        webLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                usrId = et_stu_id.getText().toString().trim();
+                pwd = et_pwd.getText().toString().trim();
+                Intent loginWebViewActivityIntent = new Intent(LoginActivity.this, LoginWebViewActivity.class);
+                loginWebViewActivityIntent.putExtra("pwd", pwd);
+                loginWebViewActivityIntent.putExtra("usrId", usrId);
+                // 启动 ids 网页登录, 并等待回调.
+                startActivityForResult(loginWebViewActivityIntent, 1);
+                //startActivity(loginWebViewActivityIntent);
             }
         });
     }
@@ -136,6 +153,24 @@ public class LoginActivity extends BaseActivity {
         super.onDestroy();
         if (progress_dialog != null){
             progress_dialog.dismiss();
+        }
+    }
+
+    /**
+     * 启动 web login 后的回调函数. 如果 success 字段为 true, 则登陆成功.
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (resultCode) {
+            case RESULT_OK:
+                if (data.getBooleanExtra("success", false)) {
+                    sendMessage(SUCCESS);
+                }
+                break;
         }
     }
 }
