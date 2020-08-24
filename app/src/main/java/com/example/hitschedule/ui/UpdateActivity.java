@@ -137,6 +137,45 @@ public class UpdateActivity extends BaseActivity {
                             BmobFile bmobFile = new BmobFile(name,"",list.get(0).getApkUrl());
                             downloadFile(bmobFile);
                         }
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                try {
+                                    String redirectedUrl = bmobFile.getFileUrl(); //"http://dl.hitschedule.top/latest";
+                                    int redirect_times = 0;
+                                    while (true) {
+                                        HttpURLConnection con = (HttpURLConnection) new URL(redirectedUrl).openConnection();
+                                        con.setInstanceFollowRedirects(false);
+                                        con.connect();
+                                        int code = con.getResponseCode();
+                                        Log.d(TAG, "downloadFile: " + "connected url: " + con.getResponseCode());
+                                        if (code == 301 || code == 302) {
+                                            ++redirect_times;
+                                            if (redirect_times > 5)
+                                            {
+                                                throw new IOException("Too many redirects");
+                                            }
+                                            redirectedUrl = con.getHeaderField("Location");
+                                            Log.d(TAG, "downloadFile: " + "redirected url: " + redirectedUrl);
+                                        }
+                                        con.disconnect();
+                                        if (code != 301 && code != 302) {
+                                            break;
+                                        }
+                                    }
+                                    bmobFile.setUrl(redirectedUrl);
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            downloadFile(bmobFile);
+                                        }
+                                    });
+                                } catch (Exception e) {
+                                    Log.d(TAG, "downloadFile: Get rediredted url failed: " + e);
+                                    Toast.makeText(UpdateActivity.this, "网络连接失败, 请稍后再试", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        }).start();
                     } else {
                         Toast.makeText(UpdateActivity.this, "当前版本已经是最新版本", Toast.LENGTH_SHORT).show();
                     }
