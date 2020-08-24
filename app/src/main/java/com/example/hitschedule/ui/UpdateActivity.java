@@ -140,7 +140,7 @@ public class UpdateActivity extends BaseActivity {
                             @Override
                             public void run() {
                                 try {
-                                    String redirectedUrl = "http://dl.hitschedule.top/latest";//bmobFile.getFileUrl();
+                                    String redirectedUrl = bmobFile.getFileUrl(); //"http://dl.hitschedule.top/latest";
                                     int redirect_times = 0;
                                     while (true) {
                                         HttpURLConnection con = (HttpURLConnection) new URL(redirectedUrl).openConnection();
