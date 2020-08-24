@@ -20,6 +20,49 @@
                 android:layout_marginRight="20dp"
                 android:gravity="center_horizontal"
                 android:height="@dimen/tv_title_height"
+                android:text="v1.4.0"
+                android:textSize="17sp"
+                android:textColor="@color/new_black"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#EFEFEF"/>
+
+            <TextView
+                android:layout_marginTop="8dp"
+                android:layout_marginLeft="@dimen/tv_margin_left"
+                android:layout_marginRight="@dimen/tv_margin_right"
+                android:lineSpacingExtra="@dimen/tv_line_space"
+                android:textColor="@color/new_black"
+                android:text="- 课表可导出为 ICS 文件, 导入至其他日历应用"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_marginTop="8dp"
+                android:layout_marginLeft="@dimen/tv_margin_left"
+                android:layout_marginRight="@dimen/tv_margin_right"
+                android:lineSpacingExtra="@dimen/tv_line_space"
+                android:textColor="@color/new_black"
+                android:text="- 从微信平台抓取课表, 提高课表解析成功率"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_marginTop="8dp"
+                android:layout_marginLeft="@dimen/tv_margin_left"
+                android:layout_marginRight="@dimen/tv_margin_right"
+                android:lineSpacingExtra="@dimen/tv_line_space"
+                android:textColor="@color/new_black"
+                android:text="- 使用统一身份认证系统验证身份, 提高安全性"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:gravity="center_horizontal"
+                android:height="@dimen/tv_title_height"
                 android:text="v1.3.3"
                 android:textSize="17sp"
                 android:textColor="@color/new_black"
