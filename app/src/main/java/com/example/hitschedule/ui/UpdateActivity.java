@@ -24,6 +24,9 @@ import com.example.hitschedule.util.DensityUtil;
 import com.example.hitschedule.util.Util;
 
 import java.io.File;
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.List;
 
 import androidx.annotation.RequiresApi;
@@ -124,18 +127,14 @@ public class UpdateActivity extends BaseActivity {
                     Log.d(TAG, "handleMessage: 新版本" + newVersion + " 旧版本 " + oldVersion);
                     String name = "v" + newVersion.replace("\\.", "_") + ".apk";
                     if(Util.compareVersion(newVersion, oldVersion)){
-                        File file = new File(base_path, name);
+                        final File file = new File(base_path, name);
+                        final BmobFile bmobFile = new BmobFile(name,"",list.get(0).getApkUrl());
                         Toast.makeText(UpdateActivity.this, "检查到新版本", Toast.LENGTH_SHORT).show();
                         if (file.exists()){
 //                                    Log.d(TAG, "done: 删除文件" + file.delete());
                             file.delete();
-                            BmobFile bmobFile = new BmobFile(name,"",list.get(0).getApkUrl());
-                            downloadFile(bmobFile);
 //                            install(file);
                             Log.d(TAG, "done: 文件已存在" + file.getAbsolutePath());
-                        } else {
-                            BmobFile bmobFile = new BmobFile(name,"",list.get(0).getApkUrl());
-                            downloadFile(bmobFile);
                         }
                         new Thread(new Runnable() {
                             @Override
