@@ -27,7 +27,7 @@
         app:showAsAction="always" />
 
     <item android:id="@+id/report"
-        android:title="@string/health_report"
+        android:title="@string/academic_services"
         android:icon="@drawable/ic_report"
         app:showAsAction="always" />
 
