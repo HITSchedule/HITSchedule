@@ -61,4 +61,5 @@
     <string name="android_version_too_low">Android version too low. Please update system.</string>
     <string name="export_ics_failure">Failed to export ics file. Please send feedback to developer.</string>
     <string name="export_ics_success">"ics file saved at "</string>
+    <string name="academic_services">Academic Services</string>
 </resources>
