@@ -318,7 +318,7 @@ public class HttpUtil {
      */
     public static String wechatBksKbPost(String usrId, String xnxq, int day) throws IOException {
         OkHttpClient httpClient = new OkHttpClient();
-        final String url = "https://weixin.hit.edu.cn/app/bkskbcx/kbcxapp/getBkskb";
+        final String url = "https://wxfwdt.hit.edu.cn/app/bkskbcx/kbcxapp/getBkskb";
         JSONObject jsonBody = new JSONObject();
         try {
             jsonBody.put("gxh", usrId);
