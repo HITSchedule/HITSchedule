@@ -1,5 +1,6 @@
 package com.example.hitschedule.ui;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
@@ -41,6 +42,8 @@ import com.example.hitschedule.dialog.CustomDialog;
 import com.example.hitschedule.util.DensityUtil;
 import com.example.hitschedule.util.HtmlUtil;
 import com.example.hitschedule.util.HttpUtil;
+import com.example.hitschedule.util.YjsHtmlUtil;
+import com.example.hitschedule.util.XywHttpUtil;
 import com.example.hitschedule.util.IcalUtil;
 import com.example.hitschedule.util.JsonUtil;
 import com.example.hitschedule.util.LocaleUtil;
@@ -50,6 +53,12 @@ import com.example.hitschedule.view.MyScrollView;
 import com.example.hitschedule.view.WeekView;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.OnItemClickListener;
+import com.sangfor.ssl.BaseMessage;
+import com.sangfor.ssl.IConstants;
+import com.sangfor.ssl.LoginResultListener;
+import com.sangfor.ssl.SFException;
+import com.sangfor.ssl.SangforAuthManager;
+import com.sangfor.ssl.common.ErrorCode;
 import com.zhuangfei.timetable.TimetableView;
 import com.zhuangfei.timetable.listener.ISchedule;
 import com.zhuangfei.timetable.listener.IWeekView;
@@ -59,12 +68,15 @@ import com.zhuangfei.timetable.model.Schedule;
 import net.fortuna.ical4j.data.CalendarOutputter;
 import net.fortuna.ical4j.model.Calendar;
 
+import org.apache.commons.lang3.ObjectUtils;
 import org.litepal.LitePal;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -76,12 +88,21 @@ import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.FindListener;
 
 import static com.example.hitschedule.util.Constant.CAPTCHA_ERROR;
+import static com.example.hitschedule.util.Constant.XNXQ;
+import static com.sangfor.ssl.IConstants.AUTH_TYPE_PASSWORD;
 
-public class MainActivity extends BaseActivity implements View.OnClickListener{
+public class MainActivity extends BaseCheckPermissionActivity implements View.OnClickListener, LoginResultListener {
 
     private String TAG = getClass().getName();
 
+    private static final String[] ALL_PERMISSIONS_NEED = {Manifest.permission.INTERNET, Manifest.permission.READ_PHONE_STATE,
+            Manifest.permission.ACCESS_WIFI_STATE, Manifest.permission.ACCESS_NETWORK_STATE, Manifest.permission.WRITE_EXTERNAL_STORAGE,};
+
+
     private Toolbar toolbar;
+
+    // VPN
+    private SangforAuthManager mSFManager = null;
 
     // 课表控件
     private TimetableView mTimetableView;
@@ -126,6 +147,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         setContentView(R.layout.activity_main);
         type = getIntent().getStringExtra("type");
         Bmob.initialize(this, "d2ad693a0277f5fc81c6dc84a91ca08f");
+        initVPNLoginParms();
         checkForUpdate();
     }
 
@@ -144,6 +166,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         if(users.size() > 0){
             usrId = users.get(0).getUsrId();
             pwd = users.get(0).getPwd();
+            XywHttpUtil.set_url(usrId);
             initView();
             initData();
         } else {
@@ -296,12 +319,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
             } else {
                 if (type != null){
                     showProgressDialog();
-                    getDataFromWechat();
+//                    getDataFromWechat();
+                    getDataFromJwts();
                     Log.d(TAG, "done: 首次登录");
                 }else {
                     Log.d(TAG, "done: 非首次登录");
                 }
-
             }
 
         } else {
@@ -321,12 +344,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
                         } else {
                             if (type != null){
                                 showProgressDialog();
-                                getDataFromWechat();
+//                                getDataFromWechat();
+                                getDataFromJwts();
                                 Log.d(TAG, "done: 首次登录");
                             }else {
                                 Log.d(TAG, "done: 非首次登录");
                             }
-                            
+
                         }
                     } else {
                         makeToast(getString(R.string.data_update_failed));
@@ -337,55 +361,16 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
     }
 
     /**
-     * 从Bmob的数据库获取数据
-     */
-    private void getDataFromBmob(){
-        BmobQuery<Subject> query = new BmobQuery<>();
-        query.addWhereEqualTo("usrId", usrId);
-        query.addWhereEqualTo("xnxq", info.getXnxq());
-        query.findObjects(new FindListener<Subject>() {
-            @Override
-            public void done(List<Subject> list, BmobException e) {
-                if(e == null){
-                    if (list.size() > 0){
-                        Log.d(TAG, "done: bmob size=" + list.size());
-                        subjects = Util.subjects2MySubjects(list);
-                        for(MySubject subject : subjects){
-                            subject.save();
-                        }
-                        updateTimeTable();
-                    }else {
-                        showProgressDialog();
-                        getDataFromWechat();
-                    }
-                } else {
-                    Log.d(TAG, "done: " + e.getMessage());
-                    makeToast(getString(R.string.table_update_failed_check_connection));
-                    hideProgressDialog();
-                }
-            }
-        });
-    }
-
-    /**
      * 从Jwts抓取课表
      */
     private void getDataFromJwts(){
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    HttpUtil.vpn_login(usrId, pwd);
-                    bitmap = HttpUtil.getCaptchaImage();
-                    Message msg = new Message();
-                    msg.what = CAPTCHAVIEW;
-                    msg.obj = bitmap;
-                    handler.sendMessage(msg);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }).start();
+        // Login vpn first
+        try {
+            mSFManager.startPasswordAuthLogin(getApplication(), MainActivity.this, IConstants.VPNMode.L3VPN,
+                    new URL("http://ivpn.hit.edu.cn"), usrId, pwd);
+        } catch (SFException | MalformedURLException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -429,7 +414,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
             @Override
             public void run() {
                 try {
-                    int code = HttpUtil.vpn_jwts_login(usrId, pwd, captcha);
+                    int code = XywHttpUtil.jwc_login(usrId, pwd, captcha);
                     if (code == CAPTCHA_ERROR){
                         makeToast(getString(R.string.wrong_captcha));
                         Message msg = new Message();
@@ -444,13 +429,20 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
                         return;
                     }
 
-                    String html = HttpUtil.vpn_kb_post(info.getXnxq());
+                    String html = XywHttpUtil.kb_get(info.getXnxq());
 
                     if (html != null){
                         // 捕获一下解析异常
+                        List<MySubject> newSubjects = null;
                         try{
-                            HtmlUtil util = new HtmlUtil(html);
-                            List<MySubject> newSubjects = util.getzkb(info.getXnxq(), usrId);
+                            if (usrId.toUpperCase().contains("S") || usrId.toUpperCase().contains("B")){
+                                YjsHtmlUtil util = new YjsHtmlUtil(html);
+                                newSubjects = util.getzkb(info.getXnxq(), usrId);
+                            }else{
+                                HtmlUtil util = new HtmlUtil(html);
+                                newSubjects = util.getzkb(info.getXnxq(), usrId);
+                            }
+
                             subjects = newSubjects;
                             updateDataBase(newSubjects);
                         }catch (Exception e){
@@ -558,6 +550,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
             }
             updateTimeTable();
         }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        SangforAuthManager.getInstance().vpnLogout();
     }
 
     //设置menu（右边图标）
@@ -759,8 +757,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
                                         LitePal.deleteAll(MyInfo.class);
                                         info.save();
                                         makeToast(getString(R.string.start_fetch_curriculum));
-                                        //getDataFromJwts();
-                                        getDataFromWechat();
+                                        getDataFromJwts();
+//                                        getDataFromWechat();
                                     } else {
                                         if (e!=null){
                                             makeToast(e.getMessage());
@@ -910,7 +908,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
                             @Override
                             public void run() {
                                 try {
-                                    bitmap = HttpUtil.getCaptchaImage();
+                                    bitmap = XywHttpUtil.getCaptchaImage();
                                     captchaDialog.setCaptcha(bitmap);
                                     captchaDialog.show();
                                 } catch (IOException e) {
@@ -1128,6 +1126,70 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         }
 
         super.onDestroy();
+    }
+
+    ///////// Get Permissions Callbask
+    @Override
+    protected String[] getNeedPermissions() {
+        return ALL_PERMISSIONS_NEED;
+    }
+
+    @Override
+    protected void permissionGrantedSuccess() {
+
+    }
+
+    @Override
+    protected void permissionGrantedFail() {
+        Toast.makeText(MainActivity.this, R.string.str_permission_not_all_pass, Toast.LENGTH_SHORT).show();
+    }
+
+
+    private void initVPNLoginParms() {
+        // 1.构建SangforAuthManager对象
+        mSFManager = SangforAuthManager.getInstance();
+
+        // 2.设置VPN认证结果回调
+        try {
+            mSFManager.setLoginResultListener(this);
+        }catch (SFException e) {
+            com.sangfor.bugreport.logger.Log.info(TAG, "SFException:%s", e);
+        }
+
+        //3.设置登录超时时间，单位为秒
+        mSFManager.setAuthConnectTimeOut(8);
+    }
+
+    /////// Vpn Login Listener
+    @Override
+    public void onLoginFailed(ErrorCode errorCode, String s) {
+        Toast.makeText(MainActivity.this, "Vpn Login Fail" + s, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onLoginProcess(int i, BaseMessage baseMessage) {
+
+    }
+
+    @Override
+    public void onLoginSuccess() {
+
+        Toast.makeText(MainActivity.this, "Vpn Login Success", Toast.LENGTH_LONG).show();
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    bitmap = XywHttpUtil.getCaptchaImage();
+                    Message msg = new Message();
+                    msg.what = CAPTCHAVIEW;
+                    msg.obj = bitmap;
+                    handler.sendMessage(msg);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
     }
 
     public void setCWeek(int week){

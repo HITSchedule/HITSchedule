@@ -15,8 +15,9 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <!--允许读取手机状态 用于创建BmobInstallation-->
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <application
         android:name=".Application"
@@ -28,10 +29,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
+
+        <uses-library android:name="org.apache.http.legacy" android:required="false"/>
+
         <activity android:name=".ui.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -66,6 +69,27 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_path"/>
         </provider>
+
+
+        <!-- TimeQry服务 -->
+        <service android:name="com.sangfor.ssl.service.timeqry.TimeQryService"
+            android:exported="false"
+            >
+            <intent-filter>
+                <action android:name="com.sangfor.ssl.vpn.sdk.action.ACTION_TIMEQRY" />
+            </intent-filter>
+        </service>
+
+        <!-- VpnService服务 -->
+        <service
+            android:name="com.sangfor.ssl.l3vpn.service.EasyappSvpnService"
+            android:permission="android.permission.BIND_VPN_SERVICE"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.sangfor.ssl.l3vpn.service.EasyappSvpnService" />
+            </intent-filter>
+        </service>
+
     </application>
 
 </manifest>

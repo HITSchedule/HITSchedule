@@ -66,4 +66,6 @@
     <string name="export_ics_failure">导出 ics 失败, 请向开发者反馈</string>
     <string name="export_ics_success">ics 导出成功, 保存到</string>
     <string name="academic_services">学工系统</string>
+    <string name="str_permission_not_all_pass">权限未全部授权，部分功能将受限！</string>
+    <string name="str_vpn_login_fail">VPN Login Failed, please check your network and try again！</string>
 </resources>
