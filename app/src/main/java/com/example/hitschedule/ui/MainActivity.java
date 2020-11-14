@@ -95,8 +95,8 @@ public class MainActivity extends BaseCheckPermissionActivity implements View.On
 
     private String TAG = getClass().getName();
 
-    private static final String[] ALL_PERMISSIONS_NEED = {Manifest.permission.INTERNET, Manifest.permission.READ_PHONE_STATE,
-            Manifest.permission.ACCESS_WIFI_STATE, Manifest.permission.ACCESS_NETWORK_STATE, Manifest.permission.WRITE_EXTERNAL_STORAGE,};
+    private static final String[] ALL_PERMISSIONS_NEED = {Manifest.permission.INTERNET,
+            Manifest.permission.ACCESS_WIFI_STATE, Manifest.permission.ACCESS_NETWORK_STATE,};
 
 
     private Toolbar toolbar;
