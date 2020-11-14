@@ -26,7 +26,7 @@ public class SearchActivity extends BaseActivity {
             public void onClick(View view) {
                 Intent carIntent = new Intent(SearchActivity.this, WebViewActivity.class);
                 carIntent.putExtra("title", "校车查询");
-                carIntent.putExtra("url", "https://weixin.hit.edu.cn/app/xccx/xccxappbc");
+                carIntent.putExtra("url", "https://wxfwdt.hit.edu.cn/app/xccx/xccxappbc");
                 startActivity(carIntent);
             }
         });
@@ -36,7 +36,7 @@ public class SearchActivity extends BaseActivity {
             public void onClick(View view) {
                 Intent dateIntent = new Intent(SearchActivity.this, WebViewActivity.class);
                 dateIntent.putExtra("title", "校历查询");
-                dateIntent.putExtra("url", "https://weixin.hit.edu.cn/app/xlxq/xlxqapp");
+                dateIntent.putExtra("url", "https://wxfwdt.hit.edu.cn/app/xlxq/xlxqapp");
                 startActivity(dateIntent);
             }
         });
@@ -46,7 +46,7 @@ public class SearchActivity extends BaseActivity {
             public void onClick(View view) {
                 Intent emptyIntent = new Intent(SearchActivity.this, WebViewActivity.class);
                 emptyIntent.putExtra("title", "空教室查询");
-                emptyIntent.putExtra("url", "https://weixin.hit.edu.cn/app/kxjscx/kxjscxapp");
+                emptyIntent.putExtra("url", "https://wxfwdt.hit.edu.cn/app/kxjscx/kxjscxapp");
                 startActivity(emptyIntent);
             }
         });
