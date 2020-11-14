@@ -1,5 +1,7 @@
 apply plugin: 'com.android.application'
 
+//storeFile file('/home/user/Android/jks/hitschedule.jks')
+
 android {
     signingConfigs {
         release {
@@ -16,6 +18,7 @@ android {
         }
     }
     compileSdkVersion 29
+
     defaultConfig {
         applicationId "com.example.hitschedule"
         minSdkVersion 21
@@ -23,6 +26,10 @@ android {
         versionCode 12
         versionName "1.4.2"
         testInstrumentationRunner "androidx.logo.runner.AndroidJUnitRunner"
+
+        ndk {
+            abiFilters "armeabi", "armeabi-v7a", "x86" //输出指定三种abi体系结构下的so库
+        }
     }
     buildTypes {
         release {
@@ -33,6 +40,13 @@ android {
     packagingOptions {
         exclude 'META-INF/proguard/androidx-annotations.pro'
     }
+
+    sourceSets{
+        main{
+            jniLibs.srcDirs=['libs']
+        }
+    }
+
     // bmob
     useLibrary 'org.apache.http.legacy'
 
@@ -73,4 +87,7 @@ dependencies {
     implementation 'com.theartofdev.edmodo:android-image-cropper:2.8.+'
     // ical4j, 生成 ICS 文件
     implementation 'org.mnode.ical4j:ical4j:2.2.6'
+
+    // SSL
+    implementation files('libs/SangforSDK.jar')
 }

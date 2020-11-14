@@ -62,4 +62,6 @@
     <string name="export_ics_failure">Failed to export ics file. Please send feedback to developer.</string>
     <string name="export_ics_success">"ics file saved at "</string>
     <string name="academic_services">Academic Services</string>
+    <string name="str_permission_not_all_pass">Not all permissions are authorized, some functions will be restricted！</string>
+    <string name="str_vpn_login_fail">VPN Login Failed, please check your network and try again！</string>
 </resources>

@@ -2,12 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/GitHub-HITSchedule.iml" filepath="$PROJECT_DIR$/GitHub-HITSchedule.iml" group="HITSchedule" />
-      <module fileurl="file://$PROJECT_DIR$/HITSchedule.iml" filepath="$PROJECT_DIR$/HITSchedule.iml" group="HITSchedule" />
-      <module fileurl="file://$PROJECT_DIR$/app/HITSchedule-app.iml" filepath="$PROJECT_DIR$/app/HITSchedule-app.iml" group="HITSchedule/app" />
-      <module fileurl="file://$PROJECT_DIR$/library/HITSchedule-library.iml" filepath="$PROJECT_DIR$/library/HITSchedule-library.iml" group="HITSchedule/library" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" group="HITSchedule/app" />
-      <module fileurl="file://$PROJECT_DIR$/library/library.iml" filepath="$PROJECT_DIR$/library/library.iml" group="HITSchedule/library" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/HITSchedule.iml" filepath="$PROJECT_DIR$/.idea/HITSchedule.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/HITSchedule.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/HITSchedule.app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/library/HITSchedule.library.iml" filepath="$PROJECT_DIR$/.idea/modules/library/HITSchedule.library.iml" />
     </modules>
   </component>
 </project>
