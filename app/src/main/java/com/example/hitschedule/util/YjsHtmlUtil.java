@@ -55,6 +55,12 @@ public class YjsHtmlUtil {
             //   周一到周日， 可能为空，即为没课
             for (int j = 2; j < 9; j++){
                 Element subject = rows.get(j);
+                // Remove the <a> tag
+                Elements aTags = subject.getElementsByTag("a");
+                for (Element a:aTags) {
+                    a.remove();
+                }
+                
                 String text = subject.text().replace("周]", "]周"); // 与之前本科的保持一致
                 Log.d(TAG, "getzkb: " + text);
                 text = text.replace("节", "节!!!!!!"); // 研究生课表每门课都是按[]节结束
