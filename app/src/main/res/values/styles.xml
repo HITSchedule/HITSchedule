@@ -8,6 +8,7 @@
         <item name="colorAccent">@color/colorAccent</item>
         <!-- 加入toolbar溢出【弹出】菜单的风格 -->
         <item name="actionOverflowMenuStyle">@style/OverflowMenuStyle</item>
+        <item name="actionOverflowButtonStyle">@style/OverflowButtonStyle</item>
     </style>
 
     <!-- Toolbar的样式 -->
@@ -25,6 +26,11 @@
         <item name="android:dropDownHorizontalOffset">0dp</item>
         <!-- 设置弹出菜单文字颜色 -->
         <item name="android:textColor">@color/app_white</item>
+    </style>
+
+    <!-- Overriding overflow button color -->
+    <style name="OverflowButtonStyle" parent="@style/Widget.AppCompat.ActionButton.Overflow">
+        <item name="tint">@color/app_white</item>
     </style>
 
     <!--CustomCaptchaDialog-->
