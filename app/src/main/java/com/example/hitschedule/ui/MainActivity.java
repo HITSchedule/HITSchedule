@@ -96,7 +96,7 @@ public class MainActivity extends BaseCheckPermissionActivity implements View.On
     private String TAG = getClass().getName();
 
     private static final String[] ALL_PERMISSIONS_NEED = {Manifest.permission.INTERNET,
-            Manifest.permission.ACCESS_WIFI_STATE, Manifest.permission.ACCESS_NETWORK_STATE,};
+            Manifest.permission.ACCESS_WIFI_STATE, Manifest.permission.ACCESS_NETWORK_STATE, Manifest.permission.WRITE_EXTERNAL_STORAGE,};
 
 
     private Toolbar toolbar;
@@ -761,6 +761,7 @@ public class MainActivity extends BaseCheckPermissionActivity implements View.On
 //                                        getDataFromWechat();
                                     } else {
                                         if (e!=null){
+                                            Log.d(TAG, "done: " + e.toString());
                                             makeToast(e.getMessage());
                                         } else {
                                             makeToast(getString(R.string.table_update_failed_check_connection));
