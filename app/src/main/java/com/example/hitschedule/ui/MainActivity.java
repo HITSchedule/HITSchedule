@@ -371,6 +371,8 @@ public class MainActivity extends BaseCheckPermissionActivity implements View.On
         } catch (SFException | MalformedURLException e) {
             e.printStackTrace();
         }
+        //TODO:修复VPN并删去下面一行
+        onLoginSuccess();//绕过VPN直接访问jwts的临时补丁
     }
 
     /**
@@ -438,9 +440,21 @@ public class MainActivity extends BaseCheckPermissionActivity implements View.On
                             if (usrId.toUpperCase().contains("S") || usrId.toUpperCase().contains("B")){
                                 YjsHtmlUtil util = new YjsHtmlUtil(html);
                                 newSubjects = util.getzkb(info.getXnxq(), usrId);
+
+                                //TODO:获取开始时间并删去下面的if
+                                if(util.getStartTime().equals("2022春季")) {//改变开始时间的临时补丁
+                                    info.setStartTime("2022-02-21 00:00:00");
+                                    info.save();
+                                }
                             }else{
                                 HtmlUtil util = new HtmlUtil(html);
                                 newSubjects = util.getzkb(info.getXnxq(), usrId);
+
+                                //TODO:获取开始时间并删去下面的if
+                                if(util.getStartTime().equals("2022春季")) {//改变开始时间的临时补丁
+                                    info.setStartTime("2022-02-21 00:00:00");
+                                    info.save();
+                                }
                             }
 
                             subjects = newSubjects;
