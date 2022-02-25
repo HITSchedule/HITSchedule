@@ -7,13 +7,13 @@ android {
         release {
             keyAlias 'key0'
             keyPassword 'hitschedule'
-            storeFile file('D:\\leylee\\hitschedule.jks')
+            storeFile file('../hitschedule.jks')
             storePassword 'hitschedule'
         }
         debug{
             keyAlias 'key0'
             keyPassword 'hitschedule'
-            storeFile file('D:\\leylee\\hitschedule.jks')
+            storeFile file('../hitschedule.jks')
             storePassword 'hitschedule'
         }
     }
