@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -129,11 +130,13 @@ public class MainActivity extends BaseCheckPermissionActivity implements View.On
     private final int CAPTCHAVIEW = 2113;
     private final int TOAST = 2114;
     private final int CHANGE_WEEK = 2115;
+    private final int LOGOUT_VPN = 2116;
 
     private Dialog progressDialog;
     private Dialog refreshDialog;
     private Dialog deleteDialog;
     private Dialog updateDialog;
+    private Dialog vpnChooseDialog;
     private CustomCaptchaDialog captchaDialog;
     private DialogPlus scheduleDialog;
     private CustomDialog languageDialog;
@@ -364,15 +367,45 @@ public class MainActivity extends BaseCheckPermissionActivity implements View.On
      * 从Jwts抓取课表
      */
     private void getDataFromJwts(){
-        // Login vpn first
-        try {
-            mSFManager.startPasswordAuthLogin(getApplication(), MainActivity.this, IConstants.VPNMode.L3VPN,
-                    new URL("http://ivpn.hit.edu.cn"), usrId, pwd);
-        } catch (SFException | MalformedURLException e) {
-            e.printStackTrace();
+        // 选择是否连接 VPN
+        if (vpnChooseDialog == null) {
+            CustomDialog.Builder builder = new CustomDialog.Builder(MainActivity.this);
+            vpnChooseDialog = builder
+                    .style(R.style.fillet_dialog)
+                    .widthpx(getResources().getDisplayMetrics().widthPixels - DensityUtil.dp2px(MainActivity.this, 50f))
+                    .heightdp(180)
+                    .cancelTouchout(false)
+                    .view(R.layout.dialog_select)
+                    .text(R.id.show_text, getString(R.string.choose_if_vpn))
+                    .addViewOnclick(R.id.btn_sure, new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            vpnChooseDialog.dismiss();
+                            showProgressDialog();
+                            // Login vpn first
+                            try {
+                                mSFManager.startPasswordAuthLogin(getApplication(), MainActivity.this, IConstants.VPNMode.L3VPN,
+                                        new URL("http://ivpn.hit.edu.cn"), usrId, pwd);
+                            } catch (SFException | MalformedURLException e) {
+                                Log.e(TAG, "getDataFromJwts: SFException | MalformedURLException", e);
+                                e.printStackTrace();
+                            }
+                        }
+                    })
+                    .addViewOnclick(R.id.btn_cancel, new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            vpnChooseDialog.dismiss();
+                            showProgressDialog();
+                            getDataFromJwtsDirectly();
+                        }
+                    })
+                    .build();
         }
-        //TODO:修复VPN并删去下面一行
-        onLoginSuccess();//绕过VPN直接访问jwts的临时补丁
+
+
+        hideProgressDialog();
+        vpnChooseDialog.show();
     }
 
     /**
@@ -432,6 +465,10 @@ public class MainActivity extends BaseCheckPermissionActivity implements View.On
                     }
 
                     String html = XywHttpUtil.kb_get(info.getXnxq());
+                    // 登出 vpn
+                    Message message = new Message();
+                    message.what = LOGOUT_VPN;
+                    handler.sendMessage(message);
 
                     if (html != null){
                         // 捕获一下解析异常
@@ -533,7 +570,6 @@ public class MainActivity extends BaseCheckPermissionActivity implements View.On
 //        }
 
         subjects = LitePal.findAll(MySubject.class);
-
         makeToast(getString(R.string.update_succeeded));
     }
 
@@ -894,7 +930,7 @@ public class MainActivity extends BaseCheckPermissionActivity implements View.On
                     @Override
                     public void onClick(View view) {
                         String text = captchaDialog.getCaptcha();
-                        if (!text.isEmpty() && text.length() == 4){
+                        if (text.length() == 4){
                             captcha = text.trim();
                             captchaDialog.dismiss();
                             showProgressDialog();
@@ -1094,6 +1130,9 @@ public class MainActivity extends BaseCheckPermissionActivity implements View.On
                 case CHANGE_WEEK:
                     cWeek = msg.arg1;
                     break;
+                case LOGOUT_VPN:
+                    mSFManager.vpnLogout();
+                    break;
             }
         }
     }
@@ -1104,6 +1143,24 @@ public class MainActivity extends BaseCheckPermissionActivity implements View.On
         // getPackageName()是你当前类的包名，0代表是获取版本信息
         PackageInfo packInfo = packageManager.getPackageInfo(getPackageName(),0);
         return packInfo.versionName;
+    }
+
+
+    private void getDataFromJwtsDirectly() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    bitmap = XywHttpUtil.getCaptchaImage();
+                    Message msg = new Message();
+                    msg.what = CAPTCHAVIEW;
+                    msg.obj = bitmap;
+                    handler.sendMessage(msg);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
     }
 
 
@@ -1178,21 +1235,10 @@ public class MainActivity extends BaseCheckPermissionActivity implements View.On
     public void onLoginSuccess() {
 
         Toast.makeText(MainActivity.this, "Vpn Login Success", Toast.LENGTH_LONG).show();
-
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    bitmap = XywHttpUtil.getCaptchaImage();
-                    Message msg = new Message();
-                    msg.what = CAPTCHAVIEW;
-                    msg.obj = bitmap;
-                    handler.sendMessage(msg);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }).start();
+//        mSFManager.onActivityResult();
+        // VPN连接成功后等几秒钟再获取课表, 否则可能失败
+        SystemClock.sleep(3000);
+        getDataFromJwtsDirectly();
     }
 
     public void setCWeek(int week){

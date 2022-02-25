@@ -68,4 +68,5 @@
     <string name="academic_services">学工系统</string>
     <string name="str_permission_not_all_pass">权限未全部授权，部分功能将受限！</string>
     <string name="str_vpn_login_fail">VPN Login Failed, please check your network and try again！</string>
+    <string name="choose_if_vpn">是否通过 VPN 更新? (如未连接校园网环境, 请选择是)</string>
 </resources>

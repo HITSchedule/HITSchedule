@@ -64,4 +64,5 @@
     <string name="academic_services">Academic Services</string>
     <string name="str_permission_not_all_pass">Not all permissions are authorized, some functions will be restricted！</string>
     <string name="str_vpn_login_fail">VPN Login Failed, please check your network and try again！</string>
+    <string name="choose_if_vpn">Update via VPN? (YES when not connected to campus area network)</string>
 </resources>
