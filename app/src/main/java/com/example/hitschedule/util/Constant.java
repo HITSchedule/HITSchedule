@@ -6,6 +6,8 @@ public class Constant {
 
     public static final int LOGIN_SUCCESS = 4321;
 
+    public static final int RSA_ERROR = 3124;
+
     public static final int CAPTCHA_ERROR = 2134;
 
     public static final String INFO = "INFO";

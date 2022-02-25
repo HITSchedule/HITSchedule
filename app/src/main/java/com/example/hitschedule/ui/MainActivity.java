@@ -371,6 +371,8 @@ public class MainActivity extends BaseCheckPermissionActivity implements View.On
         } catch (SFException | MalformedURLException e) {
             e.printStackTrace();
         }
+        //TODO:修复VPN并删去下面一行
+        onLoginSuccess();//绕过VPN直接访问jwts的临时补丁
     }
 
     /**

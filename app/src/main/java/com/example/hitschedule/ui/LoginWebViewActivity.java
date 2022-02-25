@@ -36,7 +36,7 @@ public class LoginWebViewActivity extends BaseActivity {
         setContentView(R.layout.activity_webview);
 
         String title = getString(R.string.login_title);
-        String url = "https://ids.hit.edu.cn/authserver/logout";
+        String url = "https://ids.hit.edu.cn/authserver/login";
         pwd = getIntent().getStringExtra("pwd");
         usrId = getIntent().getStringExtra("usrId");
 
@@ -56,6 +56,7 @@ public class LoginWebViewActivity extends BaseActivity {
 
         webView.getSettings().setJavaScriptEnabled(true);
         webView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
+        webView.getSettings().setDomStorageEnabled(true);
 
         webView.setWebChromeClient(new WebChromeClient());
 
@@ -67,8 +68,8 @@ public class LoginWebViewActivity extends BaseActivity {
                 Log.d(LoginWebViewActivity.this.TAG, "onPageFinished: ");
                 // 如果是登录页面, 则自动填充用户名和密码并登录
                 if (url.contains("ids.hit.edu.cn/authserver/login")) {
-                    String jsUrl = "javascript:usernameInput=document.getElementById(\"mobileUsername\");"
-                            + "passwordInput=document.getElementById(\"mobilePassword\");"
+                    String jsUrl = "javascript:usernameInput=document.getElementById(\"username\");"
+                            + "passwordInput=document.getElementById(\"password\");"
                             + "usernameInput.readOnly = true;"
                             + "passwordInput.readOnly = true;"
                             + "usernameInput.value = \"" +
@@ -86,8 +87,10 @@ public class LoginWebViewActivity extends BaseActivity {
                     if (firstLogin) {
                         firstLogin = false;
                         // 如果不需要验证码, 就自动点击登录
-                        jsUrl += "if(document.getElementById(\"cpatchaDiv\").style.display==\"none\")" +
-                        "{document.getElementById(\"load\").click()}";
+                        jsUrl += "if(document.getElementById(\"captchaDiv\").style.display==\"none\")"
+                                +"{"
+                                +"document.getElementById(\"login_submit\").click();"
+                                +"}";
                     }
                     view.loadUrl(jsUrl);
                 }
@@ -98,7 +101,7 @@ public class LoginWebViewActivity extends BaseActivity {
             public void onPageStarted(final WebView view, String url, Bitmap bitmap) {
                 Log.d(TAG, "onPageStarted: ");
                 // 如果是这个URL, 证明登录成功
-                if (url.contains("ids.hit.edu.cn/authserver/index.do")) {
+                if (url.contains("ids.hit.edu.cn/personalInfo")) {
 //                    Intent mainIntent = new Intent(LoginWebViewActivity.this, MainActivity.class);
 //                    mainIntent.putExtra("type", "init");
 //                    startActivity(mainIntent);

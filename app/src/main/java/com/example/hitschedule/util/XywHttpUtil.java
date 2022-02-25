@@ -1,19 +1,23 @@
 package com.example.hitschedule.util;
+
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigInteger;
+import java.security.KeyFactory;
+import java.security.NoSuchAlgorithmException;
+import java.security.PublicKey;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.RSAPublicKeySpec;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+
+import javax.crypto.Cipher;
 
 import okhttp3.Call;
 import okhttp3.CipherSuite;
@@ -24,14 +28,13 @@ import okhttp3.FormBody;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 import okhttp3.TlsVersion;
 
-import static com.example.hitschedule.util.Constant.ACCONUT_ERROR;
 import static com.example.hitschedule.util.Constant.CAPTCHA_ERROR;
 import static com.example.hitschedule.util.Constant.LOGIN_SUCCESS;
+import static com.example.hitschedule.util.Constant.RSA_ERROR;
 
 /**
  * HTTP网络请求封装工具类，用于登录，课表请求等
@@ -104,6 +107,72 @@ public class XywHttpUtil {
         return null; // TODO 改
     }
 
+    private static int chunkSize = 0;
+    private static PublicKey publicKey = null;
+
+    /**
+     * 得到publicKey和chunkSize
+     * @throws IOException
+     * @throws NoSuchAlgorithmException
+     * @throws InvalidKeySpecException
+     */
+    private static void getRSAPublicKey() throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
+        OkHttpClient client = getHttpClient();
+        Request request = new Request.Builder()
+                .url(login_url)
+                .build();
+
+        Call call = client.newCall(request);
+        Response response = call.execute();
+
+        String htmlString = response.body().string();
+        String halfHtmlString = htmlString.substring( htmlString.indexOf("RSA公钥") );
+        String RSAString = halfHtmlString.substring(
+                halfHtmlString.indexOf("getKeyPair"),
+                halfHtmlString.indexOf("</script>"));
+
+        String[] keyString = RSAString.split("\'|\"");
+        BigInteger publicExponent = new BigInteger(keyString[1], 16);
+        Log.d(TAG, "RSA : publicExponent->" + publicExponent);
+        BigInteger modulus = new BigInteger(keyString[5], 16);
+        Log.d(TAG, "RSA : modulus->" + modulus);
+        chunkSize = 2 * modulus.bitLength();
+        Log.d(TAG, "RSA : chunkSize->" + chunkSize);
+
+        RSAPublicKeySpec publicKeySpec = new RSAPublicKeySpec(modulus, publicExponent);
+        KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+        publicKey = keyFactory.generatePublic(publicKeySpec);
+    }
+
+    /**
+     * 使用publicKey和chunkSize加密数据
+     * @param data
+     * @return
+     */
+    private static String encryptData(String data)
+    {
+        StringBuilder encoded = new StringBuilder();
+        try {
+            Cipher cipher = Cipher.getInstance("RSA");
+            cipher.init(Cipher.ENCRYPT_MODE, publicKey);
+            for(int i = 0; i < data.length(); i += chunkSize) {
+                String now = data.substring(i, Math.min(data.length(), i + chunkSize));
+                byte[] encrypted = cipher.doFinal(now.getBytes());
+                if(i != 0) {
+                    encoded.append(" ");
+                }
+                for(byte nowByte : encrypted) {
+                    encoded.append(String.format("%02x", nowByte));
+                }
+            }
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        Log.d(TAG, "RSA : " + data + " is encrypted to ->" + encoded.toString());
+        return encoded.toString();
+    }
+
     /**
      * 校园网登录jwts
      * @param usrId 学号
@@ -113,12 +182,17 @@ public class XywHttpUtil {
      * @throws IOException
      */
     public static int jwc_login(String usrId, String pwd, String captcha) throws IOException {
+        try {
+            getRSAPublicKey();
+        } catch (NoSuchAlgorithmException|InvalidKeySpecException e) {
+            return RSA_ERROR;
+        }
 
         OkHttpClient client = getHttpClient();
 
         FormBody jwts_data = new FormBody.Builder()
-                .add("usercode", usrId)
-                .add("password", pwd)
+                .add("usercode", encryptData(usrId))
+                .add("password", encryptData(pwd))
                 .add("code", captcha)
                 .build();
         Request request = new Request.Builder()
@@ -130,7 +204,6 @@ public class XywHttpUtil {
         Response response = call.execute();
 
         Response prior = response.priorResponse();
-
 
         if (prior != null && prior.header("location").equals("/")){
             // TODO 判断什么时候获取课表失败
