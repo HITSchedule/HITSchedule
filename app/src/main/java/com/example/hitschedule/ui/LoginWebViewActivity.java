@@ -36,7 +36,7 @@ public class LoginWebViewActivity extends BaseActivity {
         setContentView(R.layout.activity_webview);
 
         String title = getString(R.string.login_title);
-        String url = "https://ids.hit.edu.cn/authserver/login";
+        String url = "https://ids.hit.edu.cn/authserver/logout?service=https%3A%2F%2Fids.hit.edu.cn%2Fauthserver%2Flogin";
         pwd = getIntent().getStringExtra("pwd");
         usrId = getIntent().getStringExtra("usrId");
 
@@ -87,7 +87,7 @@ public class LoginWebViewActivity extends BaseActivity {
                     if (firstLogin) {
                         firstLogin = false;
                         // 如果不需要验证码, 就自动点击登录
-                        jsUrl += "if(document.getElementById(\"captchaDiv\").style.display==\"none\")"
+                        jsUrl += "if(document.getElementById(\"captchaDiv\").classList.contains(\"hide\"))"
                                 +"{"
                                 +"document.getElementById(\"login_submit\").click();"
                                 +"}";
