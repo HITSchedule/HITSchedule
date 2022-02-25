@@ -67,7 +67,7 @@ dependencies {
     // 课表依赖
     implementation 'com.github.zfman:TimetableView:v2.0.7'
     // 网络请求
-    implementation 'cn.bmob.android:bmob-sdk:3.6.9'
+    implementation 'io.github.bmob:android-sdk:3.8.12'
     implementation 'io.reactivex.rxjava2:rxjava:2.2.2'
     implementation 'io.reactivex.rxjava2:rxandroid:2.1.0'
     implementation 'com.squareup.okio:okio:2.1.0'
