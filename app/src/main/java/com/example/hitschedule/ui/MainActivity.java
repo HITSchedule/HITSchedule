@@ -485,7 +485,7 @@ public class MainActivity extends BaseCheckPermissionActivity implements View.On
         // 将新列表的部分保存
         for (MySubject subject : newSubjects) {
             subject.setUsrId(usrId);
-            subject.setXnxq(info.getReserved2());
+            subject.setXnxq(info.getXnxq());
             subject.setType("JWTS");
             subject.save();
         }
