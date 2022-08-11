@@ -221,11 +221,23 @@ public class XywHttpUtil {
     public static String kb_get(String xnxq) throws IOException {
         String url = "http://gcourse.hit.edu.cn/kbgl/queryxskbxsy";
         OkHttpClient client = getHttpClient();
+        Request request;
 
-        Request request = new Request.Builder()
-                .get()
-                .url(query_url)
-                .build();
+        if (query_url.contains("jwts.hit.edu.cn")) {
+            request = new Request.Builder()
+                    .post(new FormBody.Builder()
+                        .add("fhlj", "kbcx/queryGrkb")
+                        .add("xnxq", xnxq)
+                        .build()
+                    )
+                    .url(query_url)
+                    .build();
+        } else {
+            request = new Request.Builder()
+                    .get()
+                    .url(query_url)
+                    .build();
+        }
 
         Call call = client.newCall(request);
 
