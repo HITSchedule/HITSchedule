@@ -149,6 +149,7 @@ public class MainActivity extends BaseCheckPermissionActivity implements View.On
         //Log.d(TAG, "onCreate: " + getResources().getConfiguration().getLocales().get(0));
         setContentView(R.layout.activity_main);
         type = getIntent().getStringExtra("type");
+        Bmob.resetDomain("http://open.hitschedule.top/8/");
         Bmob.initialize(this, "d2ad693a0277f5fc81c6dc84a91ca08f");
         initVPNLoginParms();
         checkForUpdate();
